@@ -62,7 +62,7 @@ class CList extends CComponent implements IteratorAggregate,ArrayAccess,Countabl
 	}
 
 	/**
-	 * @return boolean только для чтения ли данная карта или нет. По умолчанию false.
+	 * @return boolean только для чтения ли данный список или нет. По умолчанию false.
 	 */
 	public function getReadOnly()
 	{
@@ -269,7 +269,7 @@ class CList extends CComponent implements IteratorAggregate,ArrayAccess,Countabl
 	}
 
 	/**
-	 * Сливает итерируемые данные в карту.
+	 * Сливает итерируемые данные в список.
 	 * Новые данные будут добавлены в конец существующих данных.
 	 * @param mixed данные для слияния; должны быть массивом или Traversable-объектом
 	 * @throws CException вызывается, если данные не являются ни массивом ни итератором.
