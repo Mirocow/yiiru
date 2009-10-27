@@ -16,7 +16,7 @@
  * результат, вычисленный при сохранении данных в кэш.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CExpressionDependency.php 891 2009-03-25 15:20:56Z qiang.xue $
+ * @version $Id: CExpressionDependency.php 1483 2009-10-27 15:57:33Z qiang.xue $
  * @package system.caching.dependencies
  * @since 1.0
  */
@@ -24,6 +24,10 @@ class CExpressionDependency extends CCacheDependency
 {
 	/**
 	 * @var string PHP-выражение, результат которого используется для определения зависимости.
+	 * Начиная с версии 1.0.11, выражение также может быть допустимым обратным вызовом PHP,
+	 * включая имя функции, имя метода класса (array(ClassName/Object, MethodName))
+	 * или анонимная функция (PHP 5.3.0+). В функцию/метод будет передан один параметр -
+	 * сам объект зависимости.
 	 */
 	public $expression;
 
@@ -43,6 +47,9 @@ class CExpressionDependency extends CCacheDependency
 	 */
 	protected function generateDependentData()
 	{
-		return @eval('return '.$this->expression.';');
+		if(is_callable($this->expression))
+			return call_user_func($this->expression, $this);
+		else
+			return @eval('return '.$this->expression.';');
 	}
 }

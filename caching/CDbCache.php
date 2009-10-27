@@ -23,7 +23,7 @@
  * Обратитесь к документации {@link CCache} за информацией об обычных операциях кэша, поддерживаемых компонентом CDbCache.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbCache.php 1354 2009-08-20 18:15:14Z qiang.xue $
+ * @version $Id: CDbCache.php 1483 2009-10-27 15:57:33Z qiang.xue $
  * @package system.caching
  * @since 1.0
  */
@@ -266,6 +266,15 @@ EOD;
 		$sql="DELETE FROM {$this->cacheTableName} WHERE id='$key'";
 		$this->getDbConnection()->createCommand($sql)->execute();
 		return true;
+	}
+
+	/**
+	 * Удаляет значения данных с истокшим сроком годности.
+	 * @since 1.0.11
+	 */
+	protected function gc()
+	{
+		$this->getDbConnection()->createCommand("DELETE FROM {$this->cacheTableName} WHERE expire>0 AND expire<".time())->execute();
 	}
 
 	/**
