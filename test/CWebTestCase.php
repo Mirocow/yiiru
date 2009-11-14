@@ -17,7 +17,7 @@ require_once('PHPUnit/Extensions/SeleniumTestCase.php');
  * фикстурами базы данных такую, как {@link CDbTestCase}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CWebTestCase.php 1206 2009-07-04 20:38:54Z qiang.xue $
+ * @version $Id: CWebTestCase.php 1496 2009-10-29 21:08:02Z qiang.xue $
  * @package system.test
  * @since 1.1
  */
@@ -68,6 +68,26 @@ abstract class CWebTestCase extends PHPUnit_Extensions_SeleniumTestCase
 	public function getFixtureManager()
 	{
 		return Yii::app()->getComponent('fixture');
+	}
+
+	/**
+	 * @param string имя фикстуры (значение ключа в списке фикстур {@link fixtures})
+	 * @return array данные именованной фикстуры
+	 */
+	public function getFixtureData($name)
+	{
+		return $this->getFixtureManager()->getRows($name);
+	}
+
+	/**
+	 * @param string имя фикстуры (значение ключа в списке фикстур {@link fixtures})
+	 * @param string псевдоним строки данных фикстуры
+	 * @return CActiveRecord экземпляр ActiveRecord, соответствующий определенному псевдониму в именованной фикстуре.
+	 * Возвращается значение false, если такой фикстуры или записи не обнаружено
+	 */
+	public function getFixtureRecord($name,$alias)
+	{
+		return $this->getFixtureManager()->getRecord($name,$alias);
 	}
 
 	/**

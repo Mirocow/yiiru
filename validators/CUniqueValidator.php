@@ -12,7 +12,7 @@
  * Валидатор CUniqueValidator проверяет значение атрибута на уникальность в соответствующей таблице БД.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CUniqueValidator.php 1354 2009-08-20 18:15:14Z qiang.xue $
+ * @version $Id: CUniqueValidator.php 1494 2009-10-28 22:42:06Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
@@ -80,16 +80,20 @@ class CUniqueValidator extends CValidator
 		if($this->criteria!==array())
 			$criteria->mergeWith($this->criteria);
 
-		if($column->isPrimaryKey || $this->className!==null)
+		if($object->isNewRecord || $object->tableName()!==$finder->tableName())
 			$exists=$finder->exists($criteria);
 		else
 		{
-			// need to exclude the current record based on PK
 			$criteria->limit=2;
 			$objects=$finder->findAll($criteria);
 			$n=count($objects);
 			if($n===1)
-				$exists=$objects[0]->getPrimaryKey()!=$object->getPrimaryKey();
+			{
+				if($column->isPrimaryKey)  // primary key is modified and not unique
+					$exists=$object->getOldPrimaryKey()!=$object->getPrimaryKey();
+				else // non-primary key, need to exclude the current record based on PK
+					$exists=$objects[0]->getPrimaryKey()!=$object->getPrimaryKey();
+			}
 			else
 				$exists=$n>1;
 		}
