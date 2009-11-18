@@ -21,7 +21,7 @@
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CQueue.php 571 2009-01-24 19:06:11Z qiang.xue $
+ * @version $Id: CQueue.php 1523 2009-11-14 17:10:29Z qiang.xue $
  * @package system.collections
  * @since 1.0
  */

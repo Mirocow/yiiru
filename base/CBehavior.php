@@ -9,7 +9,7 @@
  */
 
 /**
- * CBehavior - это удобный базовый класс для классов поведений.
+ * CBehavior - это базовый класс для классов поведений.
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @version $Id: CBehavior.php 564 2009-01-21 22:07:10Z qiang.xue $
  * @package system.base
