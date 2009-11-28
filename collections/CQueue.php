@@ -21,7 +21,7 @@
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CQueue.php 1523 2009-11-14 17:10:29Z qiang.xue $
+ * @version $Id: CQueue.php 1533 2009-11-20 14:10:46Z qiang.xue $
  * @package system.collections
  * @since 1.0
  */
@@ -107,7 +107,7 @@ class CQueue extends CComponent implements IteratorAggregate,Countable
 		if($this->_c===0)
 			throw new CException(Yii::t('yii','The queue is empty.'));
 		else
-			return $this->_d[$this->_c-1];
+			return $this->_d[0];
 	}
 
 	/**

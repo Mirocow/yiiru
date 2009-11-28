@@ -16,7 +16,7 @@
  * результат, вычисленный при сохранении данных в кэш.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CExpressionDependency.php 1508 2009-11-02 13:52:11Z qiang.xue $
+ * @version $Id: CExpressionDependency.php 1531 2009-11-19 22:56:31Z qiang.xue $
  * @package system.caching.dependencies
  * @since 1.0
  */
@@ -47,9 +47,6 @@ class CExpressionDependency extends CCacheDependency
 	 */
 	protected function generateDependentData()
 	{
-		if(!is_string($this->expression) && is_callable($this->expression))
-			return call_user_func($this->expression, $this);
-		else
-			return @eval('return '.$this->expression.';');
+		return $this->evaluateExpression($this->expression);
 	}
 }

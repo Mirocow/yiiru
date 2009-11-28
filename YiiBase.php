@@ -6,7 +6,7 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2009 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: YiiBase.php 1463 2009-10-17 01:49:02Z qiang.xue $
+ * @version $Id: YiiBase.php 1535 2009-11-20 22:38:44Z qiang.xue $
  * @package system
  * @since 1.0
  */
@@ -50,7 +50,7 @@ defined('YII_ZII_PATH') or define('YII_ZII_PATH',YII_PATH.DIRECTORY_SEPARATOR.'z
  * вы можете настраивать методы YiiBase.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: YiiBase.php 1463 2009-10-17 01:49:02Z qiang.xue $
+ * @version $Id: YiiBase.php 1535 2009-11-20 22:38:44Z qiang.xue $
  * @package system
  * @since 1.0
  */
@@ -239,16 +239,10 @@ class YiiBase
 		if(class_exists($alias,false) || interface_exists($alias,false))
 			return self::$_imports[$alias]=$alias;
 
-		if(isset(self::$_coreClasses[$alias]) || ($pos=strrpos($alias,'.'))===false)  // a simple class name
+		if(($pos=strrpos($alias,'.'))===false)  // a simple class name
 		{
-			self::$_imports[$alias]=$alias;
-			if($forceInclude)
-			{
-				if(isset(self::$_coreClasses[$alias])) // a core class
-					require(YII_PATH.self::$_coreClasses[$alias]);
-				else
-					require($alias.'.php');
-			}
+			if($forceInclude && self::autoload($alias))
+				self::$_imports[$alias]=$alias;
 			return $alias;
 		}
 
@@ -259,9 +253,11 @@ class YiiBase
 		{
 			if($className!=='*')
 			{
-				self::$_imports[$alias]=$className;
 				if($forceInclude)
+				{
 					require($path.'.php');
+					self::$_imports[$alias]=$className;
+				}
 				else
 					self::$_classes[$className]=$path.'.php';
 				return $className;
@@ -634,11 +630,13 @@ class YiiBase
 		'CUnsafeValidator' => '/validators/CUnsafeValidator.php',
 		'CUrlValidator' => '/validators/CUrlValidator.php',
 		'CValidator' => '/validators/CValidator.php',
+		'CActiveDataProvider' => '/web/CActiveDataProvider.php',
 		'CAssetManager' => '/web/CAssetManager.php',
 		'CBaseController' => '/web/CBaseController.php',
 		'CCacheHttpSession' => '/web/CCacheHttpSession.php',
 		'CClientScript' => '/web/CClientScript.php',
 		'CController' => '/web/CController.php',
+		'CDataProvider' => '/web/CDataProvider.php',
 		'CDbHttpSession' => '/web/CDbHttpSession.php',
 		'CExtController' => '/web/CExtController.php',
 		'CFormModel' => '/web/CFormModel.php',
