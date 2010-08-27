@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -31,7 +31,7 @@
  * загружены в базу данных.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbFixtureManager.php 1206 2009-07-04 20:38:54Z qiang.xue $
+ * @version $Id: CDbFixtureManager.php 2198 2010-06-16 02:51:21Z qiang.xue $
  * @package system.test
  * @since 1.1
  */
@@ -115,8 +115,11 @@ class CDbFixtureManager extends CApplicationComponent
 			require($initFile);
 		else
 		{
-			foreach($this->getFixtures() as $fixture)
-				$this->loadFixture($fixture);
+			foreach($this->getFixtures() as $tableName=>$fixturePath)
+			{
+				$this->resetTable($tableName);
+				$this->loadFixture($tableName);
+			}
 		}
 		$this->checkIntegrity(true);
 	}
@@ -186,9 +189,10 @@ class CDbFixtureManager extends CApplicationComponent
 	}
 
 	/**
-	 * Возвращает имена таблиц, имеющих данные фикстур.
-	 * Предполагается, что все фикстуры хранятся в директории, заданной свойством {@link basePath}.
-	 * @return array имена таблиц, имеющих данные фикстур
+	 * Возвращает информацию доступных фикстур.
+	 * Метод будет искать все файлы в директории {@link basePath}.
+	 * Если имя файла такое же как и имя таблицы, то файл считается хранилищем данных фикстуры для данной таблицы.
+	 * @return array информация доступных фикстур (имя таблицы => файл фикстуры)
 	 */
 	public function getFixtures()
 	{
@@ -291,6 +295,8 @@ class CDbFixtureManager extends CApplicationComponent
 			{
 				$modelClass=Yii::import($tableName,true);
 				$tableName=CActiveRecord::model($modelClass)->tableName();
+				if(($prefix=$this->getDbConnection()->tablePrefix)!='')
+					$tableName=preg_replace('/{{(.*?)}}/',$prefix.'\1',$tableName);
 			}
 			$this->resetTable($tableName);
 			$rows=$this->loadFixture($tableName);

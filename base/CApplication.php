@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -44,7 +44,7 @@
  * приложение переключается на его обработчик ошибок и после переходит к шагу 6.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CApplication.php 1489 2009-10-27 21:13:26Z qiang.xue $
+ * @version $Id: CApplication.php 1789 2010-02-02 18:38:56Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -635,6 +635,7 @@ abstract class CApplication extends CModule
 
 			try
 			{
+				Yii::import('CErrorEvent',true);
 				$event=new CErrorEvent($this,$code,$message,$file,$line);
 				$this->onError($event);
 				if(!$event->handled)
@@ -773,6 +774,9 @@ abstract class CApplication extends CModule
 			),
 			'request'=>array(
 				'class'=>'CHttpRequest',
+			),
+			'format'=>array(
+				'class'=>'CFormatter',
 			),
 		);
 

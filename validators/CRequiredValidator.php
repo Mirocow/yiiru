@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -12,7 +12,7 @@
  * Валидатор CRequiredValidator проверяет, что значение определенного атрибута не нулевое и не пустое.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CRequiredValidator.php 1423 2009-09-28 01:54:38Z qiang.xue $
+ * @version $Id: CRequiredValidator.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
@@ -46,9 +46,11 @@ class CRequiredValidator extends CValidator
 		if($this->requiredValue!==null)
 		{
 			if(!$this->strict && $value!=$this->requiredValue || $this->strict && $value!==$this->requiredValue)
-			$message=$this->message!==null?$this->message:Yii::t('yii','{attribute} must be {value}.',
-				array('{value}'=>$this->requiredValue));
-			$this->addError($object,$attribute,$message);
+			{
+				$message=$this->message!==null?$this->message:Yii::t('yii','{attribute} must be {value}.',
+					array('{value}'=>$this->requiredValue));
+				$this->addError($object,$attribute,$message);
+			}
 		}
 		else if($this->isEmpty($value,true))
 		{

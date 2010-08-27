@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -12,7 +12,7 @@
  * Валидатор CUniqueValidator проверяет значение атрибута на уникальность в соответствующей таблице БД.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CUniqueValidator.php 1494 2009-10-28 22:42:06Z qiang.xue $
+ * @version $Id: CUniqueValidator.php 2188 2010-06-15 17:20:35Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
@@ -50,6 +50,17 @@ class CUniqueValidator extends CValidator
 	 * @since 1.0.8
 	 */
 	public $criteria=array();
+	/**
+	 * @var string пользовательское сообщение об ошибке. Можно использовать маркеры "{attribute}" и "{value}",
+	 * которые будут заменены реальным именем или значением атрибута соответственно.
+	 */
+	public $message;
+	/**
+	 * @var boolean whether this validation rule should be skipped if when there is already a validation
+	 * error for the current attribute. Defaults to true.
+	 * @since 1.1.1
+	 */
+	public $skipOnError=true;
 
 
 	/**
@@ -69,7 +80,7 @@ class CUniqueValidator extends CValidator
 		$finder=CActiveRecord::model($className);
 		$table=$finder->getTableSchema();
 		if(($column=$table->getColumn($attributeName))===null)
-			throw new CException(Yii::t('yii','Column "{column} does not exist in table "{table}".',
+			throw new CException(Yii::t('yii','Table "{table}" does not have a column named "{column}".',
 				array('{column}'=>$attributeName,'{table}'=>$table->name)));
 
 		$columnName=$column->rawName;
@@ -80,7 +91,7 @@ class CUniqueValidator extends CValidator
 		if($this->criteria!==array())
 			$criteria->mergeWith($this->criteria);
 
-		if($object->isNewRecord || $object->tableName()!==$finder->tableName())
+		if(!$object instanceof CActiveRecord || $object->isNewRecord || $object->tableName()!==$finder->tableName())
 			$exists=$finder->exists($criteria);
 		else
 		{

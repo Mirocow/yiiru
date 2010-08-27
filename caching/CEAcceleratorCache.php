@@ -4,19 +4,22 @@
  *
  * @author Steffen Dietz <steffo.dietz[at]googlemail[dot]com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
 /**
- * Класс CEAcceleratorCache реализует кэш-модуль приложения, основанный на {@link http://eaccelerator.net/ eaccelerator}.
+ * Класс CEAcceleratorCache реализует кэш-компонент приложения, основанный на {@link http://eaccelerator.net/ eaccelerator}.
  *
  * Для использования этого компонента приложения должно быть загружено расширение PHP eAccelerator.
  *
  * Обратитесь к документации {@link CCache} за информацией об обычных операциях кэша, поддерживаемых компонентом CEAccelerator.
+ * 
+ * Please note that as of v0.9.6, eAccelerator no longer supports data caching.
+ * This means if you still want to use this component, your eAccelerator should be of 0.9.5.x or lower version.
  *
  * @author Steffen Dietz <steffo.dietz[at]googlemail[dot]com>
- * @version $Id: CEAcceleratorCache.php 814 2009-03-10 18:00:11Z qiang.xue $
+ * @version $Id: CEAcceleratorCache.php 1854 2010-03-03 13:10:50Z qiang.xue $
  * @package system.caching
  * @since 1.0.4
  */

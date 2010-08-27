@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -44,7 +44,7 @@
  * местами назначения, даже если маршруты имеют одинаковый тип.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLogRouter.php 1194 2009-06-29 20:00:12Z qiang.xue $
+ * @version $Id: CLogRouter.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.logging
  * @since 1.0
  */
@@ -65,7 +65,8 @@ class CLogRouter extends CApplicationComponent
 			$route->init();
 			$this->_routes[$name]=$route;
 		}
-		Yii::app()->attachEventHandler('onEndRequest',array($this,'collectLogs'));
+		Yii::getLogger()->attachEventHandler('onFlush',array($this,'collectLogs'));
+		Yii::app()->attachEventHandler('onEndRequest',array($this,'processLogs'));
 	}
 
 	/**
@@ -92,16 +93,32 @@ class CLogRouter extends CApplicationComponent
 
 	/**
 	 * Собирает сообщения журнала от регистратора.
-	 * Метод является обработчиком события onEndRequest приложения.
-	 * @param mixed параметр события
+	 * Метод является обработчиком события {@link CLogger::onFlush}.
+	 * @param CEvent параметр события
 	 */
-	public function collectLogs($param)
+	public function collectLogs($event)
 	{
 		$logger=Yii::getLogger();
 		foreach($this->_routes as $route)
 		{
 			if($route->enabled)
-				$route->collectLogs($logger);
+				$route->collectLogs($logger,false);
+		}
+	}
+
+	/**
+	 * Собирает и обрабатывает сообщения журнала от регистратора.
+	 * Метод является обработчиком события {@link CApplication::onEndRequest}.
+	 * @param CEvent параметр события
+	 * @since 1.1.0
+	 */
+	public function processLogs($event)
+	{
+		$logger=Yii::getLogger();
+		foreach($this->_routes as $route)
+		{
+			if($route->enabled)
+				$route->collectLogs($logger,true);
 		}
 	}
 }

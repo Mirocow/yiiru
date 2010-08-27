@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -18,7 +18,7 @@
  * в директории времени выполнения приложения.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbLogRoute.php 1180 2009-06-26 21:16:33Z qiang.xue $
+ * @version $Id: CDbLogRoute.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.logging
  * @since 1.0
  */

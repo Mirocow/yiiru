@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -81,7 +81,7 @@
  * определяемые геттерами и/или сеттерами) доступны из компонента, к которому присоединено поведение.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CComponent.php 1538 2009-11-25 02:58:34Z qiang.xue $
+ * @version $Id: CComponent.php 2190 2010-06-15 20:47:31Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -189,8 +189,17 @@ class CComponent
 			$name=strtolower($name);
 			return isset($this->_e[$name]) && $this->_e[$name]->getCount();
 		}
-		else
-			return false;
+		else if(is_array($this->_m))
+		{
+ 			if(isset($this->_m[$name]))
+ 				return true;
+			foreach($this->_m as $object)
+			{
+				if($object->getEnabled() && (property_exists($object,$name) || $object->canGetProperty($name)))
+					return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -208,6 +217,24 @@ class CComponent
 			$this->$setter(null);
 		else if(strncasecmp($name,'on',2)===0 && method_exists($this,$name))
 			unset($this->_e[strtolower($name)]);
+		else if(is_array($this->_m))
+		{
+			if(isset($this->_m[$name]))
+				$this->detachBehavior($name);
+			else
+			{
+				foreach($this->_m as $object)
+				{
+					if($object->getEnabled())
+					{
+						if(property_exists($object,$name))
+							return $object->$name=null;
+						else if($object->canSetProperty($name))
+							return $object->$setter(null);
+					}
+				}
+			}
+		}
 		else if(method_exists($this,'get'.$name))
 			throw new CException(Yii::t('yii','Property "{class}.{property}" is read only.',
 				array('{class}'=>get_class($this), '{property}'=>$name)));
@@ -232,6 +259,8 @@ class CComponent
 					return call_user_func_array(array($object,$name),$parameters);
 			}
 		}
+		if(class_exists('Closure', false) && $this->$name instanceof Closure)
+			return call_user_func_array($this->$name, $parameters);
 		throw new CException(Yii::t('yii','{class} does not have a method named "{name}".',
 			array('{class}'=>get_class($this), '{name}'=>$name)));
 	}
@@ -557,7 +586,7 @@ class CComponent
 	/**
 	 * Выполняет выражение PHP или обратный вызов в контексте данного компонента.
 	 *
-	 * Допустимый обратный вызов PHP - это имя глобальной функции, имя метода класса в формате
+	 * Допустимый обратный вызов PHP - это имя метода класса в формате
 	 * array(ClassName/Object, MethodName) или анонимная функция (доступно только в PHP 5.3.0 или выше).
 	 *
 	 * Если используется обратный вызов PHP, структура соответствующих функции/метода должна быть такой:
@@ -579,10 +608,10 @@ class CComponent
 	 */
 	public function evaluateExpression($_expression_,$_data_=array())
 	{
-		if(is_string($_expression_) && !function_exists($_expression_))
+		if(is_string($_expression_))
 		{
 			extract($_data_);
-			return @eval('return '.$_expression_.';');
+			return eval('return '.$_expression_.';');
 		}
 		else
 		{
@@ -603,7 +632,7 @@ class CComponent
  * еще не выполненные обработчики выполняться не будут.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CComponent.php 1538 2009-11-25 02:58:34Z qiang.xue $
+ * @version $Id: CComponent.php 2190 2010-06-15 20:47:31Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -647,7 +676,7 @@ class CEvent extends CComponent
  * Тогда можно использовать перечисляемые значения так - TextAlign::Left и TextAlign::Right.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CComponent.php 1538 2009-11-25 02:58:34Z qiang.xue $
+ * @version $Id: CComponent.php 2190 2010-06-15 20:47:31Z qiang.xue $
  * @package system.base
  * @since 1.0
  */

@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -20,7 +20,7 @@
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CVarDumper.php 434 2008-12-30 23:14:31Z qiang.xue $
+ * @version $Id: CVarDumper.php 2100 2010-05-05 21:39:14Z qiang.xue $
  * @package system.utils
  * @since 1.0
  */
@@ -103,7 +103,8 @@ class CVarDumper
 					self::$_output.="array\n".$spaces.'(';
 					foreach($keys as $key)
 					{
-						self::$_output.="\n".$spaces."    [$key] => ";
+						$key2=str_replace("'","\\'",$key);
+						self::$_output.="\n".$spaces."    '$key2' => ";
 						self::$_output.=self::dumpInternal($var[$key],$level+1);
 					}
 					self::$_output.="\n".$spaces.')';
@@ -119,14 +120,13 @@ class CVarDumper
 					$id=array_push(self::$_objects,$var);
 					$className=get_class($var);
 					$members=(array)$var;
-					$keys=array_keys($members);
 					$spaces=str_repeat(' ',$level*4);
 					self::$_output.="$className#$id\n".$spaces.'(';
-					foreach($keys as $key)
+					foreach($members as $key=>$value)
 					{
 						$keyDisplay=strtr(trim($key),array("\0"=>':'));
 						self::$_output.="\n".$spaces."    [$keyDisplay] => ";
-						self::$_output.=self::dumpInternal($members[$key],$level+1);
+						self::$_output.=self::dumpInternal($value,$level+1);
 					}
 					self::$_output.="\n".$spaces.')';
 				}

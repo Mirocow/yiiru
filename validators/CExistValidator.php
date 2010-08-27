@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -14,10 +14,8 @@
  * Данный валидатор часто используется для проверки того, что внешний ключ содержит значение,
  * которое может быть найдено во внешней таблице.
  *
- * CExistValidator может использоваться только для active record-объектов.
- *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CExistValidator.php 1354 2009-08-20 18:15:14Z qiang.xue $
+ * @version $Id: CExistValidator.php 2188 2010-06-15 17:20:35Z qiang.xue $
  * @package system.validators
  * @since 1.0.4
  */
@@ -66,7 +64,7 @@ class CExistValidator extends CValidator
 		$finder=CActiveRecord::model($className);
 		$table=$finder->getTableSchema();
 		if(($column=$table->getColumn($attributeName))===null)
-			throw new CException(Yii::t('yii','Column "{column} does not exist in table "{table}".',
+			throw new CException(Yii::t('yii','Table "{table}" does not have a column named "{column}".',
 				array('{column}'=>$attributeName,'{table}'=>$table->name)));
 
 		$criteria=array('condition'=>$column->rawName.'=:vp','params'=>array(':vp'=>$value));

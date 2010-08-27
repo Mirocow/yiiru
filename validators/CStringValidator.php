@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -14,7 +14,7 @@
  * Примечание: валидатор должен использоваться только для строковых атрибутов.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CStringValidator.php 1354 2009-08-20 18:15:14Z qiang.xue $
+ * @version $Id: CStringValidator.php 2340 2010-08-25 13:38:05Z mdomba $
  * @package system.validators
  * @since 1.0
  */
@@ -45,6 +45,15 @@ class CStringValidator extends CValidator
 	 * т.е. пустой атрибут считается валидным
 	 */
 	public $allowEmpty=true;
+	/**
+	 * @var string the encoding of the string value to be validated (e.g. 'UTF-8').
+	 * Setting this property requires you to enable mbstring PHP extension.
+	 * The value of this property will be used as the 2nd parameter of the mb_strlen() function.
+	 * Defaults to false, which means the strlen() function will be used for calculating the length
+	 * of the string.
+	 * @since 1.1.1
+	 */
+	public $encoding=false;
 
 	/**
 	 * Валидирует отдельный атрибут.
@@ -57,7 +66,10 @@ class CStringValidator extends CValidator
 		$value=$object->$attribute;
 		if($this->allowEmpty && $this->isEmpty($value))
 			return;
-		$length=strlen($value);
+		if($this->encoding!==false && function_exists('mb_strlen'))
+			$length=mb_strlen($value,$this->encoding);
+		else
+			$length=strlen($value);
 		if($this->min!==null && $length<$this->min)
 		{
 			$message=$this->tooShort!==null?$this->tooShort:Yii::t('yii','{attribute} is too short (minimum is {min} characters).');

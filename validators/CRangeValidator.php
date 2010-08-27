@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -12,7 +12,7 @@
  * Валидатор CRangeValidator проверяет, чтобы значение атрибута было в списке, определенном свойством {@link range}).
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CRangeValidator.php 1354 2009-08-20 18:15:14Z qiang.xue $
+ * @version $Id: CRangeValidator.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */

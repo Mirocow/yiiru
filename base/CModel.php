@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -15,7 +15,7 @@
  * CModel определяет базовый каркас для моделей данных, которым необходима валидация.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CModel.php 1173 2009-06-26 01:57:22Z qiang.xue $
+ * @version $Id: CModel.php 2268 2010-07-18 17:44:48Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -160,6 +160,7 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	 * Вы можете переопределить данный метод, чтобы выполнить предварительные действия перед валидацией.
 	 * Убедитесь, что родительский метод также вызывается.
 	 * @return boolean должна ли выполняться валидация. По умолчанию - true.
+	 * Если возвращается значение false, валидация прекращается и модель считается невалидной.
 	 */
 	protected function beforeValidate()
 	{
@@ -200,6 +201,25 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	}
 
 	/**
+	 * Возвращает все определенные в модели валидаторы.
+	 * Метод отличен от метода {@link getValidators} тем, что последний
+	 * возвращает только валидаторы, применимые к текущему {@link scenario сценарию}.
+	 * Также, т.к. теперь метод возвращает объект класса {@link CList}, вы можете
+	 * манипулировать им, вставляя и удаляя валидаторы (удобно для поведений).
+	 * Например, <code>$model->validatorList->add($newValidator)</code>.
+	 * Сделанное изменение в объекте класса {@link CList} будет применено и отразится
+	 * при следующем вызове метода {@link getValidators}.
+	 * @return CList все определенные в модели валидаторы
+	 * @since 1.1.2
+	 */
+	public function getValidatorList()
+	{
+		if($this->_validators===null)
+			$this->_validators=$this->createValidators();
+		return $this->_validators;
+	}
+
+	/**
 	 * Возвращает валидаторы, применимые к текущему {@link scenario сценарию}.
 	 * @param string имя атрибута, валидаторы которого должны буть вовращены.
 	 * Если null, будут возвращены валидаторы для ВСЕХ атрибутов модели.
@@ -227,15 +247,15 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	/**
 	 * Создает объекты валидаторов, основанных на определении {@link rules}.
 	 * В основном, метод используется внутренне.
-	 * @return array объекты валидаторов, основанных на определении {@link rules}.
+	 * @return CList объекты валидаторов, основанных на определении {@link rules}.
 	 */
 	public function createValidators()
 	{
-		$validators=array();
+		$validators=new CList;
 		foreach($this->rules() as $rule)
 		{
 			if(isset($rule[0],$rule[1]))  // attributes, validator name
-				$validators[]=CValidator::createValidator($rule[1],$this,$rule[0],array_slice($rule,2));
+				$validators->add(CValidator::createValidator($rule[1],$this,$rule[0],array_slice($rule,2)));
 			else
 				throw new CException(Yii::t('yii','{class} has an invalid validation rule. The rule must specify attributes to be validated and the validator name.',
 					array('{class}'=>get_class($this))));
@@ -380,7 +400,7 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	 */
 	public function generateAttributeLabel($name)
 	{
-		return ucwords(trim(strtolower(str_replace(array('-','_'),' ',preg_replace('/(?<![A-Z])[A-Z]/', ' \0', $name)))));
+		return ucwords(trim(strtolower(str_replace(array('-','_','.'),' ',preg_replace('/(?<![A-Z])[A-Z]/', ' \0', $name)))));
 	}
 
 	/**
@@ -424,7 +444,38 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 		{
 			if(isset($attributes[$name]))
 				$this->$name=$value;
+			else
+				$this->onUnsafeAttribute($name,$value);
 		}
+	}
+
+	/**
+	 * Устанавливает атрибуты в null.
+	 * @param array список устанавливаемых в null атрибутов. Если параметр не передан,
+	 * все атрибуты, имена которых определены свойством {@link attributeNames},
+	 * будут установлены в null.
+	 * @since 1.1.3
+	 */
+	public function unsetAttributes($names=null)
+	{
+		if($names===null)
+			$names=$this->attributeNames();
+		foreach($names as $name)
+			$this->$name=null;
+	}
+
+	/**
+	 * This method is invoked when an unsafe attribute is being massively assigned.
+	 * The default implementation will log a warning message if YII_DEBUG is on.
+	 * It does nothing otherwise.
+	 * @param string the unsafe attribute name
+	 * @param mixed the attribute value
+	 * @since 1.1.1
+	 */
+	public function onUnsafeAttribute($name,$value)
+	{
+		if(YII_DEBUG)
+			Yii::log(Yii::t('yii','Failed to set unsafe attribute "{attribute}".',array('{attribute}'=>$name)),CLogger::LEVEL_WARNING);
 	}
 
 	/**
@@ -471,7 +522,7 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 		$unsafe=array();
 		foreach($this->getValidators() as $validator)
 		{
-			if($validator instanceof CUnsafeValidator)
+			if(!$validator->safe)
 			{
 				foreach($validator->attributes as $name)
 					$unsafe[]=$name;

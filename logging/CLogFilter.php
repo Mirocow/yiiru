@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -19,7 +19,7 @@
  * их в сообщении журнала, что может помочь в выявлении/отладке встречающихся проблем.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLogFilter.php 1104 2009-06-07 13:12:28Z qiang.xue $
+ * @version $Id: CLogFilter.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.logging
  * @since 1.0.6
  */

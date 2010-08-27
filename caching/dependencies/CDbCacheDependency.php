@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -17,7 +17,7 @@
  * Это соединение БД, используемое для выполнения запроса.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbCacheDependency.php 1295 2009-08-06 20:00:34Z qiang.xue $
+ * @version $Id: CDbCacheDependency.php 2300 2010-08-03 01:45:21Z qiang.xue $
  * @package system.caching.dependencies
  * @since 1.0
  */
@@ -33,6 +33,11 @@ class CDbCacheDependency extends CCacheDependency
 	 * Примечание: SQL запрос должен возвращать единственное значение.
 	 */
 	public $sql;
+	/**
+	 * @var array массив параметров (имя=>значение), связываемых с SQL выражением, определенным параметром {@link sql}.
+	 * @since 1.1.4
+	 */
+	public $params;
 
 	private $_db;
 
@@ -63,7 +68,15 @@ class CDbCacheDependency extends CCacheDependency
 	protected function generateDependentData()
 	{
 		if($this->sql!==null)
-			return $this->getDbConnection()->createCommand($this->sql)->queryScalar();
+		{
+			$command=$this->getDbConnection()->createCommand($this->sql);
+			if(is_array($this->params))
+			{
+				foreach($this->params as $name=>$value)
+					$command->bindValue($name,$value);
+			}
+			return $command->queryRow();
+		}
 		else
 			throw new CException(Yii::t('yii','CDbCacheDependency.sql cannot be empty.'));
 	}

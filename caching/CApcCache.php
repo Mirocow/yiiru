@@ -4,18 +4,18 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
 /**
- * Класс CApcCache реализует кэш-модуль приложения, основанный на {@link http://www.php.net/apc APC}.
+ * Класс CApcCache реализует кэш-компонент приложения, основанный на {@link http://www.php.net/apc APC}.
  * Для использования этого компонента приложения должно быть загружено расширение PHP APC.
  *
  * Обратитесь к документации {@link CCache} за информацией об обычных операциях кэша, поддерживаемых компонентом CApcCache.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CApcCache.php 1295 2009-08-06 20:00:34Z qiang.xue $
+ * @version $Id: CApcCache.php 1832 2010-02-20 03:22:45Z qiang.xue $
  * @package system.caching
  * @since 1.0
  */
@@ -53,7 +53,7 @@ class CApcCache extends CCache
 	 */
 	protected function getValues($keys)
 	{
-		return array_combine($keys,apc_fetch($keys));
+		return apc_fetch($keys);
 	}
 
 	/**

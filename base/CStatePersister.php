@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -35,7 +35,7 @@
  * Получить доступ к нему можно методом {@link CApplication::getStatePersister}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CStatePersister.php 1474 2009-10-18 21:13:52Z qiang.xue $
+ * @version $Id: CStatePersister.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -99,7 +99,7 @@ class CStatePersister extends CApplicationComponent implements IStatePersister
 
 	/**
 	 * Сохраняет состояние приложения в постоянное хранилище.
-	 * @param mixed данные состояния (должны быть сериализуемы).
+	 * @param mixed данные состояния (должны быть сериализуемы)
 	 */
 	public function save($state)
 	{

@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -20,13 +20,24 @@
  * (за подробностями обратитесь к классу {@link CList}).
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CChainedCacheDependency.php 1423 2009-09-28 01:54:38Z qiang.xue $
+ * @version $Id: CChainedCacheDependency.php 2282 2010-07-22 02:05:03Z qiang.xue $
  * @package system.caching.dependencies
  * @since 1.0
  */
 class CChainedCacheDependency extends CComponent implements ICacheDependency
 {
 	private $_dependencies=null;
+
+	/**
+	 * Конструктор.
+	 * @param array зависимости, добавляемые в данную цепочку
+	 * @since 1.1.4
+	 */
+	public function __construct($dependencies=array())
+	{
+		if(!empty($dependencies))
+			$this->setDependencies($dependencies);
+	}
 
 	/**
 	 * @return CTypedList список объектов зависимости
@@ -39,14 +50,20 @@ class CChainedCacheDependency extends CComponent implements ICacheDependency
 	}
 
 	/**
-	 * @param array список объектов зависимости, добавляемых к данной цепочке.
+	 * @param array список объектов зависимости или конфигураций, добавляемых к данной цепочке.
+	 * Если зависимость определена конфигурацией, то конфигурация должна быть массивом, который
+	 * может быть распознан методом {@link YiiBase::createComponent}
 	 * @since 1.0.10
 	 */
 	public function setDependencies($values)
 	{
 		$dependencies=$this->getDependencies();
 		foreach($values as $value)
+		{
+			if(is_array($value))
+				$value=Yii::createComponent($value);
 			$dependencies->add($value);
+		}
 	}
 
 	/**

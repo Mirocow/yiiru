@@ -1,38 +1,39 @@
 <?php
 /**
- * Файл класса CXCache
+ * Файл класса CWinCache
  *
- * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
+ * @author Alexander Makarov <sam@rmcreative.ru>
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
 /**
- * Класс CXCache реализует кэш-компонент приложения, основанный на {@link http://xcache.lighttpd.net/ xcache}.
+ * Класс CWinCache реализует кэш-компонент приложения, основанный на {@link http://www.iis.net/expand/wincacheforphp WinCache}.
  *
- * Для использования этого компонента приложения должно быть загружено расширение PHP XCache.
+ * Для использования этого компонента приложения должно быть загружено расширение PHP WinCache.
  *
- * Обратитесь к документации {@link CCache} за информацией об обычных операциях кэша, поддерживаемых компонентом CXCache.
+ * Обратитесь к документации {@link CCache} за информацией об обычных операциях кэша, поддерживаемых компонентом WinCache.
  *
- * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: CXCache.php 2062 2010-04-20 19:22:35Z qiang.xue $
+ * @author Alexander Makarov <sam@rmcreative.ru>
+ * @version $Id: CWinCache.php 1942 2010-03-21 00:48:04Z alexander.makarow $
  * @package system.caching
- * @since 1.0.1
+ * @since 1.1.2
  */
-class CXCache extends CCache
-{
+class CWinCache extends CCache {
 	/**
 	 * Инициализирует данный компонент приложения.
 	 * Метод требуется интерфейсом {@link IApplicationComponent}.
-	 * Проверяет доступность xcache.
-	 * @throws CException вызывается, если расширение xcache не загружено или отключено
+	 * Проверяет доступность WinCache и кэш пользователя WinCache (параметр wincache.ucenabled файла настроек php.ini).
+	 * @throws CException вызывается, если расширение WinCache не загружено или отключено
 	 */
 	public function init()
 	{
 		parent::init();
-		if(!function_exists('xcache_isset'))
-			throw new CException(Yii::t('yii','CXCache requires PHP XCache extension to be loaded.'));
+		if(!extension_loaded('wincache'))
+			throw new CException(Yii::t('yii', 'CWinCache requires PHP wincache extension to be loaded.'));
+		if(!ini_get('wincache.ucenabled'))
+			throw new CException(Yii::t('yii', 'CWinCache user cache is disabled. Please set wincache.ucenabled to On in your php.ini.'));
 	}
 
 	/**
@@ -43,7 +44,17 @@ class CXCache extends CCache
 	 */
 	protected function getValue($key)
 	{
-		return xcache_isset($key) ? xcache_get($key) : false;
+		return wincache_ucache_get($key);
+	}
+
+	/**
+	 * Получает из кэша несколько значений с определенными ключами.
+	 * @param array список ключей, идентифицирующих кэшированные значения
+	 * @return array список кэшированных значений, индексированный по ключам
+	 */
+	protected function getValues($keys)
+	{
+		return wincache_ucache_get($keys);
 	}
 
 	/**
@@ -56,7 +67,7 @@ class CXCache extends CCache
 	 */
 	protected function setValue($key,$value,$expire)
 	{
-		return xcache_set($key,$value,$expire);
+		return wincache_ucache_set($key,$value,$expire);
 	}
 
 	/**
@@ -69,7 +80,7 @@ class CXCache extends CCache
 	 */
 	protected function addValue($key,$value,$expire)
 	{
-		return !xcache_isset($key) ? $this->setValue($key,$value,$expire) : false;
+		return wincache_ucache_add($key,$value,$expire);
 	}
 
 	/**
@@ -80,7 +91,7 @@ class CXCache extends CCache
 	 */
 	protected function deleteValue($key)
 	{
-		return xcache_unset($key);
+		return wincache_ucache_delete($key);
 	}
 
 	/**
@@ -89,12 +100,6 @@ class CXCache extends CCache
 	 */
 	public function flush()
 	{
-		for($i=0, $max=xcache_count(XC_TYPE_VAR); $i<$max; $i++)
-		{
-			if(xcache_clear_cache(XC_TYPE_VAR, $i)===false)
-				return false;
-		}
-		return true;
+		return wincache_ucache_clear();
 	}
 }
-

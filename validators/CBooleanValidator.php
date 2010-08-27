@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -13,7 +13,7 @@
  * либо свойству {@link falseValue}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CBooleanValidator.php 1423 2009-09-28 01:54:38Z qiang.xue $
+ * @version $Id: CBooleanValidator.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.validators
  * @since 1.0.10
  */

@@ -4,12 +4,12 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
 /**
- * Компонент CDbCache реализует кэш-модуль приложения, сохраняя кэшируемые данные в БД.
+ * Класс CDbCache реализует кэш-компонент приложения, сохраняя кэшируемые данные в БД.
  *
  * Компонент CDbCache сохраняет кэшируемые данные в таблице БД с именем, определяемым свойством {@link cacheTableName}.
  * Если таблица не существует, она будет автоматически создана.
@@ -23,7 +23,7 @@
  * Обратитесь к документации {@link CCache} за информацией об обычных операциях кэша, поддерживаемых компонентом CDbCache.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbCache.php 1483 2009-10-27 15:57:33Z qiang.xue $
+ * @version $Id: CDbCache.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.caching
  * @since 1.0
  */

@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -41,7 +41,7 @@
  * Класс CCache также реализует интерфейс ArrayAccess, и поэтому может использоваться как массив.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCache.php 1423 2009-09-28 01:54:38Z qiang.xue $
+ * @version $Id: CCache.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.caching
  * @since 1.0
  */

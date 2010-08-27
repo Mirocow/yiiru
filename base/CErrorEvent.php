@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -12,7 +12,7 @@
  * Класс CErrorEvent представляет параметр для события {@link CApplication::onError onError}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CErrorEvent.php 878 2009-03-23 15:31:21Z qiang.xue $
+ * @version $Id: CErrorEvent.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.base
  * @since 1.0
  */

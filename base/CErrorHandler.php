@@ -4,9 +4,11 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
+
+Yii::import('CHtml',true);
 
 /**
  * Компонент CErrorHandler обрабатывает неулавливаемые ошибки и исключения PHP.
@@ -44,7 +46,7 @@
  * CErrorHandler - это компонент ядра приложения, доступный методом {@link CApplication::getErrorHandler()}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CErrorHandler.php 1064 2009-05-26 00:15:33Z qiang.xue $
+ * @version $Id: CErrorHandler.php 2201 2010-06-16 19:11:00Z alexander.makarow $
  * @package system.base
  * @since 1.0
  */
@@ -209,7 +211,6 @@ class CErrorHandler extends CApplicationComponent
 	protected function getExactTrace($exception)
 	{
 		$traces=$exception->getTrace();
-		$result=null;
 		foreach($traces as $trace)
 		{
 			// property access exception

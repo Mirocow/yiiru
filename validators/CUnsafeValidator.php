@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -12,12 +12,18 @@
  * Валидатор CUnsafeValidator помечает связанные атрибуты как небезопасные так, что они не могут быть присвоены пакетно.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CUnsafeValidator.php 1065 2009-05-26 14:47:59Z qiang.xue $
+ * @version $Id: CUnsafeValidator.php 2268 2010-07-18 17:44:48Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
 class CUnsafeValidator extends CValidator
 {
+	/**
+	 * @var boolean должны ли атрибуты данного валидатора считаться безопасными для пакетного присваивания.
+	 * По умолчанию - false.
+	 * @since 1.1.4
+	 */
+	public $safe=false;
 	/**
 	 * Валидирует отдельный атрибут.
 	 * При возникновении ошибки к объекту добавляется сообщение об ошибке.

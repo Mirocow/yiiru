@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -16,6 +16,7 @@
  * <li><b>integer</b> 32-х битные целочисленные знаковые данные.</li>
  * <li><b>float</b> Числа с плавающей точкой двойной точности.</li>
  * <li><b>string</b> Строковые данные.</li>
+ * <li><b>array</b> Массив. </li>
  * <li><b>date</b> Дата.</li>
  * <li><b>time</b> Время (доступен с версии 1.0.5).</li>
  * <li><b>datetime</b> Дата и время (доступен с версии 1.0.5).</li>
@@ -26,7 +27,7 @@
  * атрибут будет считаться неправильным.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CTypeValidator.php 1354 2009-08-20 18:15:14Z qiang.xue $
+ * @version $Id: CTypeValidator.php 1963 2010-03-25 04:00:48Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
@@ -34,7 +35,7 @@ class CTypeValidator extends CValidator
 {
 	/**
 	 * @var string тип данных, которому должен соответствовать атрибут. По умолчанию - 'string'.
-	 * Допустимые значения - 'string', 'integer', 'float', 'date', 'time' и 'datetime'.
+	 * Допустимые значения - 'string', 'integer', 'float', 'array', 'date', 'time' и 'datetime'.
 	 * Примечание: типы 'time' и 'datetime' доступны с версии 1.0.5.
 	 */
 	public $type='string';
@@ -86,6 +87,8 @@ class CTypeValidator extends CValidator
 			$valid=CDateTimeParser::parse($value,$this->timeFormat)!==false;
 	    else if($this->type==='datetime')
 			$valid=CDateTimeParser::parse($value,$this->datetimeFormat)!==false;
+		else if($this->type==='array')
+			$valid=is_array($value);
 		else
 			return;
 

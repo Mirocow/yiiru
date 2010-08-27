@@ -4,12 +4,12 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
 /**
- * Компонент CFileCache реализует кэш-модуль приложения, основанный на файлах.
+ * Класс CFileCache реализует кэш-компонент приложения, основанный на файлах.
  *
  * Для каждого значения кэшируемых данных CFileCache будет использовать для хранения отдельные файлы
  * в директории, определяемой свойством {@link cachePath} и равным по умолчанию 'protected/runtime/cache'.
@@ -18,7 +18,7 @@
  * Обратитесь к документации {@link CCache} за информацией об обычных операциях кэша, поддерживаемых компонентом CFileCache.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFileCache.php 1104 2009-06-07 13:12:28Z qiang.xue $
+ * @version $Id: CFileCache.php 1942 2010-03-21 00:48:04Z alexander.makarow $
  * @package system.caching
  * @since 1.0.6
  */
@@ -199,7 +199,7 @@ class CFileCache extends CCache
 			$path=$this->cachePath;
 		if(($handle=opendir($path))===false)
 			return;
-		while($file=readdir($handle))
+		while(($file=readdir($handle))!==false)
 		{
 			if($file[0]==='.')
 				continue;

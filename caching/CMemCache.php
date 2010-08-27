@@ -4,12 +4,12 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
 /**
- * Класс CMemCache реализует кэш-модуль приложения, основанный на {@link http://www.danga.com/memcached/ memcached}.
+ * Класс CMemCache реализует кэш-компонент приложения, основанный на {@link http://www.danga.com/memcached/ memcached}.
  *
  * Клмпонент CMemCache может быть сконфигурирован списком серверов memcache, установив
  * его свойство {@link setServers servers}. По умолчанию CMemCache предполагает, что
@@ -51,7 +51,7 @@
  * Для этого установите свойство {@link useMemcached} в значение true.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMemCache.php 1458 2009-10-16 15:03:59Z qiang.xue $
+ * @version $Id: CMemCache.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.caching
  * @since 1.0
  */
@@ -215,7 +215,7 @@ class CMemCache extends CCache
  * детальными объяснениями по каждому свойству конфигурации.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMemCache.php 1458 2009-10-16 15:03:59Z qiang.xue $
+ * @version $Id: CMemCache.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.caching
  * @since 1.0
  */

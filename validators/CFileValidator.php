@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -37,7 +37,7 @@
  * Вы можете использовать {@link CFileValidator} для проверки атрибутов файла.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFileValidator.php 1470 2009-10-18 19:58:59Z qiang.xue $
+ * @version $Id: CFileValidator.php 2025 2010-04-07 11:50:00Z alexander.makarow $
  * @package system.validators
  * @since 1.0
  */
@@ -204,12 +204,28 @@ class CFileValidator extends CValidator
 	protected function getSizeLimit()
 	{
 		$limit=ini_get('upload_max_filesize');
-		if(strpos($limit,'M')!==false)
-			$limit=$limit*1024*1024;
+		$limit=$this->sizeToBytes($limit);			
 		if($this->maxSize!==null && $limit>0 && $this->maxSize<$limit)
 			$limit=$this->maxSize;
 		if(isset($_POST['MAX_FILE_SIZE']) && $_POST['MAX_FILE_SIZE']>0 && $_POST['MAX_FILE_SIZE']<$limit)
 			$limit=$_POST['MAX_FILE_SIZE'];
 		return $limit;
+	}
+
+	/**
+	 * Преобразует строку размера файла в виде, задаваемом в файле php.ini, в байты
+	 *
+	 * @param string строка размера файла
+	 * @return int размер файла в байтах
+	 */
+	private function sizeToBytes($sizeStr)
+	{
+		switch (substr($sizeStr, -1))
+		{
+			case 'M': case 'm': return (int)$sizeStr * 1048576;
+			case 'K': case 'k': return (int)$sizeStr * 1024;
+			case 'G': case 'g': return (int)$sizeStr * 1073741824;
+			default: return (int)$sizeStr;
+		}
 	}
 }

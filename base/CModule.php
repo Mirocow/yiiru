@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -14,7 +14,7 @@
  * В основном CModule управляет компонентами приложения и подмодулями.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CModule.php 1354 2009-08-20 18:15:14Z qiang.xue $
+ * @version $Id: CModule.php 2094 2010-05-05 00:51:49Z qiang.xue $
  * @package system.base
  * @since 1.0.4
  */
@@ -61,11 +61,6 @@ abstract class CModule extends CComponent
 		{
 			$this->setBasePath($config['basePath']);
 			unset($config['basePath']);
-		}
-		else
-		{
-			$class=new ReflectionClass(get_class($this));
-			$this->setBasePath(dirname($class->getFileName()));
 		}
 		Yii::setPathOfAlias($id,$this->getBasePath());
 
@@ -269,6 +264,17 @@ abstract class CModule extends CComponent
 	}
 
 	/**
+	 * Возвращает значение, показывающее, установлен ли определенный модуль.
+	 * @param string идентификатор модуля
+	 * @return boolean установлен ли определенный модуль
+	 * @since 1.1.2
+	 */
+	public function hasModule($id)
+	{
+		return isset($this->_moduleConfig[$id]) || isset($this->_modules[$id]);
+	}
+
+	/**
 	 * @return array конфигурация установленных модулей (идентификатор модуля => конфигурация)
 	 */
 	public function getModules()
@@ -351,7 +357,7 @@ abstract class CModule extends CComponent
 			unset($this->_componentConfig[$id]);
 			if(!isset($config['enabled']) || $config['enabled'])
 			{
-				Yii::trace("Loading \"$id\" application component",'system.web.CModule');
+				Yii::trace("Loading \"$id\" application component",'system.CModule');
 				unset($config['enabled']);
 				$component=Yii::createComponent($config);
 				$component->init();
@@ -379,6 +385,22 @@ abstract class CModule extends CComponent
 	public function getComponents()
 	{
 		return $this->_components;
+	}
+
+	/**
+	 * Возвращает компоненты приложения.
+	 * @param boolean возвращать ли только загруженные компоненты. Если установлено в значение false,
+	 * то будут возвращены все компоненты, определенные в конфигурации, загружены они или нет.
+	 * Загруженные компоненты будут возвращены в виде объектов, а незагруженные в виде массивов конфигураций.
+	 * Параметр доступен с версии 1.1.3.
+	 * @return array компоненты приложения (индексированные по их идентификаторам)
+	 */
+	public function getComponents($loadedOnly=true)
+	{
+		if($loadedOnly)
+			return $this->_components;
+		else
+			return array_merge($this->_componentConfig, $this->_components);
 	}
 
 	/**

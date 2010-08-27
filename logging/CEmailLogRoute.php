@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -16,16 +16,12 @@
  * свойство {@link setSentFrom sentFrom} (адрес отправителя).
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CEmailLogRoute.php 434 2008-12-30 23:14:31Z qiang.xue $
+ * @version $Id: CEmailLogRoute.php 2213 2010-06-18 13:17:30Z qiang.xue $
  * @package system.logging
  * @since 1.0
  */
 class CEmailLogRoute extends CLogRoute
 {
-	/**
-	 * Тема письма по умолчанию.
-	 */
-	const DEFAULT_SUBJECT='Application Log';
 	/**
 	 * @var array список адресов назначения
 	 */
@@ -33,11 +29,11 @@ class CEmailLogRoute extends CLogRoute
 	/**
 	 * @var string тема письма
 	 */
-	private $_subject='';
+	private $_subject;
 	/**
 	 * @var string адрес отправителя
 	 */
-	private $_from='';
+	private $_from;
 
 	/**
 	 * Отправляет сообщения журнала по определенным адресам.
@@ -49,8 +45,11 @@ class CEmailLogRoute extends CLogRoute
 		foreach($logs as $log)
 			$message.=$this->formatLogMessage($log[0],$log[1],$log[2],$log[3]);
 		$message=wordwrap($message,70);
+		$subject=$this->getSubject();
+		if($subject===null)
+			$subject=Yii::t('yii','Application Log');
 		foreach($this->getEmails() as $email)
-			$this->sendEmail($email,$this->getSubject(),$message);
+			$this->sendEmail($email,$subject,$message);
 	}
 
 	/**
@@ -61,7 +60,7 @@ class CEmailLogRoute extends CLogRoute
 	 */
 	protected function sendEmail($email,$subject,$message)
 	{
-		if(($from=$this->getSentFrom())!=='')
+		if(($from=$this->getSentFrom())!==null)
 			mail($email,$subject,$message,"From:{$from}\r\n");
 		else
 			mail($email,$subject,$message);

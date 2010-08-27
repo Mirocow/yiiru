@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -25,7 +25,7 @@
  * сообщения, удовлетворяющие условиям обоих фильтров.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLogRoute.php 1180 2009-06-26 21:16:33Z qiang.xue $
+ * @version $Id: CLogRoute.php 2213 2010-06-18 13:17:30Z qiang.xue $
  * @package system.logging
  * @since 1.0
  */
@@ -54,6 +54,11 @@ abstract class CLogRoute extends CComponent
 	 * @since 1.0.6
 	 */
 	public $filter;
+	/**
+	 * @var array журналы, собранные данным журнальным маршрутом
+	 * @since 1.1.0
+	 */
+	public $logs;
 
 
 	/**
@@ -80,15 +85,18 @@ abstract class CLogRoute extends CComponent
 	/**
 	 * Получает отфильтрованные сообщения журнала из регистратора сообщений журнала для дальнейшей обработки.
 	 * @param CLogger экземпляр регистратора сообщений журнала
+	 * @param boolean обрабатывать ли сообщения журнала после их сбора из регистратора
 	 */
-	public function collectLogs($logger)
+	public function collectLogs($logger, $processLogs=false)
 	{
 		$logs=$logger->getLogs($this->levels,$this->categories);
-		if(!empty($logs))
+		$this->logs=empty($this->logs) ? $logs : array_merge($this->logs,$logs);
+		if($processLogs)
 		{
 			if($this->filter!==null)
-				Yii::createComponent($this->filter)->filter($logs);
-			$this->processLogs($logs);
+				Yii::createComponent($this->filter)->filter($this->logs);
+			if(!empty($this->logs))
+				$this->processLogs($this->logs);
 		}
 	}
 

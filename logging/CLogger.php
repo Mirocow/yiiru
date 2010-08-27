@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -15,7 +15,7 @@
  * условиями, включающими в себя фильтры уровней и категорий журнала.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLogger.php 1051 2009-05-22 20:14:05Z qiang.xue $
+ * @version $Id: CLogger.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.logging
  * @since 1.0
  */
@@ -28,9 +28,20 @@ class CLogger extends CComponent
 	const LEVEL_PROFILE='profile';
 
 	/**
+	 * @var integer какое количество сообщений должно журналироваться прежде, чем они будут отправлены по месту назначения и удалены из памяти.
+	 * По умолчанию - 10 000, т.е. каждые 10 000 сообщений будет автоматически вызываться метод {@link flush}.
+	 * Если установлено значение 0, тогда сообщения никогда не будут втоматически удаляться.
+	 * @since 1.1.0
+	 */
+	public $autoFlush=10000;
+	/**
 	 * @var array сообщения журнала
 	 */
 	private $_logs=array();
+	/**
+	 * @var integer количество сообщений журнала
+	 */
+	private $_logCount=0;
 	/**
 	 * @var array уровни для фильтрации (используется при фильтрации)
 	 */
@@ -56,6 +67,9 @@ class CLogger extends CComponent
 	public function log($message,$level='info',$category='application')
 	{
 		$this->_logs[]=array($message,$level,$category,microtime(true));
+		$this->_logCount++;
+		if($this->autoFlush>0 && $this->_logCount>=$this->autoFlush)
+			$this->flush();
 	}
 
 	/**
@@ -233,5 +247,28 @@ class CLogger extends CComponent
 			$delta=$now-$last[3];
 			$this->_timings[]=array($last[0],$last[2],$delta);
 		}
+	}
+
+	/**
+	 * Удаляет все записанные сообщения из памяти.
+	 * Метод вызывает событие {@link onFlush}.
+	 * Присоединенные обработчики событий могут обработать сообщения журнала перед их удалением.
+	 * @since 1.1.0
+	 */
+	public function flush()
+	{
+		$this->onFlush(new CEvent($this));
+		$this->_logs=array();
+		$this->_logCount=0;
+	}
+
+	/**
+	 * Вызывает событие <code>onFlush</code>.
+	 * @param CEvent параметр события
+	 * @since 1.1.0
+	 */
+	public function onFlush($event)
+	{
+		$this->raiseEvent('onFlush', $event);
 	}
 }

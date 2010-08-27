@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -12,12 +12,26 @@
  * Класс CFileHelper предоставляет набор вспомогательных методов для обычных операций файловой системы.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFileHelper.php 1264 2009-07-21 19:34:55Z qiang.xue $
+ * @version $Id: CFileHelper.php 2297 2010-08-02 14:41:08Z qiang.xue $
  * @package system.utils
  * @since 1.0
  */
 class CFileHelper
 {
+	/**
+	 * Возвращает расширение файла по его пути.
+	 * Например, путь "path/to/something.php" вернет "php".
+	 * @param string путь к файлу
+	 * @return string расширение файла без точки
+	 * @since 1.1.2
+	 */
+	public static function getExtension($path)
+	{
+		if(($pos=strrpos($path,'.'))!==false)
+			return substr($path,$pos+1);
+		else
+			return '';
+	}
 	/**
 	 * Рекурсивно копирует директорию.
 	 * Если директория назначения не задана, она создается.
@@ -30,7 +44,8 @@ class CFileHelper
 	 * может быть именем или путем (к файлу или директории).
 	 * Если имя файла или директории соответствует исключению, этот файл или директория не копируются. Например,
 	 * исключение '.svn' запрещает копирование файлов и директорий с именем '.svn', а исключение '/a/b' -
-	 * файлы или папки, находящиеся по пути '$src/a/b'.</li>
+	 * файлы или папки, находящиеся по пути '$src/a/b'. Помните, что надо использовать в качестве разделителя знак '/'
+	 * вместо константы DIRECTORY_SEPARATOR.</li>
 	 * <li>level: целое число, глубина рекурсии, по умолчанию равно -1.
 	 * Уровень -1 означает, что будут скопированы все файлы и директории;
 	 * Уровень 0 означает, что будут скопированы только файлы, находящиеся НЕПОСРЕДСТВЕННО в данной директории;
@@ -57,7 +72,8 @@ class CFileHelper
 	 * может быть именем или путем (к файлу или директории).
 	 * Если имя файла или директории соответствует исключению, этот файл или директория не копируются. Например,
 	 * исключение '.svn' запрещает копирование файлов и директорий с именем '.svn', а исключение '/a/b' -
-	 * файлы или папки, находящиеся по пути '$src/a/b'.</li>
+	 * файлы или папки, находящиеся по пути '$src/a/b'. Помните, что надо использовать в качестве разделителя знак '/'
+	 * вместо константы DIRECTORY_SEPARATOR.</li>
 	 * <li>level: целое число, глубина рекурсии, по умолчанию равно -1.
 	 * Уровень -1 означает, что будут искаться все файлы и директории;
 	 * Уровень 0 означает, что будут искаться только файлы, находящиеся НЕПОСРЕДСТВЕННО в данной директории;
@@ -88,7 +104,8 @@ class CFileHelper
 	 * может быть именем или путем (к файлу или директории).
 	 * Если имя файла или директории соответствует исключению, этот файл или директория не копируются. Например,
 	 * исключение '.svn' запрещает копирование файлов и директорий с именем '.svn', а исключение '/a/b' -
-	 * файлы или папки, находящиеся по пути '$src/a/b'..
+	 * файлы или папки, находящиеся по пути '$src/a/b'. Помните, что надо использовать в качестве разделителя знак '/'
+	 * вместо константы DIRECTORY_SEPARATOR.
 	 * @param integer глубина рекурсии, по умолчанию равно -1.
 	 * Уровень -1 означает, что будут скопированы все файлы и директории;
 	 * Уровень 0 означает, что будут скопированы только файлы, находящиеся НЕПОСРЕДСТВЕННО в данной директории;
@@ -99,7 +116,7 @@ class CFileHelper
 		@mkdir($dst);
 		@chmod($dst,0777);
 		$folder=opendir($src);
-		while($file=readdir($folder))
+		while(($file=readdir($folder))!==false)
 		{
 			if($file==='.' || $file==='..')
 				continue;
@@ -126,7 +143,8 @@ class CFileHelper
 	 * может быть именем или путем (к файлу или директории).
 	 * Если имя файла или директории соответствует исключению, этот файл или директория не копируются. Например,
 	 * исключение '.svn' запрещает копирование файлов и директорий с именем '.svn', а исключение '/a/b' -
-	 * файлы или папки, находящиеся по пути '$src/a/b'.
+	 * файлы или папки, находящиеся по пути '$src/a/b'. Помните, что надо использовать в качестве разделителя знак '/'
+	 * вместо константы DIRECTORY_SEPARATOR.
 	 * @param integer глубина рекурсии, по умолчанию равно -1.
 	 * Уровень -1 означает, что будут искаться все файлы и директории;
 	 * Уровень 0 означает, что будут искаться только файлы, находящиеся НЕПОСРЕДСТВЕННО в данной директории;
@@ -137,7 +155,7 @@ class CFileHelper
 	{
 		$list=array();
 		$handle=opendir($dir);
-		while($file=readdir($handle))
+		while(($file=readdir($handle))!==false)
 		{
 			if($file==='.' || $file==='..')
 				continue;
@@ -165,7 +183,8 @@ class CFileHelper
 	 * может быть именем или путем (к файлу или директории).
 	 * Если имя файла или директории соответствует исключению, этот файл или директория считается не допустимым. Например,
 	 * исключение '.svn' говорит, что файлы и директории с именем '.svn' недопустимы, а исключение '/a/b' - что недопустимы
-	 * файлы или папки, находящиеся по пути '$src/a/b'.
+	 * файлы или папки, находящиеся по пути '$src/a/b'. Помните, что надо использовать в качестве разделителя знак '/'
+	 * вместо константы DIRECTORY_SEPARATOR.
 	 * @return boolean является ли файл или папка допустимыми
 	 */
 	protected static function validatePath($base,$file,$isFile,$fileTypes,$exclude)
@@ -195,13 +214,17 @@ class CFileHelper
 	 * <li>{@link getMimeTypeByExtension}</li>
 	 * </ol>
 	 * @param string имя файла
+	 * @param string имя "магического" файла данных MIME типов, обычно что-то вроде /path/to/magic.mime.
+	 * Передается вторым параметром в функцию {@link http://php.net/manual/en/function.finfo-open.php finfo_open}.
+	 * Параметр доступен с версии 1.1.3.
 	 * @return string MIME-тип. Null, если MIME-тип не может быть определен
 	 */
-	public static function getMimeType($file)
+	public static function getMimeType($file,$magicFile=null)
 	{
 		if(function_exists('finfo_open'))
 		{
-			if(($info=finfo_open(FILEINFO_MIME)) && ($result=finfo_file($info,$file))!==false)
+			$info=$magicFile===null ? finfo_open(FILEINFO_MIME_TYPE) : finfo_open(FILEINFO_MIME_TYPE,$magicFile);
+			if($info && ($result=finfo_file($info,$file))!==false)
 				return $result;
 		}
 
@@ -215,13 +238,16 @@ class CFileHelper
 	 * Определяет MIME-тип, основываясь на расширении имени определенного файла.
 	 * Метод будет использовать встроенную карту 'расширение' => 'MIME-тип'.
 	 * @param string имя файла
+	 * @param string путь к файлу, содержащему информацию о всех доступных MIME типах.
+	 * Если не установлен, используется файл по умолчанию - 'system.utils.mimeTypes'.
+	 * Параметр доступен с версии 1.1.3.
 	 * @return string MIME-тип. Null, если MIME-тип не может быть определен
 	 */
-	public static function getMimeTypeByExtension($file)
+	public static function getMimeTypeByExtension($file,$magicFile=null)
 	{
 		static $extensions;
 		if($extensions===null)
-			$extensions=require(Yii::getPathOfAlias('system.utils.mimeTypes').'.php');
+			$extensions=$magicFile===null ? require(Yii::getPathOfAlias('system.utils.mimeTypes').'.php') : $magicFile;
 		if(($pos=strrpos($file,'.'))!==false)
 		{
 			$ext=strtolower(substr($file,$pos+1));

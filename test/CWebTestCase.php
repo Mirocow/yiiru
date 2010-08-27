@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -17,7 +17,7 @@ require_once('PHPUnit/Extensions/SeleniumTestCase.php');
  * фикстурами базы данных такую, как {@link CDbTestCase}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CWebTestCase.php 1496 2009-10-29 21:08:02Z qiang.xue $
+ * @version $Id: CWebTestCase.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.test
  * @since 1.1
  */

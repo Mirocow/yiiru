@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -48,7 +48,7 @@
  * </ul>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CValidator.php 1423 2009-09-28 01:54:38Z qiang.xue $
+ * @version $Id: CValidator.php 2268 2010-07-18 17:44:48Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
@@ -89,10 +89,22 @@ abstract class CValidator extends CComponent
 	 */
 	public $message;
 	/**
+	 * @var boolean должно ли данное правило валидации прекратиться, если для данного атрибута
+	 * уже появились ошибки валидации. По умолчанию - false.
+	 * @since 1.1.1
+	 */
+	public $skipOnError=false;
+	/**
 	 * @var array список сценариев, к которым применяется валидатор
 	 * Каждое значение массива относится к имени сценария с таким же именем ключа массива.
 	 */
 	public $on;
+	/**
+	 * @var boolean должны ли атрибуты данного валидатора считаться безопасными для пакетного присваивания.
+	 * По умолчанию - false.
+	 * @since 1.1.4
+	 */
+	public $safe=true;
 
 	/**
 	 * Валидирует отдельный атрибут.
@@ -110,6 +122,7 @@ abstract class CValidator extends CComponent
 	 * @param mixed список валидируемых атрибутов. Может быть либо массивом имен атрибутов либо
 	 * строкой имен атрибутов, разделенных запятой.
 	 * @param array начальные значения, применяемые к свойствам валидатора
+	 * @return CValidator the validator
 	 */
 	public static function createValidator($name,$object,$attributes,$params)
 	{
@@ -132,6 +145,8 @@ abstract class CValidator extends CComponent
 			$validator->attributes=$attributes;
 			$validator->method=$name;
 			$validator->params=$params;
+			if(isset($params['skipOnError']))
+				$validator->skipOnError=$params['skipOnError'];
 		}
 		else
 		{
@@ -163,7 +178,10 @@ abstract class CValidator extends CComponent
 		else
 			$attributes=$this->attributes;
 		foreach($attributes as $attribute)
-			$this->validateAttribute($object,$attribute);
+		{
+			if(!$this->skipOnError || !$object->hasErrors($attribute))
+				$this->validateAttribute($object,$attribute);
+		}
 	}
 
 	/**
@@ -207,7 +225,7 @@ abstract class CValidator extends CComponent
 	 */
 	protected function isEmpty($value,$trim=false)
 	{
-		return $value===null || $value===array() || $value==='' || $trim && !is_array($value) && trim($value)==='';
+		return $value===null || $value===array() || $value==='' || $trim && is_scalar($value) && trim($value)==='';
 	}
 }
 

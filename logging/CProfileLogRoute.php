@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -21,7 +21,7 @@
  * </ul>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CProfileLogRoute.php 1051 2009-05-22 20:14:05Z qiang.xue $
+ * @version $Id: CProfileLogRoute.php 2201 2010-06-16 19:11:00Z alexander.makarow $
  * @package system.logging
  * @since 1.0
  */
@@ -92,7 +92,6 @@ class CProfileLogRoute extends CWebLogRoute
 	protected function displayCallstack($logs)
 	{
 		$stack=array();
-		$level=0;
 		$results=array();
 		$n=0;
 		foreach($logs as $log)

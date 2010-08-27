@@ -6,7 +6,7 @@
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @author Tomasz Suchanek <tomasz[dot]suchanek[at]gmail[dot]com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -44,7 +44,7 @@
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDateTimeParser.php 1423 2009-09-28 01:54:38Z qiang.xue $
+ * @version $Id: CDateTimeParser.php 2184 2010-06-14 20:39:12Z qiang.xue $
  * @package system.utils
  * @since 1.0
  */
@@ -227,7 +227,7 @@ class CDateTimeParser
 		for($len=$maxLength;$len>=$minLength;--$len)
 		{
 			$v=substr($value,$offset,$len);
-			if(ctype_digit($v))
+			if(ctype_digit($v) && strlen($v)>=$minLength)
 				return $v;
 		}
 		return false;

@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -16,7 +16,7 @@
  * результат, вычисленный при сохранении данных в кэш.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CExpressionDependency.php 1531 2009-11-19 22:56:31Z qiang.xue $
+ * @version $Id: CExpressionDependency.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.caching.dependencies
  * @since 1.0
  */

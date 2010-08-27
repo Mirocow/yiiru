@@ -4,9 +4,9 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2009 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: YiiBase.php 1535 2009-11-20 22:38:44Z qiang.xue $
+ * @version $Id: YiiBase.php 2315 2010-08-10 17:32:22Z qiang.xue $
  * @package system
  * @since 1.0
  */
@@ -46,11 +46,11 @@ defined('YII_ZII_PATH') or define('YII_ZII_PATH',YII_PATH.DIRECTORY_SEPARATOR.'z
 /**
  * YiiBase - это вспомогательный класс, предоставляющий общий функционал фреймворка.
  *
- * Не используйте класс YiiBase непосредственно. Вместо этого используйте класс-потомок {@link Yii}, где
+ * Не используйте класс YiiBase напрямую. Вместо этого используйте класс-потомок {@link Yii}, где
  * вы можете настраивать методы YiiBase.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: YiiBase.php 1535 2009-11-20 22:38:44Z qiang.xue $
+ * @version $Id: YiiBase.php 2315 2010-08-10 17:32:22Z qiang.xue $
  * @package system
  * @since 1.0
  */
@@ -69,7 +69,7 @@ class YiiBase
 	 */
 	public static function getVersion()
 	{
-		return '1.1b-dev';
+		return '1.1.4-dev';
 	}
 
 	/**
@@ -255,7 +255,10 @@ class YiiBase
 			{
 				if($forceInclude)
 				{
-					require($path.'.php');
+					if(is_file($path.'.php'))
+						require($path.'.php');
+					else
+						throw new CException(Yii::t('yii','Alias "{alias}" is invalid. Make sure it points to an existing PHP file.',array('{alias}'=>$alias)));
 					self::$_imports[$alias]=$className;
 				}
 				else
@@ -271,7 +274,8 @@ class YiiBase
 						unset(self::$_includePaths[$pos]);
 				}
 				array_unshift(self::$_includePaths,$path);
-				set_include_path('.'.PATH_SEPARATOR.implode(PATH_SEPARATOR,self::$_includePaths));
+				if(set_include_path('.'.PATH_SEPARATOR.implode(PATH_SEPARATOR,self::$_includePaths))===false)
+					throw new CException(Yii::t('yii','Unable to import "{alias}". Please check your server configuration to make sure you are allowed to change PHP include_path.',array('{alias}'=>$alias)));
 				return self::$_imports[$alias]=$path;
 			}
 		}
@@ -350,27 +354,7 @@ class YiiBase
 	public static function trace($msg,$category='application')
 	{
 		if(YII_DEBUG)
-		{
-			if(YII_TRACE_LEVEL>0)
-			{
-				$traces=debug_backtrace();
-				$count=0;
-				foreach($traces as $trace)
-				{
-					if(isset($trace['file'],$trace['line']))
-					{
-						$className=substr(basename($trace['file']),0,-4);
-						if(!isset(self::$_coreClasses[$className]) && $className!=='YiiBase')
-						{
-							$msg.="\nin ".$trace['file'].' ('.$trace['line'].')';
-							if(++$count>=YII_TRACE_LEVEL)
-								break;
-						}
-					}
-				}
-			}
 			self::log($msg,CLogger::LEVEL_TRACE,$category);
-		}
 	}
 
 	/**
@@ -385,6 +369,24 @@ class YiiBase
 	{
 		if(self::$_logger===null)
 			self::$_logger=new CLogger;
+		if(YII_DEBUG && YII_TRACE_LEVEL>0 && $level!==CLogger::LEVEL_PROFILE)
+		{
+			$traces=debug_backtrace();
+			$count=0;
+			foreach($traces as $trace)
+			{
+				if(isset($trace['file'],$trace['line']))
+				{
+					$className=substr(basename($trace['file']),0,-4);
+					if(!isset(self::$_coreClasses[$className]) && $className!=='YiiBase')
+					{
+						$msg.="\nin ".$trace['file'].' ('.$trace['line'].')';
+						if(++$count>=YII_TRACE_LEVEL)
+							break;
+					}
+				}
+			}
+		}
 		self::$_logger->log($msg,$level,$category);
 	}
 
@@ -442,7 +444,7 @@ class YiiBase
 	 */
 	public static function powered()
 	{
-		return 'Powered by <a href="http://www.yiiframework.com/" target="_blank">Yii Framework</a>.';
+		return 'Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a>.';
 	}
 
 	/**
@@ -472,7 +474,7 @@ class YiiBase
 		if(self::$_app!==null)
 		{
 			if($source===null)
-				$source=$category==='yii'?'coreMessages':'messages';
+				$source=($category==='yii'||$category==='zii')?'coreMessages':'messages';
 			if(($source=self::$_app->getComponent($source))!==null)
 				$message=$source->translate($category,$message,$language);
 		}
@@ -528,6 +530,7 @@ class YiiBase
 		'CEAcceleratorCache' => '/caching/CEAcceleratorCache.php',
 		'CFileCache' => '/caching/CFileCache.php',
 		'CMemCache' => '/caching/CMemCache.php',
+		'CWinCache' => '/caching/CWinCache.php',
 		'CXCache' => '/caching/CXCache.php',
 		'CZendDataCache' => '/caching/CZendDataCache.php',
 		'CCacheDependency' => '/caching/dependencies/CCacheDependency.php',
@@ -606,6 +609,7 @@ class YiiBase
 		'CWebLogRoute' => '/logging/CWebLogRoute.php',
 		'CDateTimeParser' => '/utils/CDateTimeParser.php',
 		'CFileHelper' => '/utils/CFileHelper.php',
+		'CFormatter' => '/utils/CFormatter.php',
 		'CMarkdownParser' => '/utils/CMarkdownParser.php',
 		'CPropertyValue' => '/utils/CPropertyValue.php',
 		'CTimestamp' => '/utils/CTimestamp.php',
@@ -631,6 +635,7 @@ class YiiBase
 		'CUrlValidator' => '/validators/CUrlValidator.php',
 		'CValidator' => '/validators/CValidator.php',
 		'CActiveDataProvider' => '/web/CActiveDataProvider.php',
+		'CArrayDataProvider' => '/web/CArrayDataProvider.php',
 		'CAssetManager' => '/web/CAssetManager.php',
 		'CBaseController' => '/web/CBaseController.php',
 		'CCacheHttpSession' => '/web/CCacheHttpSession.php',
@@ -647,6 +652,7 @@ class YiiBase
 		'COutputEvent' => '/web/COutputEvent.php',
 		'CPagination' => '/web/CPagination.php',
 		'CSort' => '/web/CSort.php',
+		'CSqlDataProvider' => '/web/CSqlDataProvider.php',
 		'CTheme' => '/web/CTheme.php',
 		'CThemeManager' => '/web/CThemeManager.php',
 		'CUploadedFile' => '/web/CUploadedFile.php',
@@ -684,6 +690,7 @@ class YiiBase
 		'CWebService' => '/web/services/CWebService.php',
 		'CWebServiceAction' => '/web/services/CWebServiceAction.php',
 		'CWsdlGenerator' => '/web/services/CWsdlGenerator.php',
+		'CActiveForm' => '/web/widgets/CActiveForm.php',
 		'CAutoComplete' => '/web/widgets/CAutoComplete.php',
 		'CClipWidget' => '/web/widgets/CClipWidget.php',
 		'CContentDecorator' => '/web/widgets/CContentDecorator.php',
