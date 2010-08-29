@@ -11,17 +11,20 @@
 /**
  * Класс CDummyCache - это заглушка компонента кэша.
  *
- * Компонент CDummyCache ничего не делает и не кэширует. Используется как компонент приложения кэша 'cache' по умолчанию.
+ * Компонент CDummyCache ничего не делает и не кэширует. Предназначен для того, чтобы можно было настроить
+ * компонент приложения 'cache' и не проводить проверку Yii::app()->cache на null.
+ * Заменой CDummyCache другим кэширующим компонентом можно быстро переключиться с
+ * режима без кэша на режим с кэшем.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDummyCache.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CDummyCache.php 2327 2010-08-20 17:06:54Z qiang.xue $
  * @package system.caching
  * @since 1.0
  */
 class CDummyCache extends CApplicationComponent implements ICache, ArrayAccess
 {
 	/**
-	 * @var string строка, представляющая собой префикс ключа для уникальности ключей. По умолчанию -
+	 * @var string строка, представляющая собой префикс ключа для обеспечения уникальности. По умолчанию -
 	 * {@link CApplication::getId() идентификатор приложения}
 	 */
 	public $keyPrefix;
@@ -107,6 +110,9 @@ class CDummyCache extends CApplicationComponent implements ICache, ArrayAccess
 
 	/**
 	 * Удаляет все значения из кэша.
+	 * Будьте осторожны при выполнении данной операции, если кэш является общим для нескольких приложений.
+	 * Классы-наследники могут реализовывать данный метод для создания своего варианта операции очистки.
+	 * @throws CException вызывается, если метод не переопределен классом-наследником
 	 */
 	public function flush()
 	{

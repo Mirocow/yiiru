@@ -11,9 +11,9 @@
 /**
  * Класс CQueue реализует очередь.
  *
- * Типичные операции очереди - {@link enqueue()}, {@link dequeue()} и {@link peek()}.
+ * Типичные операции очереди, реализованные данным классом - {@link enqueue()}, {@link dequeue()} и {@link peek()}.
  * Кроме того, метод {@link contains()} может быть использован для проверки нахождения элемента в очереди.
- * Для получения количества элементов в очереди, используйте свойство {@link getCount Count}.
+ * Для получения количества элементов в очереди, используйте свойство {@link getCount count}.
  *
  * Элементы очереди можно обойти, используя foreach как показано далее:
  * <pre>
@@ -21,7 +21,7 @@
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CQueue.php 1533 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CQueue.php 1678 2010-01-07 21:02:00Z qiang.xue $
  * @package system.collections
  * @since 1.0
  */
