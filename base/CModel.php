@@ -15,7 +15,7 @@
  * CModel определяет базовый каркас для моделей данных, которым необходима валидация.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CModel.php 2268 2010-07-18 17:44:48Z qiang.xue $
+ * @version $Id: CModel.php 2365 2010-08-29 14:10:01Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -444,7 +444,7 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 		{
 			if(isset($attributes[$name]))
 				$this->$name=$value;
-			else
+			else if($safeOnly)
 				$this->onUnsafeAttribute($name,$value);
 		}
 	}

@@ -9,6 +9,11 @@
  */
 
 require_once(Yii::getPathOfAlias('system.vendors.markdown.markdown').'.php');
+if(!class_exists('HTMLPurifier_Bootstrap',false))
+{
+	require_once(Yii::getPathOfAlias('system.vendors.htmlpurifier').DIRECTORY_SEPARATOR.'HTMLPurifier.standalone.php');
+	HTMLPurifier_Bootstrap::registerAutoload();
+}
 
 /**
  * Класс CMarkdownParser - это обертка для {@link http://michelf.com/projects/php-markdown/extra/ MarkdownExtra_Parser}.
@@ -37,7 +42,7 @@ require_once(Yii::getPathOfAlias('system.vendors.markdown.markdown').'.php');
  * </ul>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMarkdownParser.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CMarkdownParser.php 2344 2010-08-28 04:05:49Z qiang.xue $
  * @package system.utils
  * @since 1.0
  */
@@ -48,6 +53,16 @@ class CMarkdownParser extends MarkdownExtra_Parser
 	 * блок кода, подвергающегося подсветке. По умолчанию - 'hl-code'.
 	 */
 	public $highlightCssClass='hl-code';
+	
+	/**
+	 * @var mixed опции, передаваемые в экземпляр {@link http://htmlpurifier.org HTML Purifier'а}.
+	 * Может быть объектом класса HTMLPurifier_Config, массивом директив (Namespace.Directive => Value)
+	 * или именем файла настроек.
+	 * Данное свойство используется только если вызывается метод {@link safeTransform}.
+	 * @see http://htmlpurifier.org/live/configdoc/plain.html
+	 * @since 1.1.4
+	 */
+	public $purifierOptions=null;
 
 	/**
 	 * Преобразует содержимое и очищает (при помощи CHtmlPurifier) результат.
@@ -61,7 +76,8 @@ class CMarkdownParser extends MarkdownExtra_Parser
 	public function safeTransform($content)
 	{
 		$content=$this->transform($content);
-		$purifier=new CHtmlPurifier;
+		$purifier=new HTMLPurifier($this->purifierOptions);
+		$purifier->config->set('Cache.SerializerPath',Yii::app()->getRuntimePath());
 		return $purifier->purify($content);
 	}
 

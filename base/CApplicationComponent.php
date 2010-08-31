@@ -18,7 +18,7 @@
  * компонент приложения может быть настроен через конфигурацию приложения.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CApplicationComponent.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CApplicationComponent.php 2359 2010-08-28 23:10:51Z mdomba $
  * @package system.base
  * @since 1.0
  */

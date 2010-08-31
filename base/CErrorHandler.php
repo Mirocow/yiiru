@@ -46,7 +46,7 @@ Yii::import('CHtml',true);
  * CErrorHandler - это компонент ядра приложения, доступный методом {@link CApplication::getErrorHandler()}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CErrorHandler.php 2334 2010-08-25 07:29:57Z keyboard.idol@gmail.com $
+ * @version $Id: CErrorHandler.php 2366 2010-08-29 14:11:34Z keyboard.idol@gmail.com $
  * @package system.base
  * @since 1.0
  */
@@ -87,8 +87,7 @@ class CErrorHandler extends CApplicationComponent
 
 		if($this->discardOutput)
 		{
-			while(ob_get_length()!==false)
-				ob_end_clean();
+			while(@ob_end_clean()) ;
 		}
 
 		if($event instanceof CExceptionEvent)

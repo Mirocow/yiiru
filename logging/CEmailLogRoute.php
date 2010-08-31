@@ -12,11 +12,11 @@
  * Компонент CEmailLogRoute отправляет выбранные сообщения журнала на email-адреса.
  *
  * Целевые email-адреса могут быть установлены свойством {@link setEmails emails}.
- * Опционально, вы можете установить свойство {@link setSubject subject} (тема письма) и
- * свойство {@link setSentFrom sentFrom} (адрес отправителя).
+ * Опционально, вы можете установить свойство {@link setSubject subject} (тема письма), 
+ * свойство {@link setSentFrom sentFrom} (адрес отправителя) и другие дополнительные заголовки ({@link setHeaders headers}).
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CEmailLogRoute.php 2213 2010-06-18 13:17:30Z qiang.xue $
+ * @version $Id: CEmailLogRoute.php 2364 2010-08-29 13:40:49Z keyboard.idol@gmail.com $
  * @package system.logging
  * @since 1.0
  */
@@ -34,6 +34,10 @@ class CEmailLogRoute extends CLogRoute
 	 * @var string адрес отправителя
 	 */
 	private $_from;
+	/**
+	 * @var array список дополнительных заголовков, используемых при отправке письма
+	 */
+	private $_headers=array();
 
 	/**
 	 * Отправляет сообщения журнала по определенным адресам.
@@ -60,10 +64,10 @@ class CEmailLogRoute extends CLogRoute
 	 */
 	protected function sendEmail($email,$subject,$message)
 	{
+		$headers=$this->getHeaders();
 		if(($from=$this->getSentFrom())!==null)
-			mail($email,$subject,$message,"From:{$from}\r\n");
-		else
-			mail($email,$subject,$message);
+			$headers[]="From: {$from}";
+		mail($email,$subject,$message,implode("\r\n",$headers));
 	}
 
 	/**
@@ -75,7 +79,7 @@ class CEmailLogRoute extends CLogRoute
 	}
 
 	/**
-	 * @return array|string устанавливаемый список адресов назначения. Если передается строка, предполагается,
+	 * @return mixed устанавливаемый список адресов назначения. Если передается строка, предполагается,
 	 * что адреса разделены запятой.
 	 */
 	public function setEmails($value)
@@ -116,6 +120,28 @@ class CEmailLogRoute extends CLogRoute
 	public function setSentFrom($value)
 	{
 		$this->_from=$value;
+	}
+
+	/**
+	 * @return array дополнительные заголовки, используемые при отправке письма
+	 * @since 1.1.4
+	 */
+	public function getHeaders()
+	{
+		return $this->_headers;
+	}
+
+	/**
+	 * @param mixed список дополнительных заголовков, используемых при отправке письма.
+	 * Если переданное значение - строка, она считается списком заголовков, разделенных переводами строк
+	 * @since 1.1.4
+	 */
+	public function setHeaders($value)
+	{
+		if (is_array($value))
+			$this->_headers=$value;
+		else
+			$this->_headers=preg_split('/\r\n|\n/',$value,-1,PREG_SPLIT_NO_EMPTY);
 	}
 }
 
