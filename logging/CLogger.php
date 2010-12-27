@@ -15,7 +15,7 @@
  * условиями, включающими в себя фильтры уровней и категорий журнала.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLogger.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CLogger.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.logging
  * @since 1.0
  */
@@ -59,9 +59,9 @@ class CLogger extends CComponent
 	/**
 	 * Записывает сообщение в журнал.
 	 * Записываемые данным методом сообщения могут быть получены методом {@link getLogs}.
-	 * @param string журналируемое сообщение
-	 * @param string уровень сообщения (например,  'Trace', 'Warning', 'Error'). Регистронезависим.
-	 * @param string категория сообщения (например, 'system.web'). Регистронезависимо.
+	 * @param string $message журналируемое сообщение
+	 * @param string $level уровень сообщения (например,  'Trace', 'Warning', 'Error'). Регистронезависим.
+	 * @param string $category категория сообщения (например, 'system.web'). Регистронезависимо.
 	 * @see getLogs
 	 */
 	public function log($message,$level='info',$category='application')
@@ -88,8 +88,8 @@ class CLogger extends CComponent
 	 * Фильтры уровней и категорий являются комбинационными, т.е, возвращены будут только
 	 * сообщения, удовлетворяющие условиям обоих фильтров.
 	 *
-	 * @param string фильтр уровней
-	 * @param string фильтр категорий
+	 * @param string $levels фильтр уровней
+	 * @param string $categories фильтр категорий
 	 * @return array список сообщений. Каждый элемент массива представляет собой одно сообщение
 	 * со следующей структурой:
 	 * array(
@@ -117,7 +117,7 @@ class CLogger extends CComponent
 
 	/**
 	 * Функция фильтрации по категориям, используемая методом {@link getLogs}
-	 * @param array элемент, подвергаемый фильтрации
+	 * @param array $value элемент, подвергаемый фильтрации
 	 * @return array прошедший фильтрацию элемент; false, если элемент не прошел фильтрацию.
 	 */
 	private function filterByCategory($value)
@@ -133,7 +133,7 @@ class CLogger extends CComponent
 
 	/**
 	 * Функция фильтрации по уровням, используемая методом {@link getLogs}
-	 * @param array элемент, подвергаемый фильтрации
+	 * @param array $value элемент, подвергаемый фильтрации
 	 * @return array valid прошедший фильтрацию элемент; false, если элемент не прошел фильтрацию.
 	 */
 	private function filterByLevel($value)
@@ -190,9 +190,9 @@ class CLogger extends CComponent
 	 * Если фильтры не установлены, то возвращенные результаты будут представлять собой массив,
 	 * каждый элемент которого - массив вида array($token,$category,$time).
 	 * Если фильтр установлен, результаты будут массивом таймингов.
-	 * @param string фильтр меток. По умолчанию - null - фильтрации по меткам нет.
-	 * @param string фильтр категорий. По умолчанию - null - фильтрации по категориям нет.
-	 * @param boolean должно ли быть проведено обновление вычислений внутренних таймингов.
+	 * @param string $token фильтр меток. По умолчанию - null - фильтрации по меткам нет.
+	 * @param string $category фильтр категорий. По умолчанию - null - фильтрации по категориям нет.
+	 * @param boolean $refresh должно ли быть проведено обновление вычислений внутренних таймингов.
 	 * Если установлено в false, то только в первый вызов данного метода будет проведено вычисление внутренних таймингов.
 	 * @return array результаты профилирования.
 	 * @since 1.0.6
@@ -264,7 +264,7 @@ class CLogger extends CComponent
 
 	/**
 	 * Вызывает событие <code>onFlush</code>.
-	 * @param CEvent параметр события
+	 * @param CEvent $event параметр события
 	 * @since 1.1.0
 	 */
 	public function onFlush($event)

@@ -37,7 +37,7 @@
  * </ul>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CPropertyValue.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CPropertyValue.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.utils
  * @since 1.0
  */
@@ -48,7 +48,7 @@ class CPropertyValue
 	 * Примечание: строка 'true' (регистронезависимо) будет конвертирована в значение true,
 	 * а строка 'false' (регистронезависимо) - в значение false.
 	 * Если строка представляет собой ненулевое число, она будет интерпретирована как true.
-	 * @param mixed значение для конвертации.
+	 * @param mixed $value значение для конвертации.
 	 * @return boolean булево значение
 	 */
 	public static function ensureBoolean($value)
@@ -63,7 +63,7 @@ class CPropertyValue
 	 * Конвертирует значение в строку.
 	 * Примечание: булево значение будет преобразовано в 'true', если оно истинно
 	 * и в 'false', если ложно.
-	 * @param mixed значение для конвертации.
+	 * @param mixed $value значение для конвертации.
 	 * @return string строка
 	 */
 	public static function ensureString($value)
@@ -76,7 +76,7 @@ class CPropertyValue
 
 	/**
 	 * Конвертирует значение в целое число (integer).
-	 * @param mixed значение для конвертации.
+	 * @param mixed $value значение для конвертации.
 	 * @return integer целое число (integer)
 	 */
 	public static function ensureInteger($value)
@@ -86,7 +86,7 @@ class CPropertyValue
 
 	/**
 	 * Конвертирует значение в число с плавающей точкой (float).
-	 * @param mixed значение для конвертации.
+	 * @param mixed $value значение для конвертации.
 	 * @return float число с плавающей точкой (float)
 	 */
 	public static function ensureFloat($value)
@@ -101,7 +101,7 @@ class CPropertyValue
 	 * происходит функцией eval.
 	 * Если строка имеет другой вид, то массив будет содержать один элемент - эту строку.
 	 * Если значение не является строкой, тогда будет возвращен массив с одним элементом - этим значением.
-	 * @param mixed значение для конвертации.
+	 * @param mixed $value значение для конвертации.
 	 * @return array массив
 	 */
 	public static function ensureArray($value)
@@ -124,7 +124,7 @@ class CPropertyValue
 
 	/**
 	 * Конвертирует значение в объектный тип.
-	 * @param mixed значение для конвертации.
+	 * @param mixed $value значение для конвертации.
 	 * @return object объект
 	 */
 	public static function ensureObject($value)
@@ -140,8 +140,8 @@ class CPropertyValue
 	 * в переданном перечисляемом типе (классе).
 	 * За подробностями обратитесь к перечисляемым типам - {@link CEnumerable}.
 	 *
-	 * @param string проверяемое перечисляемое значение.
-	 * @param string имя класса перечисляемого типа (убедитесь, что код этого класса был включен до вызова данной функции).
+	 * @param string $value проверяемое перечисляемое значение.
+	 * @param string $enumType имя класса перечисляемого типа (убедитесь, что код этого класса был включен до вызова данной функции).
 	 * @return string правильное перечисляемое значение
 	 * @throws CException вызывается, если значение не является правильным перечислояемым значением
 	 */

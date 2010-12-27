@@ -25,7 +25,7 @@
  * сообщения, удовлетворяющие условиям обоих фильтров.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLogRoute.php 2213 2010-06-18 13:17:30Z qiang.xue $
+ * @version $Id: CLogRoute.php 2553 2010-10-15 18:01:58Z qiang.xue $
  * @package system.logging
  * @since 1.0
  */
@@ -71,10 +71,10 @@ abstract class CLogRoute extends CComponent
 
 	/**
 	 * Форматирует сообщение журнала согласно переданным параметрам.
-	 * @param string сообщение
-	 * @param integer уровень сообщения
-	 * @param string категория сообщения
-	 * @param integer временная отметка
+	 * @param string $message сообщение
+	 * @param integer $level уровень сообщения
+	 * @param string $category категория сообщения
+	 * @param integer $time временная отметка
 	 * @return string отформатированное сообщение
 	 */
 	protected function formatLogMessage($message,$level,$category,$time)
@@ -84,18 +84,17 @@ abstract class CLogRoute extends CComponent
 
 	/**
 	 * Получает отфильтрованные сообщения журнала из регистратора сообщений журнала для дальнейшей обработки.
-	 * @param CLogger экземпляр регистратора сообщений журнала
-	 * @param boolean обрабатывать ли сообщения журнала после их сбора из регистратора
+	 * @param CLogger $logger экземпляр регистратора сообщений журнала
+	 * @param boolean $processLogs обрабатывать ли сообщения журнала после их сбора из регистратора
 	 */
 	public function collectLogs($logger, $processLogs=false)
 	{
 		$logs=$logger->getLogs($this->levels,$this->categories);
 		$this->logs=empty($this->logs) ? $logs : array_merge($this->logs,$logs);
-		if($processLogs)
+		if($processLogs && !empty($this->logs))
 		{
 			if($this->filter!==null)
 				Yii::createComponent($this->filter)->filter($this->logs);
-			if(!empty($this->logs))
 				$this->processLogs($this->logs);
 		}
 	}
@@ -103,7 +102,7 @@ abstract class CLogRoute extends CComponent
 	/**
 	 * Обрабатывает сообщения журнала и отправляет их по определенному назначению.
 	 * Классы-потомки должны реализовать этот метод.
-	 * @param array список сообщений. Каждый элемент массива представляет собой одно сообщение
+	 * @param array $logs список сообщений. Каждый элемент массива представляет собой одно сообщение
 	 * со следующей структурой:
 	 * array(
 	 *   [0] => сообщение (string)

@@ -15,7 +15,7 @@
  * в окне консоли FireBug (если свойство {@link showInFireBug} установлено в true).
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CWebLogRoute.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CWebLogRoute.php 2504 2010-09-26 15:44:27Z keyboard.idol@gmail.com $
  * @package system.logging
  * @since 1.0
  */
@@ -28,8 +28,15 @@ class CWebLogRoute extends CLogRoute
 	public $showInFireBug=false;
 
 	/**
+	 * @var boolean должно ли игнорироваться журналирование в FireBug'е для ajax-вызовов. По умолчанию - true.
+	 * Данная настройка должна использоваться осторожно, т.к. ajax-вызов возвращает в качестве результирующих данных все выходные данные.
+	 * Например, если ajax-вызов ожидает результат типа json, то любые выходные данные журнала будут вызывать ошибку выполнения ajax-вызова.
+	 */
+	public $ignoreAjaxInFireBug=true;
+
+	/**
 	 * Отображает сообщения журнала.
-	 * @param array list of log messages
+	 * @param array $logs список сообщений журнала
 	 */
 	public function processLogs($logs)
 	{
@@ -38,22 +45,26 @@ class CWebLogRoute extends CLogRoute
 
 	/**
 	 * Рендерит представление.
-	 * @param string имя представления (имя файла без расширения). Предполагается,
+	 * @param string $view имя представления (имя файла без расширения). Предполагается,
 	 * что файл находится в каталоге framework/data/views.
-	 * @param array данные, передающиеся в представление
+	 * @param array $data данные, передающиеся в представление
 	 */
 	protected function render($view,$data)
 	{
+		$app=Yii::app();
+		$isAjax=$app->getRequest()->getIsAjaxRequest();
+
 		if($this->showInFireBug)
-			$view.='-firebug';
-		else
 		{
-			$app=Yii::app();
-			if(!($app instanceof CWebApplication) || $app->getRequest()->getIsAjaxRequest())
+			if($isAjax && $this->ignoreAjaxInFireBug)
 				return;
+			$view.='-firebug';
 		}
+		else if(!($app instanceof CWebApplication) || $isAjax)
+			return;
+
 		$viewFile=YII_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.$view.'.php';
-		include(Yii::app()->findLocalizedFile($viewFile,'en'));
+		include($app->findLocalizedFile($viewFile,'en'));
 	}
 }
 

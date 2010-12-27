@@ -32,7 +32,7 @@ Yii::import('system.test.CTestCase');
  * Примечание: здесь 'first post' - ключ к строке в исходных данных фикстуры.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbTestCase.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CDbTestCase.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.test
  * @since 1.1
  */
@@ -50,7 +50,7 @@ abstract class CDbTestCase extends CTestCase
 	/**
 	 * Магический метод PHP.
 	 * Метод переопределяется так, чтобы именованные данные фикстуры могли быть доступны как обычное свойство.
-	 * @param string имя свойства
+	 * @param string $name имя свойства
 	 * @return mixed значение свойства
 	 */
 	public function __get($name)
@@ -65,8 +65,8 @@ abstract class CDbTestCase extends CTestCase
 	 * Магический метод PHP.
 	 * Метод переопределяется так, чтобы именованные ActiveRecord-экземпляры фикстуры
 	 * могли быть доступны в терминах вызова метода.
-	 * @param string имя метода
-	 * @param string параметры метода
+	 * @param string $name имя метода
+	 * @param string $params параметры метода
 	 * @return mixed значение свойства
 	 */
 	public function __call($name,$params)
@@ -86,7 +86,7 @@ abstract class CDbTestCase extends CTestCase
 	}
 
 	/**
-	 * @param string имя фикстуры (значение ключа в списке фикстур {@link fixtures})
+	 * @param string $name имя фикстуры (значение ключа в списке фикстур {@link fixtures})
 	 * @return array данные именованной фикстуры
 	 */
 	public function getFixtureData($name)
@@ -95,8 +95,8 @@ abstract class CDbTestCase extends CTestCase
 	}
 
 	/**
-	 * @param string имя фикстуры (значение ключа в списке фикстур {@link fixtures})
-	 * @param string псевдоним строки данных фикстуры
+	 * @param string $name имя фикстуры (значение ключа в списке фикстур {@link fixtures})
+	 * @param string $alias псевдоним строки данных фикстуры
 	 * @return CActiveRecord экземпляр ActiveRecord, соответствующий определенному псевдониму в именованной фикстуре.
 	 * Возвращается значение false, если такой фикстуры или записи не обнаружено
 	 */

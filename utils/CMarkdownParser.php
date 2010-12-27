@@ -22,7 +22,7 @@ if(!class_exists('HTMLPurifier_Bootstrap',false))
  * для подстветки синтаксиса блоков кода определенного языка.
  * В частности, если блок кода начинается со строки:
  * <pre>
- * [язык]
+ * [language]
  * </pre>
  * В этом случае будет использоваться подсветка синтаксиса блока кода для установленного языка.
  * Поддерживаемые языки (регистронезависимо):
@@ -42,7 +42,7 @@ if(!class_exists('HTMLPurifier_Bootstrap',false))
  * </ul>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMarkdownParser.php 2344 2010-08-28 04:05:49Z qiang.xue $
+ * @version $Id: CMarkdownParser.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.utils
  * @since 1.0
  */
@@ -69,7 +69,7 @@ class CMarkdownParser extends MarkdownExtra_Parser
 	 * Метод вызывает метод transform() для конвертации содержимого с синтаксисом
 	 * markdown в HTML-содержимое. Затем используется класс
 	 * {@link CHtmlPurifier} для очистки HTML-содержимого во избежание XSS атак.
-	 * @param string содержиме с синтаксисом markdown
+	 * @param string $content содержиме с синтаксисом markdown
 	 * @return string очищенное HTML-содержимое
 	 * @since 1.0.1
 	 */
@@ -91,7 +91,7 @@ class CMarkdownParser extends MarkdownExtra_Parser
 
 	/**
 	 * Функция обратного вызова при совпадении блока кода.
-	 * @param array совпадения
+	 * @param array $matches совпадения
 	 * @return string подсвеченный блок кода
 	 */
 	public function _doCodeBlocks_callback($matches)
@@ -105,7 +105,7 @@ class CMarkdownParser extends MarkdownExtra_Parser
 
 	/**
 	 * Функция обратного вызова при совпадении обернутого блока кода.
-	 * @param array совпадения
+	 * @param array $matches совпадения
 	 * @return string подсвеченный блок кода
 	 */
 	public function _doFencedCodeBlocks_callback($matches)
@@ -115,7 +115,7 @@ class CMarkdownParser extends MarkdownExtra_Parser
 
 	/**
 	 * Подсвечивает блок кода.
-	 * @param string блок кода
+	 * @param string $codeblock блок кода
 	 * @return string подсвеченный блок кода. Null, если блок не нуждается в подсветке
 	 */
 	protected function highlightCodeBlock($codeblock)
@@ -134,7 +134,7 @@ class CMarkdownParser extends MarkdownExtra_Parser
 
 	/**
 	 * Возвращает пользовательские настройки подсветки.
-	 * @param string блок кода с настройками подсветки.
+	 * @param string $codeblock блок кода с настройками подсветки.
 	 * @return string пользовательские настройки подсветки. Null, если пользовательских настроек нет.
 	 */
 	protected function getHighlightTag($codeblock)
@@ -146,7 +146,7 @@ class CMarkdownParser extends MarkdownExtra_Parser
 
 	/**
 	 * Создает экземпляр инструмента подсветки.
-	 * @param string пользовательские настройки
+	 * @param string $options пользовательские настройки
 	 * @return Text_Highlighter экземпляр инструмента подсветки
 	 */
 	protected function createHighLighter($options)
@@ -165,7 +165,7 @@ class CMarkdownParser extends MarkdownExtra_Parser
 
 	/**
 	 * Генерирует конфигурацию для инструмента подсветки.
-	 * @param string пользовательские настройки
+	 * @param string $options пользовательские настройки
 	 * @return array конфигурация для инструмента подсветки
 	 */
 	public function getHiglightConfig($options)
@@ -179,9 +179,9 @@ class CMarkdownParser extends MarkdownExtra_Parser
 
 	/**
 	 * Получает орпеделенную конфигурацию.
-	 * @param string имя конфигурации
-	 * @param string пользовательские настройки
-	 * @param mixed значение по умолчанию, если конфигурация не представлена
+	 * @param string $name имя конфигурации
+	 * @param string $str пользовательские настройки
+	 * @param mixed $defaultValue значение по умолчанию, если конфигурация не представлена
 	 * @return mixed значение конфигурации
 	 */
 	protected function getInlineOption($name, $str, $defaultValue)

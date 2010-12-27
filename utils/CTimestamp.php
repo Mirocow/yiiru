@@ -36,7 +36,7 @@
  * и только когда даты выходят за допустимые встроенными функциями границы, выполняется PHP-код.
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: CTimestamp.php 2201 2010-06-16 19:11:00Z alexander.makarow $
+ * @version $Id: CTimestamp.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.utils
  * @since 1.0
  */
@@ -45,9 +45,9 @@ class CTimestamp
 	/**
 	 * Возвращает день недели, 0 = воскресенье,... 6=суббота.
 	 * Алгоритм заимствован из PEAR::Date_Calc
-	 * @param integer год
-	 * @param integer месяц
-	 * @param integer день
+	 * @param integer $year год
+	 * @param integer $month месяц
+	 * @param integer $day день
 	 * @return integer день недели
 	 */
 	public static function getDayofWeek($year, $month, $day)
@@ -96,7 +96,7 @@ class CTimestamp
 	/**
 	 * Проверяет, високосный ли год. Проверяется год в формате YYYY либо в формате YY.
 	 * Также правильно учитывает юлианский календарь.
-	 * @param integer год для проверки
+	 * @param integer $year год для проверки
 	 * @return boolean true, если год високосный
 	 */
 	public static function isLeapYear($year)
@@ -117,7 +117,7 @@ class CTimestamp
 	 * Преобразует год в формате YY в формат YYYY. Работает для любого века.
 	 * Предполагается, что если формат YY и вычисляемый год больше, чем текущий + 30, то год
 	 * относится к предыдущему веку.
-	 * @param integer год
+	 * @param integer $y год
 	 * @return integer измененный формат года YY -> YYYY
 	 */
 	protected static function digitCheck($y)
@@ -144,7 +144,7 @@ class CTimestamp
 
 	/**
 	 * Возвращает год в формате YYYY.
-	 * @param integer год
+	 * @param integer $y год
 	 * @return integer год в формате YYYY
 	 */
 	public static function get4DigitYear($y)
@@ -166,9 +166,9 @@ class CTimestamp
 
 	/**
 	 * Возвращает массив getdate().
-	 * @param integer временная метка даты. False для использования текущих времени/даты.
-	 * @param boolean false для вычисления дня недели; по умолчанию - true (прим.перев. - в данный момент не используется)
-	 * @param boolean true для вычисления GMT-дат
+	 * @param integer $d временная метка даты. False для использования текущих времени/даты.
+	 * @param boolean $fast false для вычисления дня недели; по умолчанию - true (прим.перев. - в данный момент не используется)
+	 * @param boolean $gmt true для вычисления GMT-дат
 	 * @return array массив с данными даты.
 	 */
 	public static function getDate($d=false,$fast=false,$gmt=false)
@@ -189,9 +189,9 @@ class CTimestamp
 
 	/**
 	 * Проверяет, является ли набор год - месяц - день допустимым.
-	 * @param integer год
-	 * @param integer месяц
-	 * @param integer день
+	 * @param integer $y год
+	 * @param integer $m месяц
+	 * @param integer $d день
 	 * @return boolean true, если дата допустима; только семантическая проверка.
 	 */
 	public static function isValidDate($y,$m,$d)
@@ -201,10 +201,10 @@ class CTimestamp
 
 	/**
 	 * Проверяет, является ли набор часы - минуты - секунды допустимым.
-	 * @param integer часы
-	 * @param integer минуты
-	 * @param integer секунды
-	 * @param boolean является ли формат часов форматов 24 часов (от 0 до 23; по умолчанию) или форматом 12 часов (от 1 до 12).
+	 * @param integer $h часы
+	 * @param integer $m минуты
+	 * @param integer $s секунды
+	 * @param boolean $hs24 является ли формат часов форматов 24 часов (от 0 до 23; по умолчанию) или форматом 12 часов (от 1 до 12).
 	 * @return boolean true, если набор часы - минуты - секунды допустим; только семантическая проверка.
 	 * @since 1.0.5
 	 */
@@ -218,9 +218,9 @@ class CTimestamp
 
 	/**
 	 * Форматирует временную отметку в строку даты.
-	 * @param string шаблон для форматирования
-	 * @param integer временная отметка
-	 * @param boolean является ли временная отметка отметкой пояса GMT
+	 * @param string $fmt шаблон для форматирования
+	 * @param integer $d временная отметка
+	 * @param boolean $is_gmt является ли временная отметка отметкой пояса GMT
 	 * @return string форматированная дата, основанная на временной отметке $d
 	 */
 	public static function formatDate($fmt,$d=false,$is_gmt=false)
@@ -368,13 +368,13 @@ class CTimestamp
 	/**
 	 * Генерирует временную отметку.
 	 * Не очень быстрый алгоритм - операция O(n). Может быть оптимизирована в O(1).
-	 * @param integer часы
-	 * @param integer минуты
-	 * @param integer секунды
-	 * @param integer месяц
-	 * @param integer день
-	 * @param integer год
-	 * @param boolean является ли время временем GMT
+	 * @param integer $hr часы
+	 * @param integer $min минуты
+	 * @param integer $sec секунды
+	 * @param integer $mon месяц
+	 * @param integer $day день
+	 * @param integer $year год
+	 * @param boolean $is_gmt является ли время временем GMT
 	 * @return integer|float временная метка по местному времени.
      */
 	public static function getTimestamp($hr,$min,$sec,$mon=false,$day=false,$year=false,$is_gmt=false)

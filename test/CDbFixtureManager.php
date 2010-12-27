@@ -31,7 +31,7 @@
  * загружены в базу данных.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbFixtureManager.php 2198 2010-06-16 02:51:21Z qiang.xue $
+ * @version $Id: CDbFixtureManager.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.test
  * @since 1.1
  */
@@ -129,7 +129,7 @@ class CDbFixtureManager extends CApplicationComponent
 	 * Если существует скрипт с именем вида "tests/fixtures/TableName.init.php",
 	 * он будет исполнен. Иначе будет вызван метод {@link truncateTable} для очищения
 	 * таблицы и сброса последовательности первичного ключа.
-	 * @param string имя таблицы
+	 * @param string $tableName имя таблицы
 	 */
 	public function resetTable($tableName)
 	{
@@ -148,7 +148,7 @@ class CDbFixtureManager extends CApplicationComponent
 	 * Если фикстура не существует, метод возвратит значение false.
 	 * Примечание: вы можете захотеть вызвать метод {@link resetTable} перед вызовом данного метода,
 	 * чтобы таблица была пуста перед вставкой данных.
-	 * @param string имя таблицы
+	 * @param string $tableName имя таблицы
 	 * @return array строки загруженной фикстуры, индексированные по псевдонимам строк (если существуют).
 	 * Если таблица не имеет фикстуры, возвращается значение false.
 	 */
@@ -222,7 +222,7 @@ class CDbFixtureManager extends CApplicationComponent
 	/**
 	 * Включает или отключает проверку целостности базы данных.
 	 * Метод может использоваться для временного отключения проверки внешних связей.
-	 * @param boolean должна ли проверяться целостность базы данных
+	 * @param boolean $check должна ли проверяться целостность базы данных
 	 */
 	public function checkIntegrity($check)
 	{
@@ -234,7 +234,7 @@ class CDbFixtureManager extends CApplicationComponent
 	 * Удаляет все строки из определенной таблицы и сбрасывает последовательность её первичного ключа, если он есть.
 	 * Перед вызовом данного метода вам может понадобиться вызвать метод {@link checkIntegrity}
 	 * для временного отключения проверки целостности базы данных
-	 * @param string имя таблицы
+	 * @param string $tableName имя таблицы
 	 */
 	public function truncateTable($tableName)
 	{
@@ -253,7 +253,7 @@ class CDbFixtureManager extends CApplicationComponent
 	 * Очищает все таблицы в определенной схеме БД.
 	 * Перед вызовом данного метода вам может понадобиться вызвать метод {@link checkIntegrity}
 	 * для временного отключения проверки целостности базы данных
-	 * @param string имя схемы. По умолчанию - пустая строка, т.е. схема по умолчанию.
+	 * @param string $schema имя схемы. По умолчанию - пустая строка, т.е. схема по умолчанию.
 	 * @see truncateTable
 	 */
 	public function truncateTables($schema='')
@@ -271,7 +271,7 @@ class CDbFixtureManager extends CApplicationComponent
 	 * и {@link getRecord}.
 	 * Примечание: если таблица не имеет данных фикстуры, метод {@link resetTable} все равно
 	 * будет вызываться для сброса таблицы.
-	 * @param array загружаемые фикстуры. Ключи массива - имена фикстур, а значения -
+	 * @param array $fixtures загружаемые фикстуры. Ключи массива - имена фикстур, а значения -
 	 * имена либо AR-классов либо таблиц.
 	 * Если это имя таблицы, то оно должно начинаться с двоеточия (например, 'Post'
 	 * означает, что это AR-класс, а ':Post' - имя таблицы).
@@ -317,7 +317,7 @@ class CDbFixtureManager extends CApplicationComponent
 	/**
 	 * Возвращает строки данных фикстуры.
 	 * Строки будут иметь обновленные значения первичного ключа, если этот ключ является автоинкрементным.
-	 * @param string имя фикстуры
+	 * @param string $name имя фикстуры
 	 * @return array строки данных фикстуры. Если данных фикстуры нет, возвращается значение false.
 	 */
 	public function getRows($name)
@@ -330,8 +330,8 @@ class CDbFixtureManager extends CApplicationComponent
 
 	/**
 	 * Возвращает определенный экземпляр ActiveRecord в данных фикстуры.
-	 * @param string имя фикстуры
-	 * @param string псевдоним строки данных фикстуры
+	 * @param string $name имя фикстуры
+	 * @param string $alias псевдоним строки данных фикстуры
 	 * @return CActiveRecord экземпляр ActiveRecord. Если такой строки фикстуры нет, возвращается значение false.
 	 */
 	public function getRecord($name,$alias)

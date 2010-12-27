@@ -16,7 +16,7 @@
  * свойство {@link setSentFrom sentFrom} (адрес отправителя) и другие дополнительные заголовки ({@link setHeaders headers}).
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CEmailLogRoute.php 2364 2010-08-29 13:40:49Z keyboard.idol@gmail.com $
+ * @version $Id: CEmailLogRoute.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.logging
  * @since 1.0
  */
@@ -41,7 +41,7 @@ class CEmailLogRoute extends CLogRoute
 
 	/**
 	 * Отправляет сообщения журнала по определенным адресам.
-	 * @param array список сообщений журнала
+	 * @param array $logs список сообщений журнала
 	 */
 	protected function processLogs($logs)
 	{
@@ -58,9 +58,9 @@ class CEmailLogRoute extends CLogRoute
 
 	/**
 	 * Отправляет письмо.
-	 * @param string отдельный email-адрес
-	 * @param string тема письма
-	 * @param string содержимое письма
+	 * @param string $email отдельный email-адрес
+	 * @param string $subject тема письма
+	 * @param string $message содержимое письма
 	 */
 	protected function sendEmail($email,$subject,$message)
 	{
@@ -79,7 +79,7 @@ class CEmailLogRoute extends CLogRoute
 	}
 
 	/**
-	 * @return mixed устанавливаемый список адресов назначения. Если передается строка, предполагается,
+	 * @return mixed $value устанавливаемый список адресов назначения. Если передается строка, предполагается,
 	 * что адреса разделены запятой.
 	 */
 	public function setEmails($value)
@@ -99,7 +99,7 @@ class CEmailLogRoute extends CLogRoute
 	}
 
 	/**
-	 * @param string устанавливаемая тема письма.
+	 * @param string $value устанавливаемая тема письма.
 	 */
 	public function setSubject($value)
 	{
@@ -115,7 +115,7 @@ class CEmailLogRoute extends CLogRoute
 	}
 
 	/**
-	 * @param string устанавливаемый адрес отправителя
+	 * @param string $value устанавливаемый адрес отправителя
 	 */
 	public function setSentFrom($value)
 	{
@@ -132,7 +132,7 @@ class CEmailLogRoute extends CLogRoute
 	}
 
 	/**
-	 * @param mixed список дополнительных заголовков, используемых при отправке письма.
+	 * @param mixed $value список дополнительных заголовков, используемых при отправке письма.
 	 * Если переданное значение - строка, она считается списком заголовков, разделенных переводами строк
 	 * @since 1.1.4
 	 */

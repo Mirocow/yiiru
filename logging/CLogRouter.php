@@ -44,7 +44,7 @@
  * местами назначения, даже если маршруты имеют одинаковый тип.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLogRouter.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CLogRouter.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.logging
  * @since 1.0
  */
@@ -78,7 +78,7 @@ class CLogRouter extends CApplicationComponent
 	}
 
 	/**
-	 * @param array список конфигурации маршрута. Каждый элемент массива представляет собой
+	 * @param array $config список конфигурации маршрута. Каждый элемент массива представляет собой
 	 * конфигурацию для отдельного маршрута и имеет следующую структуру массива:
 	 * <ul>
 	 * <li>класс: определяет имя класса или псевдоним для класса маршрута.</li>
@@ -94,7 +94,7 @@ class CLogRouter extends CApplicationComponent
 	/**
 	 * Собирает сообщения журнала от регистратора.
 	 * Метод является обработчиком события {@link CLogger::onFlush}.
-	 * @param CEvent параметр события
+	 * @param CEvent $event параметр события
 	 */
 	public function collectLogs($event)
 	{
@@ -109,7 +109,7 @@ class CLogRouter extends CApplicationComponent
 	/**
 	 * Собирает и обрабатывает сообщения журнала от регистратора.
 	 * Метод является обработчиком события {@link CApplication::onEndRequest}.
-	 * @param CEvent параметр события
+	 * @param CEvent $event параметр события
 	 * @since 1.1.0
 	 */
 	public function processLogs($event)

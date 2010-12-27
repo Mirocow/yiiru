@@ -21,7 +21,7 @@
  * </ul>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CProfileLogRoute.php 2201 2010-06-16 19:11:00Z alexander.makarow $
+ * @version $Id: CProfileLogRoute.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.logging
  * @since 1.0
  */
@@ -58,7 +58,7 @@ class CProfileLogRoute extends CWebLogRoute
 	}
 
 	/**
-	 * @param string установить тип отображения отчета профилирования. Допустимые значения - 'summary' и 'callstack'.
+	 * @param string $value установить тип отображения отчета профилирования. Допустимые значения - 'summary' и 'callstack'.
 	 */
 	public function setReport($value)
 	{
@@ -71,7 +71,7 @@ class CProfileLogRoute extends CWebLogRoute
 
 	/**
 	 * Отображает сообщения журнала.
-	 * @param array список собщений журнала
+	 * @param array $logs список собщений журнала
 	 */
 	public function processLogs($logs)
 	{
@@ -87,7 +87,7 @@ class CProfileLogRoute extends CWebLogRoute
 
 	/**
 	 * Отображает стек вызовов процедур профилирования.
-	 * @param array список собщений журнала
+	 * @param array $logs список собщений журнала
 	 */
 	protected function displayCallstack($logs)
 	{
@@ -129,7 +129,7 @@ class CProfileLogRoute extends CWebLogRoute
 
 	/**
 	 * Отображает суммарный отчет результатов профилирования.
-	 * @param array список собщений журнала
+	 * @param array $logs список собщений журнала
 	 */
 	protected function displaySummary($logs)
 	{
@@ -183,8 +183,8 @@ class CProfileLogRoute extends CWebLogRoute
 
 	/**
 	 * Собирает результаты отчета.
-	 * @param array результат журнала для данного блока кода
-	 * @param float время, затраченное на данный блок кода
+	 * @param array $result результат журнала для данного блока кода
+	 * @param float $delta время, затраченное на данный блок кода
 	 */
 	protected function aggregateResult($result,$delta)
 	{

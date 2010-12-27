@@ -31,6 +31,7 @@
  * mm      | Минуты с 00 до 59, с нулем (с версии 1.0.5)
  * s	   | Секунды с 0 до 59, без нулей (с версии 1.0.5)
  * ss      | Секунды с 00 до 59, с нулем (с версии 1.0.5)
+ * a       | Формат времени AM или PM, регистронезависим (с версии 1.1.5)
  * ----------------------------------------------------
  * </pre>
  * Все остальные символы должны появиться в строке даты на соответствующих позициях.
@@ -44,7 +45,7 @@
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDateTimeParser.php 2184 2010-06-14 20:39:12Z qiang.xue $
+ * @version $Id: CDateTimeParser.php 2606 2010-11-02 18:37:10Z qiang.xue $
  * @package system.utils
  * @since 1.0
  */
@@ -52,12 +53,18 @@ class CDateTimeParser
 {
 	/**
 	 * Конвертирует строку даты/времени во временную отметку в UNIX-формате.
-	 * @param string конвертируемая строка даты
-	 * @param string шаблон, по которому профодится конвертация
+	 * @param string $value конвертируемая строка даты
+	 * @param string $pattern шаблон, по которому профодится конвертация
+	 * @param array $defaults значения по умолчанию для года, месяца, дня, часа, минут и секунд.
+	 * Значения по умолчанию будут использоваться, если шаблон не определяет соответствующие поля.
+	 * Например, есть шаблон 'MM/dd/yyyy' и данный параметр - это массив
+	 * array('minute'=>0, 'second'=>0), тогда реальные значения минут и секунд для результата
+	 * парсинга примут значения 0, а реальное значение часа будет равно текущему часу, полученному
+	 * при вызове функции date('H'). Параметр доступен с версии 1.1.5.
 	 * @return integer временная отметка в UNIX-формате для переданной строки даты.
 	 * Если конвертация закончилась неудачей, возвращается false.
 	 */
-	public static function parse($value,$pattern='MM/dd/yyyy')
+	public static function parse($value,$pattern='MM/dd/yyyy',$defaults=array())
 	{
 		$tokens=self::tokenize($pattern);
 		$i=0;
@@ -152,6 +159,20 @@ class CDateTimeParser
 					$i+=2;
 					break;
 				}
+				case 'a':
+				{
+				    if(($ampm=self::parseAmPm($value,$i))===false)
+				        return false;
+				    if(isset($hour))
+				    {
+				    	if($hour==12 && $ampm==='am')
+				    		$hour=0;
+				    	else if($hour<12 && $ampm==='pm')
+				    		$hour+=12;
+				    }
+					$i+=2;
+					break;
+				}
 				default:
 				{
 					$tn=strlen($token);
@@ -166,15 +187,15 @@ class CDateTimeParser
 			return false;
 
 		if(!isset($year))
-			$year=date('Y');
+			$year=isset($defaults['year']) ? $defaults['year'] : date('Y');
 		if(!isset($month))
-			$month=date('n');
+			$month=isset($defaults['month']) ? $defaults['month'] : date('n');
 		if(!isset($day))
-			$day=date('j');
+			$day=isset($defaults['day']) ? $defaults['day'] : date('j');
 
 		if(strlen($year)===2)
 		{
-			if($year>70)
+			if($year>=70)
 				$year+=1900;
 			else
 				$year+=2000;
@@ -188,11 +209,11 @@ class CDateTimeParser
 		else
 		{
 			if(!isset($hour))
-				$hour=date('H');
+				$hour=isset($defaults['hour']) ? $defaults['hour'] : date('H');
 			if(!isset($minute))
-				$minute=date('i');
+				$minute=isset($defaults['minute']) ? $defaults['minute'] : date('i');
 			if(!isset($second))
-				$second=date('s');
+				$second=isset($defaults['second']) ? $defaults['second'] : date('s');
 			$hour=(int)$hour;
 			$minute=(int)$minute;
 			$second=(int)$second;
@@ -204,6 +225,9 @@ class CDateTimeParser
 			return false;
 	}
 
+	/*
+	 * @param string $pattern the pattern that the date string is following
+	 */
 	private static function tokenize($pattern)
 	{
 		if(!($n=strlen($pattern)))
@@ -222,6 +246,12 @@ class CDateTimeParser
 		return $tokens;
 	}
 
+	/*
+	 * @param string $value строка даты для парсинга
+	 * @param integer $offset начальное смещение
+	 * @param integer $minLength минимальная длина
+	 * @param integer $maxLength максимальная длина
+	 */
 	protected static function parseInteger($value,$offset,$minLength,$maxLength)
 	{
 		for($len=$maxLength;$len>=$minLength;--$len)
@@ -231,5 +261,15 @@ class CDateTimeParser
 				return $v;
 		}
 		return false;
+	}
+
+	/*
+	 * @param string $value строка даты для парсинга
+	 * @param integer $offset начальное смещение
+	 */
+	protected static function parseAmPm($value, $offset)
+	{
+		$v=strtolower(substr($value,$offset,2));
+		return $v==='am' || $v==='pm' ? $v : false;
 	}
 }

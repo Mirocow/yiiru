@@ -20,7 +20,7 @@
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CVarDumper.php 2100 2010-05-05 21:39:14Z qiang.xue $
+ * @version $Id: CVarDumper.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.utils
  * @since 1.0
  */
@@ -34,9 +34,9 @@ class CVarDumper
 	 * Отображает переменную.
 	 * Метод имеет ту же функциональность, что и функции var_dump и print_r,
 	 * но более надежен при обработке сложных объектов, таких как контроллеры Yii.
-	 * @param mixed переменная
-	 * @param integer максимальная глубина, на которую может спуститься метод при обходе переменной. По умолчанию - 10.
-	 * @param boolean должен ли результат быть обработан подсветкой синтаксиса
+	 * @param mixed $var переменная
+	 * @param integer $depth максимальная глубина, на которую может спуститься метод при обходе переменной. По умолчанию - 10.
+	 * @param boolean $highlight должен ли результат быть обработан подсветкой синтаксиса
 	 */
 	public static function dump($var,$depth=10,$highlight=false)
 	{
@@ -47,9 +47,9 @@ class CVarDumper
 	 * Преобразует переменную в строку.
 	 * Метод имеет ту же функциональность, что и функции var_dump и print_r,
 	 * но более надежен при обработке сложных объектов, таких как контроллеры Yii.
-	 * @param mixed переменная
-	 * @param integer максимальная глубина, на которую может спуститься метод при обходе переменной. По умолчанию - 10.
-	 * @param boolean должен ли результат быть обработан подсветкой синтаксиса
+	 * @param mixed $var переменная
+	 * @param integer $depth максимальная глубина, на которую может спуститься метод при обходе переменной. По умолчанию - 10.
+	 * @param boolean $highlight должен ли результат быть обработан подсветкой синтаксиса
 	 * @return string строка, представляющая переменную
 	 */
 	public static function dumpAsString($var,$depth=10,$highlight=false)
@@ -66,6 +66,10 @@ class CVarDumper
 		return self::$_output;
 	}
 
+	/*
+	 * @param mixed $var variable to be dumped
+	 * @param integer $level depth level
+	 */
 	private static function dumpInternal($var,$level)
 	{
 		switch(gettype($var))
@@ -80,7 +84,7 @@ class CVarDumper
 				self::$_output.="$var";
 				break;
 			case 'string':
-				self::$_output.="'$var'";
+				self::$_output.="'".addslashes($var)."'";
 				break;
 			case 'resource':
 				self::$_output.='{resource}';

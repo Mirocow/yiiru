@@ -18,7 +18,7 @@
  * в директории времени выполнения приложения.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbLogRoute.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CDbLogRoute.php 2567 2010-10-22 18:10:54Z qiang.xue $
  * @package system.logging
  * @since 1.0
  */
@@ -60,16 +60,6 @@ class CDbLogRoute extends CLogRoute
 	private $_db;
 
 	/**
-	 * Деструктор.
-	 * Отключается от БД.
-	 */
-	public function __destruct()
-	{
-		if($this->_db!==null)
-			$this->_db->setActive(false);
-	}
-
-	/**
 	 * Инициализирует маршрут.
 	 * Метод вызывается после создания маршрута менеджером маршрутов.
 	 */
@@ -96,8 +86,8 @@ class CDbLogRoute extends CLogRoute
 
 	/**
 	 * Создает в БД таблицу для хранения сообщений журнала.
-	 * @param CDbConnection соединение БД
-	 * @param string имя создаваемой таблицы
+	 * @param CDbConnection $db соединение БД
+	 * @param string $tableName имя создаваемой таблицы
 	 */
 	protected function createLogTable($db,$tableName)
 	{
@@ -146,7 +136,7 @@ CREATE TABLE $tableName
 
 	/**
 	 * Сохраняет сообщения журнала в БД.
-	 * @param array список сообщений журнала
+	 * @param array $logs список сообщений журнала
 	 */
 	protected function processLogs($logs)
 	{

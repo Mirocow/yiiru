@@ -40,7 +40,7 @@
  * Таким образом, к компоненту форматирования можно обращаться так: <code>Yii::app()->format->boolean(1)</code>.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFormatter.php 1716 2010-01-17 21:38:41Z qiang.xue $
+ * @version $Id: CFormatter.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.utils
  * @since 1.1.0
  */
@@ -75,8 +75,8 @@ class CFormatter extends CApplicationComponent
 	/**
 	 * Вызывает метод форматирования по его короткой ссылке.
 	 * Магический метод PHP, переопределенный для реализации доступа к методам форматирования по их коротким ссылкам.
-	 * @param string имя метода
-	 * @param array параметры метода
+	 * @param string $name имя метода
+	 * @param array $parameters параметры метода
 	 * @return mixed значение, возвращаемое методом
 	 */
 	public function __call($name,$parameters)
@@ -89,8 +89,8 @@ class CFormatter extends CApplicationComponent
 
 	/**
 	 * Форматирует значение на основе переданного типа.
-	 * @param mixed форматируемое значение
-	 * @param string тип данных. Должен соответствовать методу, доступному в классе CFormatter.
+	 * @param mixed $value форматируемое значение
+	 * @param string $type тип данных. Должен соответствовать методу, доступному в классе CFormatter.
 	 * Например, можно использовать тип 'text', т.к. существует метод с именем {@link formatText}.
 	 * @return string результат форматирования
 	 */
@@ -106,7 +106,7 @@ class CFormatter extends CApplicationComponent
 	/**
 	 * Форматирует значение в виде исходного значения.
 	 * Метод просто возвращает переданное значение без какого-либо форматирования.
-	 * @param mixed форматируемое значение
+	 * @param mixed $value форматируемое значение
 	 * @return string результат форматирования
 	 */
 	public function formatRaw($value)
@@ -116,7 +116,7 @@ class CFormatter extends CApplicationComponent
 
 	/**
 	 * Форматирует значение в виде HTML текста с кодированием спец-символов ({@link CHtml::encode()}).
-	 * @param mixed форматируемое значение
+	 * @param mixed $value форматируемое значение
 	 * @return string результат форматирования
 	 */
 	public function formatText($value)
@@ -126,7 +126,7 @@ class CFormatter extends CApplicationComponent
 
 	/**
 	 * Форматирует значение в виде HTML текста с кодированием спец-символов ({@link CHtml::encode()}) и конвертацией перевода строк в HTML тег "br".
-	 * @param mixed форматируемое значение
+	 * @param mixed $value форматируемое значение
 	 * @return string результат форматирования
 	 */
 	public function formatNtext($value)
@@ -136,7 +136,7 @@ class CFormatter extends CApplicationComponent
 
 	/**
 	 * Форматирует значение в виде HTML текста без кодирования спец-символов (encoding).
-	 * @param mixed форматируемое значение
+	 * @param mixed $value форматируемое значение
 	 * @return string результат форматирования
 	 */
 	public function formatHtml($value)
@@ -146,7 +146,7 @@ class CFormatter extends CApplicationComponent
 
 	/**
 	 * Форматирует значение в виде даты.
-	 * @param mixed форматируемое значение
+	 * @param mixed $value форматируемое значение
 	 * @return string результат форматирования
 	 * @see dateFormat
 	 */
@@ -157,7 +157,7 @@ class CFormatter extends CApplicationComponent
 
 	/**
 	 * Форматирует значение в виде времени.
-	 * @param mixed форматируемое значение
+	 * @param mixed $value форматируемое значение
 	 * @return string результат форматирования
 	 * @see timeFormat
 	 */
@@ -168,7 +168,7 @@ class CFormatter extends CApplicationComponent
 
 	/**
 	 * Форматирует значение в виде даты и времени.
-	 * @param mixed форматируемое значение
+	 * @param mixed $value форматируемое значение
 	 * @return string результат форматирования
 	 * @see datetimeFormat
 	 */
@@ -179,7 +179,7 @@ class CFormatter extends CApplicationComponent
 
 	/**
 	 * Форматирует значение в виде булева значения.
-	 * @param mixed форматируемое значение
+	 * @param mixed $value форматируемое значение
 	 * @return string результат форматирования
 	 * @see trueText
 	 * @see falseText
@@ -191,7 +191,7 @@ class CFormatter extends CApplicationComponent
 
 	/**
 	 * Форматирует значение в виде ссылки на электронный адрес.
-	 * @param mixed форматируемое значение
+	 * @param mixed $value форматируемое значение
 	 * @return string результат форматирования
 	 */
 	public function formatEmail($value)
@@ -201,7 +201,7 @@ class CFormatter extends CApplicationComponent
 
 	/**
 	 * Форматирует значение в виде тега изображения.
-	 * @param mixed форматируемое значение
+	 * @param mixed $value форматируемое значение
 	 * @return string результат форматирования
 	 */
 	public function formatImage($value)
@@ -211,7 +211,7 @@ class CFormatter extends CApplicationComponent
 
 	/**
 	 * Форматирует значение в виде гиперссылки.
-	 * @param mixed форматируемое значение
+	 * @param mixed $value форматируемое значение
 	 * @return string результат форматирования
 	 */
 	public function formatUrl($value)
@@ -224,7 +224,7 @@ class CFormatter extends CApplicationComponent
 
 	/**
 	 * Форматирует значение в виде числа, используя PHP функцию number_format().
-	 * @param mixed форматируемое значение
+	 * @param mixed $value форматируемое значение
 	 * @return string результат форматирования
 	 * @see numberFormat
 	 */

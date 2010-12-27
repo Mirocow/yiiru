@@ -19,7 +19,7 @@
  * их в сообщении журнала, что может помочь в выявлении/отладке встречающихся проблем.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLogFilter.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CLogFilter.php 2499 2010-09-23 14:14:20Z mdomba $
  * @package system.logging
  * @since 1.0.6
  */
@@ -50,13 +50,16 @@ class CLogFilter extends CComponent
 	/**
 	 * Проводит фильтрацию переданных сообщений журнала.
 	 * Главный метод класса CLogFilter. Обрабатывает сообщения журнала, добавляя контекстную информацию и т.п.
-	 * @param array сообщения журнала
+	 * @param array $logs сообщения журнала
 	 */
 	public function filter(&$logs)
 	{
+		if (!empty($logs))
+		{
 		if(($message=$this->getContext())!=='')
 			array_unshift($logs,array($message,CLogger::LEVEL_INFO,'application',YII_BEGIN_TIME));
 		$this->format($logs);
+		}
 		return $logs;
 	}
 
@@ -65,6 +68,7 @@ class CLogFilter extends CComponent
 	 * Реализация по умолчанию добавляет к каждому сообщению префикс в виде идентификатора сессии,
 	 * если свойство {@link prefixSession} установлено в значение true, либо префикс в виде имени и
 	 * идентификатора текущего пользователя, если свойство {@link prefixUser} установлено в значение true.
+	 * @param array $logs сообщения журнала
 	 */
 	protected function format(&$logs)
 	{
@@ -93,7 +97,7 @@ class CLogFilter extends CComponent
 
 		foreach($this->logVars as $name)
 		{
-			if(isset($GLOBALS[$name]) && !empty($GLOBALS[$name]))
+			if(!empty($GLOBALS[$name]))
 				$context[]="\${$name}=".var_export($GLOBALS[$name],true);
 		}
 
