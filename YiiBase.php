@@ -6,7 +6,7 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: YiiBase.php 2315 2010-08-10 17:32:22Z qiang.xue $
+ * @version $Id: YiiBase.php 2767 2010-12-23 21:30:14Z qiang.xue $
  * @package system
  * @since 1.0
  */
@@ -50,15 +50,21 @@ defined('YII_ZII_PATH') or define('YII_ZII_PATH',YII_PATH.DIRECTORY_SEPARATOR.'z
  * вы можете настраивать методы YiiBase.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: YiiBase.php 2315 2010-08-10 17:32:22Z qiang.xue $
+ * @version $Id: YiiBase.php 2767 2010-12-23 21:30:14Z qiang.xue $
  * @package system
  * @since 1.0
  */
 class YiiBase
 {
+	/**
+	 * @var array карта классов, используемая для механизма автозагрузки классов.
+	 * Ключи массива - имена классов, а значения - соответствующие файловые пути
+	 * @since 1.1.5
+	 */
+	public static $classMap=array();
+
 	private static $_aliases=array('system'=>YII_PATH,'zii'=>YII_ZII_PATH); // alias => path
 	private static $_imports=array();					// alias => class name or directory
-	private static $_classes=array();
 	private static $_includePaths;						// list of include paths
 	private static $_app;
 	private static $_logger;
@@ -69,12 +75,12 @@ class YiiBase
 	 */
 	public static function getVersion()
 	{
-		return '1.1.4-dev';
+		return '1.1.6-dev';
 	}
 
 	/**
 	 * Создает экземпляр веб-приложения.
-	 * @param mixed конфигурация приложения.
+	 * @param mixed $config конфигурация приложения.
 	 * Если передается строка, она считается путем к файлу, содержащему массив конфигурации;
 	 * если передается массив, он считается информацией конфигурации.
 	 * Убедитесь в правильности установки свойства {@link CApplication::basePath basePath} в конфигурации,
@@ -88,7 +94,7 @@ class YiiBase
 
 	/**
 	 * Создает экземпляр консольного приложения.
-	 * @param mixed конфигурация приложения.
+	 * @param mixed $config конфигурация приложения.
 	 * Если передается строка, она считается путем к файлу, содержащему массив конфигурации;
 	 * если передается массив, он считается информацией конфигурации.
 	 * Убедитесь в правильности установки свойства {@link CApplication::basePath basePath} в конфигурации,
@@ -102,8 +108,8 @@ class YiiBase
 
 	/**
 	 * Создает приложения по определенному классу.
-	 * @param string имя класса приложения
-	 * @param mixed конфигурация приложения. Данный параметр будет передан как параметр
+	 * @param string $class имя класса приложения
+	 * @param mixed $config конфигурация приложения. Данный параметр будет передан как параметр
 	 * в конструктор класса приложения.
 	 * @return mixed экземпляр приложения
 	 * @since 1.0.10
@@ -127,7 +133,7 @@ class YiiBase
 	 * Повторный вызов данного метода либо конструктора CApplication
 	 * будет вызывать исключение.
 	 * Для получения экземпляра приложения используйте метод {@link app()}.
-	 * @param CApplication экземпляр приложения. Если null, существующий
+	 * @param CApplication $app экземпляр приложения. Если null, существующий
 	 * синглтон приложения будет удален
 	 * @throws CException вызывается, если экземпляр приложения уже существует
 	 */
@@ -162,7 +168,7 @@ class YiiBase
 	 *
 	 * Примечание: конфигурация массивом доступна с версии 1.0.1.
 	 *
-	 * @param mixed конфигурация. Можеть либо строкой либо массивом
+	 * @param mixed $config конфигурация. Можеть либо строкой либо массивом
 	 * @return mixed созданный объект
 	 * @throws CException вызывается, если массив конфигурации не имеет элемента с имененм 'class'
 	 */
@@ -214,20 +220,38 @@ class YiiBase
 	/**
 	 * Импортирует определение класса или директории файлаов класса.
 	 *
-	 * Для импортирования файлов класса директории используются псевдонимы пути.
-	 * Если псевдоним пути для импортирования оканчивается '.*', псевдоним считается директорией,
-	 * добавляемой в пути включения PHP (include path); иначе псевдоним транслируется в путь
-	 * файла класса, подгружаемого при необходимости (при первом обращении к классу).
+	 * Импорт класса похож на включение соответствующего файла класса.
+	 * Главное отличие - это то, что импорт класса намного легче, т.к.
+	 * файл класса подключается только при первом обращении к классу.
 	 *
-	 * Например, строка импорта 'system.web.*' добавит директорию 'web' фреймворка
-	 * в пути включения PHP; а строка импорта 'system.web.CController' подгрузит
-	 * файл класса 'web/CController.php' при необходимости.
+	 * Импорт директории равносилен добавлению директории в путь включения PHP (include path).
+	 * Если импортируется несколько директорий, то директория, импортируемая последней, будет
+	 * иметь приоритет при поиске файла класса (т.е., она добавляется в начало пути включения PHP (include path).
+	 *
+	 * Для импортирования файлов класса или директории используются псевдонимы пути. Например,
+	 * <ul>
+	 *   <li><code>application.components.GoogleMap</code>: импортирует класс <code>GoogleMap</code>;</li>
+	 *   <li><code>application.components.*</code>: импортирует директорию <code>components</code>.</li>
+	 * </ul>
 	 *
 	 * Один и тот же псевдоним может быть импортирован несколько раз, но значение имеет только первый.
+	 * При импорте директории ее поддиректории не импортируются.
 	 *
-	 * @param string псевдоним импортируемого пути
-	 * @param boolean включать ли файл класс немедленно. Если false, файл класса
-	 * будут подгружен только при первом использовании класса.
+	 * Начиная с версии 1.1.5, метод также может быть использован для импорта классов в формате пространства имен (namespace,
+	 * доступно только для PHP версии 5.3 или выше). Данный способ похож на импорт классов в формате псевдонима путей,
+	 * за исключением того, что разделителем является обратный слеш, а не точка. Например, строка импорта
+	 * <code>application\components\GoogleMap</code> похожа на <code>application.components.GoogleMap</code>.
+	 * Различие в том, что первый класс имеет полностью однозначное имя, в то время как второй нет.
+	 *
+	 * Примечание: импорт классов в формате пространства имен требует, чтобы пространство имен соответствовало
+	 * правильному псевдониму пути при замене обратного слеша на точку.
+	 * Например, пространство имен <code>application\components</code> должно соответствовать правильному псевдониму
+	 * пути <code>application.components</code>.
+	 *
+	 * @param string $alias псевдоним импортируемого пути
+	 * @param boolean $forceInclude включать ли файл класс немедленно. Если false, файл класса
+	 * будут подгружен только при первом использовании класса. Параметр используется только если
+	 * псевдоним пути ссылается на класс
 	 * @return string имя класса или директория, на которые указывает псевдоним
 	 * @throws CException вызывается, если псевдоним невалиден
 	 */
@@ -239,6 +263,29 @@ class YiiBase
 		if(class_exists($alias,false) || interface_exists($alias,false))
 			return self::$_imports[$alias]=$alias;
 
+		if(($pos=strrpos($alias,'\\'))!==false) // a class name in PHP 5.3 namespace format
+		{
+			$namespace=str_replace('\\','.',ltrim(substr($alias,0,$pos),'\\'));
+			if(($path=self::getPathOfAlias($namespace))!==false)
+			{
+				$classFile=$path.DIRECTORY_SEPARATOR.substr($alias,$pos+1).'.php';
+				if($forceInclude)
+				{
+					if(is_file($classFile))
+						require($classFile);
+					else
+						throw new CException(Yii::t('yii','Alias "{alias}" is invalid. Make sure it points to an existing PHP file.',array('{alias}'=>$alias)));
+					self::$_imports[$alias]=$alias;
+				}
+				else
+					self::$classMap[$alias]=$classFile;
+				return $alias;
+			}
+			else
+				throw new CException(Yii::t('yii','Alias "{alias}" is invalid. Make sure it points to an existing directory.',
+					array('{alias}'=>$namespace)));
+		}
+
 		if(($pos=strrpos($alias,'.'))===false)  // a simple class name
 		{
 			if($forceInclude && self::autoload($alias))
@@ -246,12 +293,15 @@ class YiiBase
 			return $alias;
 		}
 
-		if(($className=(string)substr($alias,$pos+1))!=='*' && (class_exists($className,false) || interface_exists($className,false)))
+		$className=(string)substr($alias,$pos+1);
+		$isClass=$className!=='*';
+
+		if($isClass && (class_exists($className,false) || interface_exists($className,false)))
 			return self::$_imports[$alias]=$className;
 
 		if(($path=self::getPathOfAlias($alias))!==false)
 		{
-			if($className!=='*')
+			if($isClass)
 			{
 				if($forceInclude)
 				{
@@ -262,7 +312,7 @@ class YiiBase
 					self::$_imports[$alias]=$className;
 				}
 				else
-					self::$_classes[$className]=$path.'.php';
+					self::$classMap[$className]=$path.'.php';
 				return $className;
 			}
 			else  // a directory
@@ -273,9 +323,12 @@ class YiiBase
 					if(($pos=array_search('.',self::$_includePaths,true))!==false)
 						unset(self::$_includePaths[$pos]);
 				}
+
 				array_unshift(self::$_includePaths,$path);
+
 				if(set_include_path('.'.PATH_SEPARATOR.implode(PATH_SEPARATOR,self::$_includePaths))===false)
 					throw new CException(Yii::t('yii','Unable to import "{alias}". Please check your server configuration to make sure you are allowed to change PHP include_path.',array('{alias}'=>$alias)));
+
 				return self::$_imports[$alias]=$path;
 			}
 		}
@@ -288,7 +341,7 @@ class YiiBase
 	 * Транслирует псевдоним в файловый путь.
 	 * Примечание: метод не гарантирует существование результирующего файлового пути.
 	 * Он только проверяет, является ли валидным корневой псевдоним.
-	 * @param string псевдоним (например, system.web.CController)
+	 * @param string $alias псевдоним (например, system.web.CController)
 	 * @return mixed файловый путь, соответствующий псевдониму; false, если псевдоним невалиден
 	 */
 	public static function getPathOfAlias($alias)
@@ -312,8 +365,8 @@ class YiiBase
 	/**
 	 * Создает псевдонимы пути.
 	 * Примечание: метод не проверяет существование пути и не нормализует путь.
-	 * @param string псевдоним пути
-	 * @param string путь, соответствующий псевдониму. Если null, соответствующий псевдоним пути будет удален
+	 * @param string $alias псевдоним пути
+	 * @param string $path путь, соответствующий псевдониму. Если null, соответствующий псевдоним пути будет удален
 	 */
 	public static function setPathOfAlias($alias,$path)
 	{
@@ -326,7 +379,7 @@ class YiiBase
 	/**
 	 * Автозагрузчик классов.
 	 * Метод заменяет "магический" метод __autoload().
-	 * @param string имя класса
+	 * @param string $className имя класса
 	 * @return boolean загружен ли класс
 	 */
 	public static function autoload($className)
@@ -334,11 +387,20 @@ class YiiBase
 		// use include so that the error PHP file may appear
 		if(isset(self::$_coreClasses[$className]))
 			include(YII_PATH.self::$_coreClasses[$className]);
-		else if(isset(self::$_classes[$className]))
-			include(self::$_classes[$className]);
+		else if(isset(self::$classMap[$className]))
+			include(self::$classMap[$className]);
 		else
 		{
+			if(strpos($className,'\\')===false)
 			include($className.'.php');
+			else  // class name with namespace in PHP 5.3
+			{
+				$namespace=str_replace('\\','.',ltrim($className,'\\'));
+				if(($path=self::getPathOfAlias($namespace))!==false)
+					include($path.'.php');
+				else
+					return false;
+			}
 			return class_exists($className,false) || interface_exists($className,false);
 		}
 		return true;
@@ -347,8 +409,8 @@ class YiiBase
 	/**
 	 * Записывает трассирующее сообщение.
 	 * Метод журналирует сообщение только если приложение находится в режиме отладки.
-	 * @param string журналируемое сообщение
-	 * @param string категория сообщения
+	 * @param string $msg журналируемое сообщение
+	 * @param string $category категория сообщения
 	 * @see log
 	 */
 	public static function trace($msg,$category='application')
@@ -361,9 +423,9 @@ class YiiBase
 	 * Журналирует сообщение.
 	 * Сообщения, журналируемые данным методом, могут быть получены методом {@link CLogger::getLogs}
 	 * и могут быть записаны в другие ресурсы, такие как файлы, email-адреса, БД, используя класс {@link CLogRouter}.
-	 * @param string журналируемое сообщение
-	 * @param string уровень сообщения (например, 'trace', 'warning', 'error'). Регистронезависим
-	 * @param string категория сообщения (например, 'system.web'). Регистронезависим
+	 * @param string $msg журналируемое сообщение
+	 * @param string $level уровень сообщения (например, 'trace', 'warning', 'error'). Регистронезависим
+	 * @param string $category категория сообщения (например, 'system.web'). Регистронезависим
 	 */
 	public static function log($msg,$level=CLogger::LEVEL_INFO,$category='application')
 	{
@@ -375,15 +437,11 @@ class YiiBase
 			$count=0;
 			foreach($traces as $trace)
 			{
-				if(isset($trace['file'],$trace['line']))
+				if(isset($trace['file'],$trace['line']) && strpos($trace['file'],YII_PATH)!==0)
 				{
-					$className=substr(basename($trace['file']),0,-4);
-					if(!isset(self::$_coreClasses[$className]) && $className!=='YiiBase')
-					{
-						$msg.="\nin ".$trace['file'].' ('.$trace['line'].')';
-						if(++$count>=YII_TRACE_LEVEL)
-							break;
-					}
+					$msg.="\nin ".$trace['file'].' ('.$trace['line'].')';
+					if(++$count>=YII_TRACE_LEVEL)
+						break;
 				}
 			}
 		}
@@ -407,8 +465,8 @@ class YiiBase
 	 * Yii::endProfile('block1');
 	 * Yii::endProfile('block2');
 	 * </pre>
-	 * @param string маркер блока кода
-	 * @param string категория данного журналируемого сообщения
+	 * @param string $token маркер блока кода
+	 * @param string $category категория данного журналируемого сообщения
 	 * @see endProfile
 	 */
 	public static function beginProfile($token,$category='application')
@@ -419,8 +477,8 @@ class YiiBase
 	/**
 	 * Отмечает конец блока кода для профилирования.
 	 * Должен быть связан с вызовом метода {@link beginProfile()} с тем же маркером (token).
-	 * @param string маркер блока кода
-	 * @param string категория данного журналируемого сообщения
+	 * @param string $token маркер блока кода
+	 * @param string $category категория данного журналируемого сообщения
 	 * @see beginProfile
 	 */
 	public static function endProfile($token,$category='application')
@@ -453,18 +511,18 @@ class YiiBase
 	 * т.е. возвращаемое сообщение будет выбрано среди нескольких согласно переданному числу.
 	 * В основном данная функция используется для решения вопросов формата множественных чисел,
 	 * если в языке сообщение имеет различный вид для различных чисел.
-	 * @param string категория сообщения. Используйте только буквенные символы. Примечание: категория 'yii'
+	 * @param string $category категория сообщения. Используйте только буквенные символы. Примечание: категория 'yii'
 	 * зарезервирована для использования в коде ядра фреймворка Yii. Обратитесь к {@link CPhpMessageSource}
 	 * за дополнительной информацией о категориях сообщений.
-	 * @param string оригинальное сообщение
-	 * @param array параметры, применяемые к сообщению с использованием <code>strtr</code>.
+	 * @param string $message оригинальное сообщение
+	 * @param array $params параметры, применяемые к сообщению с использованием <code>strtr</code>.
 	 * Начиная с версии первый параметр может быть числом без ключа.
 	 * В этом случае метод будет вызывать метод {@link CChoiceFormat::format} для выбора
 	 * соответствующего перевода.
-	 * @param string какой компонент приложения использовать в качестве источника сообщений.
+	 * @param string $source какой компонент приложения использовать в качестве источника сообщений.
 	 * По умолчанию - null, т.е. использовать 'coreMessages' для сообщений, принадлежащих
 	 * к категории 'yii', и 'messages' - для остальных собщений
-	 * @param string целевой язык. Если null (по умолчанию), то будет использоваться {@link CApplication::getLanguage язык приложения}.
+	 * @param string $language целевой язык. Если null (по умолчанию), то будет использоваться {@link CApplication::getLanguage язык приложения}.
 	 * Параметр доступен с версии 1.0.3.
 	 * @return string переведенное сообщение
 	 * @see CMessageSource
@@ -492,7 +550,7 @@ class YiiBase
 	 * Регистрирует новый автозагрузчик классов.
 	 * Новый автозагрузчик будет помещен перед автозагрузчиком {@link autoload} и после
 	 * других существующих автозагрузчиков.
-	 * @param callback правильный обратный вызов PHP (имя функции или массив вида array($className,$methodName)).
+	 * @param callback $callback правильный обратный вызов PHP (имя функции или массив вида array($className,$methodName)).
 	 * @since 1.0.10
 	 */
 	public static function registerAutoloader($callback)
@@ -551,6 +609,7 @@ class YiiBase
 		'CStack' => '/collections/CStack.php',
 		'CStackIterator' => '/collections/CStackIterator.php',
 		'CTypedList' => '/collections/CTypedList.php',
+		'CTypedMap' => '/collections/CTypedMap.php',
 		'CConsoleApplication' => '/console/CConsoleApplication.php',
 		'CConsoleCommand' => '/console/CConsoleCommand.php',
 		'CConsoleCommandRunner' => '/console/CConsoleCommandRunner.php',
@@ -559,6 +618,7 @@ class YiiBase
 		'CDbConnection' => '/db/CDbConnection.php',
 		'CDbDataReader' => '/db/CDbDataReader.php',
 		'CDbException' => '/db/CDbException.php',
+		'CDbMigration' => '/db/CDbMigration.php',
 		'CDbTransaction' => '/db/CDbTransaction.php',
 		'CActiveFinder' => '/db/ar/CActiveFinder.php',
 		'CActiveRecord' => '/db/ar/CActiveRecord.php',

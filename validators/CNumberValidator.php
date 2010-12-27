@@ -12,7 +12,7 @@
  * Валидатор CNumberValidator проверяет, что значение атрибута является числом.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CNumberValidator.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CNumberValidator.php 2572 2010-10-26 00:26:40Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
@@ -28,11 +28,11 @@ class CNumberValidator extends CValidator
 	 */
 	public $allowEmpty=true;
 	/**
-	 * @var integer|double верхняя граница числа. По умолчанию - null, т.е. без верхней границы.
+	 * @var integer|float верхняя граница числа. По умолчанию - null, т.е. без верхней границы.
 	 */
 	public $max;
 	/**
-	 * @var integer|double нижняя граница числа. По умолчанию - null, т.е. без нижней границы.
+	 * @var integer|float нижняя граница числа. По умолчанию - null, т.е. без нижней границы.
 	 */
 	public $min;
 	/**
@@ -48,8 +48,8 @@ class CNumberValidator extends CValidator
 	/**
 	 * Валидирует отдельный атрибут.
 	 * При возникновении ошибки к объекту добавляется сообщение об ошибке.
-	 * @param CModel валидируемый объект данных
-	 * @param string имя валидируемого атрибута
+	 * @param CModel $object валидируемый объект данных
+	 * @param string $attribute имя валидируемого атрибута
 	 */
 	protected function validateAttribute($object,$attribute)
 	{

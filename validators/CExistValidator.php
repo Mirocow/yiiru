@@ -15,7 +15,7 @@
  * которое может быть найдено во внешней таблице.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CExistValidator.php 2188 2010-06-15 17:20:35Z qiang.xue $
+ * @version $Id: CExistValidator.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.validators
  * @since 1.0.4
  */
@@ -50,8 +50,8 @@ class CExistValidator extends CValidator
 	/**
 	 * Валидирует отдельный атрибут.
 	 * При возникновении ошибки к объекту добавляется сообщение об ошибке.
-	 * @param CModel валидируемый объект данных
-	 * @param string имя валидируемого атрибута
+	 * @param CModel $object валидируемый объект данных
+	 * @param string $attribute имя валидируемого атрибута
 	 */
 	protected function validateAttribute($object,$attribute)
 	{

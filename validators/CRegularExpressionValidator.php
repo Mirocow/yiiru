@@ -10,9 +10,10 @@
 
 /**
  * Валидатор CRegularExpressionValidator проверяет атрибут на соответствие определенному {@link pattern регулярному выражению}.
+ * Вы можете инвертировать логику валидации при помощи свойства {@link not} (доступно с версии 1.1.5).
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CRegularExpressionValidator.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CRegularExpressionValidator.php 2524 2010-10-04 02:19:21Z keyboard.idol@gmail.com $
  * @package system.validators
  * @since 1.0
  */
@@ -27,12 +28,18 @@ class CRegularExpressionValidator extends CValidator
 	 * т.е. пустой атрибут считается валидным
 	 */
 	public $allowEmpty=true;
+	/**
+	 * @var boolean инвертировать ли логику проверки. По умолчанию - false. Если установлено в значение true,
+	 * то регулярное выражение, определенное свойством {@link pattern} не должно соответствовать проверяемому значению атрибута
+	 * @since 1.1.5
+	 */
+ 	public $not=false;
 
 	/**
 	 * Валидирует отдельный атрибут.
 	 * При возникновении ошибки к объекту добавляется сообщение об ошибке.
-	 * @param CModel валидируемый объект данных
-	 * @param string имя валидируемого атрибута
+	 * @param CModel $object валидируемый объект данных
+	 * @param string $attribute имя валидируемого атрибута
 	 */
 	protected function validateAttribute($object,$attribute)
 	{
@@ -41,7 +48,7 @@ class CRegularExpressionValidator extends CValidator
 			return;
 		if($this->pattern===null)
 			throw new CException(Yii::t('yii','The "pattern" property must be specified with a valid regular expression.'));
-		if(!preg_match($this->pattern,$value))
+		if((!$this->not && !preg_match($this->pattern,$value)) || ($this->not && preg_match($this->pattern,$value)))
 		{
 			$message=$this->message!==null?$this->message:Yii::t('yii','{attribute} is invalid.');
 			$this->addError($object,$attribute,$message);

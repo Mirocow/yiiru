@@ -48,7 +48,7 @@
  * </ul>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CValidator.php 2268 2010-07-18 17:44:48Z qiang.xue $
+ * @version $Id: CValidator.php 2713 2010-12-06 19:03:00Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
@@ -109,22 +109,22 @@ abstract class CValidator extends CComponent
 	/**
 	 * Валидирует отдельный атрибут.
 	 * Метод должен переопределяться классами-потомками.
-	 * @param CModel валидируемый объект данных
-	 * @param string имя валидируемого атрибута
+	 * @param CModel $object валидируемый объект данных
+	 * @param string $attribute имя валидируемого атрибута
 	 */
 	abstract protected function validateAttribute($object,$attribute);
 
 
 	/**
 	 * Создает объект валидатора.
-	 * @param string имя или класс валидатора
-	 * @param CModel валидируемый объект данных, который может содержать встроенный метод валидации
-	 * @param mixed список валидируемых атрибутов. Может быть либо массивом имен атрибутов либо
+	 * @param string $name имя или класс валидатора
+	 * @param CModel $object валидируемый объект данных, который может содержать встроенный метод валидации
+	 * @param mixed $attributes список валидируемых атрибутов. Может быть либо массивом имен атрибутов либо
 	 * строкой имен атрибутов, разделенных запятой.
-	 * @param array начальные значения, применяемые к свойствам валидатора
+	 * @param array $params начальные значения, применяемые к свойствам валидатора
 	 * @return CValidator the validator
 	 */
-	public static function createValidator($name,$object,$attributes,$params)
+	public static function createValidator($name,$object,$attributes,$params=array())
 	{
 		if(is_string($attributes))
 			$attributes=preg_split('/[\s,]+/',$attributes,-1,PREG_SPLIT_NO_EMPTY);
@@ -167,8 +167,8 @@ abstract class CValidator extends CComponent
 
 	/**
 	 * Валидирует определенный объект.
-	 * @param CModel валидируемый объект данных
-	 * @param array валидируемый объект данных. По умолчанию - null, т.е.
+	 * @param CModel $object валидируемый объект данных
+	 * @param array $attributes валидируемый объект данных. По умолчанию - null, т.е.
 	 * будет валидироваться каждый атрибут в списке {@link attributes}.
 	 */
 	public function validate($object,$attributes=null)
@@ -191,7 +191,7 @@ abstract class CValidator extends CComponent
 	 * <li>свойство "on" валидатора пусто</li>
 	 * <li>свойство "on" валидатора содержит определенный сценарий</li>
 	 * </ul>
-	 * @param string имя сценария
+	 * @param string $scenario имя сценария
 	 * @return boolean применяется ли валидатор к определенному сценарию
 	 * @since 1.0.2
 	 */
@@ -203,10 +203,10 @@ abstract class CValidator extends CComponent
 	/**
 	 * Добавляет ошибку об определенном атрибуте в active record-объект.
 	 * Это вспомогательный метод, выполняющий выборку и интернационализацию сообщения.
-	 * @param CModel валидируемый объект данных
-	 * @param string валидируемый атрибут
-	 * @param string сообщение об ошибке
-	 * @param array значения для меток в сообщении об ошибке
+	 * @param CModel $object валидируемый объект данных
+	 * @param string $attribute валидируемый атрибут
+	 * @param string $message сообщение об ошибке
+	 * @param array $params значения для меток в сообщении об ошибке
 	 */
 	protected function addError($object,$attribute,$message,$params=array())
 	{
@@ -218,8 +218,8 @@ abstract class CValidator extends CComponent
 	 * Проверяет, пусто ли переданное значение.
 	 * Значение считается пустым, если оно равно null, пустому массиву или пустой строке (предварительно усеченной с обеих сторон).
 	 * Примечание: метод отличается от встроенного метода PHP - empty(). Он возвращает false, если значение равно 0.
-	 * @param mixed проверяемое значение
-	 * @param boolean выполнять ли усечение перед проверкой строки. По умолчанию - false.
+	 * @param mixed $value проверяемое значение
+	 * @param boolean $trim выполнять ли усечение перед проверкой строки. По умолчанию - false.
 	 * @return boolean пусто ли значение
 	 * @since 1.0.9
 	 */

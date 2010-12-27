@@ -12,7 +12,7 @@
  * Валидатор CUnsafeValidator помечает связанные атрибуты как небезопасные так, что они не могут быть присвоены пакетно.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CUnsafeValidator.php 2268 2010-07-18 17:44:48Z qiang.xue $
+ * @version $Id: CUnsafeValidator.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.validators
  * @since 1.0
  */
@@ -27,8 +27,8 @@ class CUnsafeValidator extends CValidator
 	/**
 	 * Валидирует отдельный атрибут.
 	 * При возникновении ошибки к объекту добавляется сообщение об ошибке.
-	 * @param CModel валидируемый объект данных
-	 * @param string имя валидируемого атрибута
+	 * @param CModel $object валидируемый объект данных
+	 * @param string $attribute имя валидируемого атрибута
 	 */
 	protected function validateAttribute($object,$attribute)
 	{

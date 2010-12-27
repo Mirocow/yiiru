@@ -12,7 +12,7 @@
  * Валидатор CEmailValidator проверяет, что значение атрибута - правильный адрес email.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CEmailValidator.php 1840 2010-02-26 04:34:30Z qiang.xue $
+ * @version $Id: CEmailValidator.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.validators
  * @since 1.0
  */
@@ -57,8 +57,8 @@ class CEmailValidator extends CValidator
 	/**
 	 * Валидирует отдельный атрибут.
 	 * При возникновении ошибки к объекту добавляется сообщение об ошибке.
-	 * @param CModel валидируемый объект данных
-	 * @param string имя валидируемого атрибута
+	 * @param CModel $object валидируемый объект данных
+	 * @param string $attribute имя валидируемого атрибута
 	 */
 	protected function validateAttribute($object,$attribute)
 	{
@@ -73,11 +73,11 @@ class CEmailValidator extends CValidator
 	}
 
 	/**
-	 * Validates a static value to see if it is a valid email.
-	 * Note that this method does not respect {@link allowEmpty} property.
-	 * This method is provided so that you can call it directly without going through the model validation rule mechanism.
-	 * @param mixed the value to be validated
-	 * @return boolean whether the value is a valid email
+	 * Проверяет статичное значение на соответствие email-адресу.
+	 * Примечание: данный метод не использует свойство {@link allowEmpty}.
+	 * Метод предоставлен для того, чтобы можно было вызывать его непосредственно без прохождения механизма правил валидации модели.
+	 * @param mixed $value валидируемое значение
+	 * @return boolean является ли значение верным email-адресом
 	 * @since 1.1.1
 	 */
 	public function validateValue($value)

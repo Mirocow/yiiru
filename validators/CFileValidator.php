@@ -37,7 +37,7 @@
  * Вы можете использовать {@link CFileValidator} для проверки атрибутов файла.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFileValidator.php 2347 2010-08-28 13:22:20Z mdomba $
+ * @version $Id: CFileValidator.php 2605 2010-11-02 18:10:56Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
@@ -98,15 +98,15 @@ class CFileValidator extends CValidator
 	/**
 	 * Устанавливает атрибут и затем проводит проверку, используя метод {@link validateFile}.
 	 * При возникновении ошибки к объекту добавляется сообщение об ошибке.
-	 * @param CModel валидируемый объект данных
-	 * @param string имя валидируемого атрибута
+	 * @param CModel $object валидируемый объект данных
+	 * @param string $attribute имя валидируемого атрибута
 	 */
 	protected function validateAttribute($object, $attribute)
 	{
 		if($this->maxFiles > 1)
 		{
 			$files=$object->$attribute;
-			if(!is_array($files))
+			if(!is_array($files) || !isset($files[0]) || !$files[0] instanceof CUploadedFile)
 				$files = CUploadedFile::getInstances($object, $attribute);
 			if(array()===$files)
 				return $this->emptyAttribute($object, $attribute);
@@ -134,9 +134,9 @@ class CFileValidator extends CValidator
 
 	/**
 	 * Внутренняя проверка объекта файла.
-	 * @param CModel валидируемый объект
-	 * @param string валидируемый атрибут
-	 * @param CUploadedFile загруженный файл, переданный для проверки набора правил
+	 * @param CModel $object валидируемый объект
+	 * @param string $attribute валидируемый атрибут
+	 * @param CUploadedFile $file загруженный файл, переданный для проверки набора правил
 	 */
 	protected function validateFile($object, $attribute, $file)
 	{
@@ -178,8 +178,8 @@ class CFileValidator extends CValidator
 
 	/**
 	 * Выдает ошибку для информирования конечного пользователя о пустом атрибуте.
-	 * @param CModel валидируемый объект
-	 * @param string валидируемый атрибут
+	 * @param CModel $object валидируемый объект
+	 * @param string $attribute валидируемый атрибут
 	 */
 	protected function emptyAttribute($object, $attribute)
 	{
@@ -215,7 +215,7 @@ class CFileValidator extends CValidator
 	/**
 	 * Преобразует строку размера файла в виде, задаваемом в файле php.ini, в байты
 	 *
-	 * @param string строка размера файла
+	 * @param string $sizeStr строка размера файла
 	 * @return int размер файла в байтах
 	 */
 	private function sizeToBytes($sizeStr)

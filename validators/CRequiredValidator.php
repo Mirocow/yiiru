@@ -12,7 +12,7 @@
  * Валидатор CRequiredValidator проверяет, что значение определенного атрибута не нулевое и не пустое.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CRequiredValidator.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CRequiredValidator.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.validators
  * @since 1.0
  */
@@ -37,8 +37,8 @@ class CRequiredValidator extends CValidator
 	/**
 	 * Валидирует отдельный атрибут.
 	 * При возникновении ошибки к объекту добавляется сообщение об ошибке.
-	 * @param CModel валидируемый объект данных
-	 * @param string имя валидируемого атрибута
+	 * @param CModel $object валидируемый объект данных
+	 * @param string $attribute имя валидируемого атрибута
 	 */
 	protected function validateAttribute($object,$attribute)
 	{

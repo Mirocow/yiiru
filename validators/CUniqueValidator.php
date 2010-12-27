@@ -12,7 +12,7 @@
  * Валидатор CUniqueValidator проверяет значение атрибута на уникальность в соответствующей таблице БД.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CUniqueValidator.php 2376 2010-08-30 15:03:40Z qiang.xue $
+ * @version $Id: CUniqueValidator.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.validators
  * @since 1.0
  */
@@ -56,8 +56,8 @@ class CUniqueValidator extends CValidator
 	 */
 	public $message;
 	/**
-	 * @var boolean whether this validation rule should be skipped if when there is already a validation
-	 * error for the current attribute. Defaults to true.
+	 * @var boolean пропускать ли данное правило валидации в случае, если для данного атрибута уже есть ошибка валидации
+	 * По умолчанию - true.
 	 * @since 1.1.1
 	 */
 	public $skipOnError=true;
@@ -66,8 +66,8 @@ class CUniqueValidator extends CValidator
 	/**
 	 * Валидирует отдельный атрибут.
 	 * При возникновении ошибки к объекту добавляется сообщение об ошибке.
-	 * @param CModel валидируемый объект данных
-	 * @param string имя валидируемого атрибута
+	 * @param CModel $object валидируемый объект данных
+	 * @param string $attribute имя валидируемого атрибута
 	 */
 	protected function validateAttribute($object,$attribute)
 	{
