@@ -15,7 +15,7 @@
  * типа для добавляемых элементов, чтобы они соответствовали выбранному типу списка.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CTypedList.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CTypedList.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.collections
  * @since 1.0
  */
@@ -25,7 +25,7 @@ class CTypedList extends CList
 
 	/**
 	 * Конструктор.
-	 * @param string имя класса
+	 * @param string $type имя класса
 	 */
 	public function __construct($type)
 	{
@@ -36,8 +36,8 @@ class CTypedList extends CList
 	 * Вставляет элемент в выбранную позицию.
 	 * Метод переопределяет метод предка, добавляя проверку типа вставляемого
 	 * элемента на соответствие типу, переданному при создании списка.
-	 * @param integer позиция
-	 * @param mixed элемент
+	 * @param integer $index позиция
+	 * @param mixed $item элемент
 	 * @throws CException Вызывается, если индекс превышает границу, список
 	 * только для чтения или элемент не соответствует ожидаемому типу.
 	 */

@@ -24,7 +24,7 @@
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMap.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CMap.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.collections
  * @since 1.0
  */
@@ -42,8 +42,8 @@ class CMap extends CComponent implements IteratorAggregate,ArrayAccess,Countable
 	/**
 	 * Конструктор.
 	 * Инициализирует список массивом или итерируемым объектом.
-	 * @param array начальные данные. По умолчанию null - без инициализации.
-	 * @param boolean только для чтения ли данный список
+	 * @param array $data начальные данные. По умолчанию null - без инициализации.
+	 * @param boolean $readOnly только для чтения ли данный список
 	 * @throws CException вызывается, если данные не нулевые и не являются ни массивом ни итератором.
 	 */
 	public function __construct($data=null,$readOnly=false)
@@ -62,7 +62,7 @@ class CMap extends CComponent implements IteratorAggregate,ArrayAccess,Countable
 	}
 
 	/**
-	 * @param boolean только для чтения ли данный список или нет
+	 * @param boolean $value только для чтения ли данный список или нет
 	 */
 	protected function setReadOnly($value)
 	{
@@ -108,7 +108,7 @@ class CMap extends CComponent implements IteratorAggregate,ArrayAccess,Countable
 	/**
 	 * Возвращает элемент по определенному ключу.
 	 * Метод в точности такой же как метод {@link offsetGet}.
-	 * @param mixed ключ
+	 * @param mixed $key ключ
 	 * @return mixed элемент; null, если элемент не найден
 	 */
 	public function itemAt($key)
@@ -122,8 +122,8 @@ class CMap extends CComponent implements IteratorAggregate,ArrayAccess,Countable
 	/**
 	 * Добавляет элемент в карту.
 	 * Примечание: если определенный ключ уже существует, старое значение будет перезаписано.
-	 * @param mixed ключ
-	 * @param mixed значение
+	 * @param mixed $key ключ
+	 * @param mixed $value значение
 	 * @throws CException вызывается, если карта только для чтения
 	 */
 	public function add($key,$value)
@@ -141,7 +141,7 @@ class CMap extends CComponent implements IteratorAggregate,ArrayAccess,Countable
 
 	/**
 	 * Удаляет элемент из карты по его ключу.
-	 * @param mixed ключ удаляемого элемента
+	 * @param mixed $key ключ удаляемого элемента
 	 * @return mixed удаленное значение; null, если такого ключа не существует.
 	 * @throws CException вызывается, если карта только для чтения
 	 */
@@ -176,7 +176,7 @@ class CMap extends CComponent implements IteratorAggregate,ArrayAccess,Countable
 	}
 
 	/**
-	 * @param mixed ключ
+	 * @param mixed $key ключ
 	 * @return boolean содержит ли карта элемент с определенным ключом
 	 */
 	public function contains($key)
@@ -195,7 +195,7 @@ class CMap extends CComponent implements IteratorAggregate,ArrayAccess,Countable
 	/**
 	 * Копирует итерируемые данные в карту.
 	 * Примечание: существующие данные сначала будут очищены.
-	 * @param mixed копируемые данные; должны быть массивом или Traversable-объектом
+	 * @param mixed $data копируемые данные; должны быть массивом или Traversable-объектом
 	 * @throws CException вызывается, если данные не являются ни массивом ни итератором.
 	 */
 	public function copyFrom($data)
@@ -225,8 +225,8 @@ class CMap extends CComponent implements IteratorAggregate,ArrayAccess,Countable
 	 * <li>все строково-индексированные элементы в $b переписывают элементы в $a с теми же индексами;</li>
 	 * </ul>
 	 *
-	 * @param mixed данные для слияния; должны быть массивом или Traversable-объектом
-	 * @param boolean должно ли слияние быть рекурсивным.
+	 * @param mixed $data данные для слияния; должны быть массивом или Traversable-объектом
+	 * @param boolean $recursive должно ли слияние быть рекурсивным.
 	 *
 	 * @throws CException вызывается, если данные не являются ни массивом ни итератором.
 	 */
@@ -260,8 +260,8 @@ class CMap extends CComponent implements IteratorAggregate,ArrayAccess,Countable
 
 	/**
 	 * Сливает рекурсивно два массива в один.
-	 * @param array массив, в который происходит слияние
-	 * @param array массив, который сливается с предыдущим
+	 * @param array $a массив, в который происходит слияние
+	 * @param array $b массив, который сливается с предыдущим
 	 * @return array слитый массив (исходные массивы остаются без изменений)
 	 * @see mergeWith
 	 */
@@ -282,7 +282,7 @@ class CMap extends CComponent implements IteratorAggregate,ArrayAccess,Countable
 	/**
 	 * Находится ли элемент на данном смещении (ключе).
 	 * Метод требуется интерфейсом ArrayAccess.
-	 * @param mixed смещение для проверки
+	 * @param mixed $offset смещение для проверки
 	 * @return boolean
 	 */
 	public function offsetExists($offset)
@@ -293,7 +293,7 @@ class CMap extends CComponent implements IteratorAggregate,ArrayAccess,Countable
 	/**
 	 * Возвращает элемент на данном смещении (ключе).
 	 * Метод требуется интерфейсом ArrayAccess.
-	 * @param integer смещение для получения элемента.
+	 * @param integer $offset смещение для получения элемента.
 	 * @return mixed элемент на данном смещении (ключе); null, если элемента нет
 	 */
 	public function offsetGet($offset)
@@ -304,8 +304,8 @@ class CMap extends CComponent implements IteratorAggregate,ArrayAccess,Countable
 	/**
 	 * Устанавливает элемент в определенное смещение.
 	 * Метод требуется интерфейсом ArrayAccess.
-	 * @param integer смещение для установки элемента
-	 * @param mixed элемент
+	 * @param integer $offset смещение для установки элемента
+	 * @param mixed $item элемент
 	 */
 	public function offsetSet($offset,$item)
 	{
@@ -315,7 +315,7 @@ class CMap extends CComponent implements IteratorAggregate,ArrayAccess,Countable
 	/**
 	 * Удаляет элемент на определенном смещении.
 	 * Метод требуется интерфейсом ArrayAccess.
-	 * @param mixed смещение для удаления элемента
+	 * @param mixed $offset смещение для удаления элемента
 	 */
 	public function offsetUnset($offset)
 	{

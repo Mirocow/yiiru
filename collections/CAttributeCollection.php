@@ -24,7 +24,7 @@
  * {@link caseSensitive} коллекции.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CAttributeCollection.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CAttributeCollection.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.collections
  * @since 1.0
  */
@@ -38,7 +38,7 @@ class CAttributeCollection extends CMap
 	/**
 	 * Возвращает значение свойства или список обработчиков события по имени свойства или события.
 	 * Переопределяет родительский метод, возвращая значение ключа, если таковой существует в коллекции.
-	 * @param string имя свойства или события
+	 * @param string $name имя свойства или события
 	 * @return mixed значение свойства или список обработчиков события
 	 * @throws CException вызывается, если свойство или событие не определены.
 	 */
@@ -53,8 +53,8 @@ class CAttributeCollection extends CMap
 	/**
 	 * Устанавливает значение свойства компонента.
 	 * Переопределяет родительский метод, добавляя новую пару ключ-значение в коллекцию.
-	 * @param string имя свойства или события
-	 * @param mixed значение свойства или обработчика события
+	 * @param string $name имя свойства или события
+	 * @param mixed $value значение свойства или обработчика события
 	 * @throws CException вызывается, если свойство не определено или является свойством только дя чтения.
 	 */
 	public function __set($name,$value)
@@ -65,7 +65,7 @@ class CAttributeCollection extends CMap
 	/**
 	 * Проверяет, нулевое ли значение свойства.
 	 * Переопределяет родительский метод, проверяя, существует ли ключ в коллекции и его значение ненулевое
-	 * @param string имя свойства или события
+	 * @param string $name имя свойства или события
 	 * @return boolean нулевое ли значение свойства
 	 * @since 1.0.1
 	 */
@@ -80,7 +80,7 @@ class CAttributeCollection extends CMap
 	/**
 	 * Удаляет свойство компонента.
 	 * Переопределяет родительский метод, очищая значение определенного ключа.
-	 * @param string имя свойства или события
+	 * @param string $name имя свойства или события
 	 * @since 1.0.1
 	 */
 	public function __unset($name)
@@ -92,7 +92,7 @@ class CAttributeCollection extends CMap
 	 * Возвращает элемент по определенному ключу.
 	 * Переопределяет родительский метод, сначала преобразовывая ключ в нижнему регистру,
 	 * если свойство {@link caseSensitive} равно false.
-	 * @param mixed ключ
+	 * @param mixed $key ключ
 	 * @return mixed элемент; null, если элемент не найден
 	 */
 	public function itemAt($key)
@@ -107,8 +107,8 @@ class CAttributeCollection extends CMap
 	 * Добавляет элемент в коллекцию.
 	 * Переопределяет родительский метод, сначала преобразовывая ключ в нижнему регистру,
 	 * если свойство {@link caseSensitive} равно false.
-	 * @param mixed ключ
-	 * @param mixed значение
+	 * @param mixed $key ключ
+	 * @param mixed $value значение
 	 */
 	public function add($key,$value)
 	{
@@ -122,7 +122,7 @@ class CAttributeCollection extends CMap
 	 * Удаляет элемент из коллекции по его ключу.
 	 * Переопределяет родительский метод, сначала преобразовывая ключ в нижнему регистру,
 	 * если свойство {@link caseSensitive} равно false.
-	 * @param mixed ключ удаляемого элемента
+	 * @param mixed $key ключ удаляемого элемента
 	 * @return mixed удаленное значение; null, если такого ключа не существует.
 	 */
 	public function remove($key)
@@ -137,7 +137,7 @@ class CAttributeCollection extends CMap
 	 * Содержит ли коллекция элемент с определенным ключом.
 	 * Переопределяет родительский метод, сначала преобразовывая ключ в нижнему регистру,
 	 * если свойство {@link caseSensitive} равно false.
-	 * @param mixed ключ
+	 * @param mixed $key ключ
 	 * @return boolean содержит ли коллекция элемент с определенным ключом
 	 */
 	public function contains($key)
@@ -151,7 +151,7 @@ class CAttributeCollection extends CMap
 	/**
 	 * Определено ли свойство.
 	 * Переопределяет родительский метод, возвращая значение true, если коллекция содержит именованый ключ.
-	 * @param string имя свойства
+	 * @param string $nameимя свойства
 	 * @return boolean определено ли свойство
 	 */
 	public function hasProperty($name)
@@ -162,7 +162,7 @@ class CAttributeCollection extends CMap
 	/**
 	 * Может ли свойство быть прочитано.
 	 * Переопределяет родительский метод, возвращая значение true, если коллекция содержит именованый ключ
-	 * @param string имя свойства
+	 * @param string $name имя свойства
 	 * @return boolean может ли свойство быть прочитано
 	 */
 	public function canGetProperty($name)
@@ -174,7 +174,7 @@ class CAttributeCollection extends CMap
 	 * Может ли свойство быть записано.
 	 * Переопределяет родительский метод, возвращая значение true,
 	 * поскольку вы всегда можете добавить новое значение в коллекцию.
-	 * @param string имя свойства
+	 * @param string $name имя свойства
 	 * @return boolean true
 	 */
 	public function canSetProperty($name)

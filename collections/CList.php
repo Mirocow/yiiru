@@ -28,7 +28,7 @@
  * (например, проверка типа), переопределяйте методы {@link insertAt()} и {@link removeAt()}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CList.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CList.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.collections
  * @since 1.0
  */
@@ -50,8 +50,8 @@ class CList extends CComponent implements IteratorAggregate,ArrayAccess,Countabl
 	/**
 	 * Конструктор.
 	 * Инициализирует список массивом или итерируемым объектом.
-	 * @param array начальные данные. По умолчанию null - без инициализации.
-	 * @param boolean только для чтения ли данный список
+	 * @param array $data начальные данные. По умолчанию null - без инициализации.
+	 * @param boolean $readOnly только для чтения ли данный список
 	 * @throws CException вызывается, если данные не нулевые и не являются ни массивом ни итератором.
 	 */
 	public function __construct($data=null,$readOnly=false)
@@ -70,7 +70,7 @@ class CList extends CComponent implements IteratorAggregate,ArrayAccess,Countabl
 	}
 
 	/**
-	 * @param boolean только для чтения ли данный список или нет
+	 * @param boolean $value только для чтения ли данный список или нет
 	 */
 	protected function setReadOnly($value)
 	{
@@ -108,7 +108,7 @@ class CList extends CComponent implements IteratorAggregate,ArrayAccess,Countabl
 	/**
 	 * Возвращает элемент по определенному смещению.
 	 * Метод в точности такой же как метод {@link offsetGet}.
-	 * @param integer индекс элемента
+	 * @param integer $index индекс элемента
 	 * @return mixed элемент при индексе
 	 * @throws CException вызывается, если индекс выходит за границы диапазона
 	 */
@@ -125,7 +125,7 @@ class CList extends CComponent implements IteratorAggregate,ArrayAccess,Countabl
 
 	/**
 	 * Добавляет элемент в конец списка.
-	 * @param mixed новый элемент
+	 * @param mixed $item новый элемент
 	 * @return integer индекс, в который был добавлен элемент
 	 */
 	public function add($item)
@@ -137,8 +137,8 @@ class CList extends CComponent implements IteratorAggregate,ArrayAccess,Countabl
 	/**
 	 * Вставляет элемент в определенную позицию.
 	 * Текущий элемент в данной позиции и последующие будут сдвинуты на один шаг к концу
-	 * @param integer определенная позиция.
-	 * @param mixed новый элемент
+	 * @param integer $index определенная позиция.
+	 * @param mixed $item новый элемент
 	 * @throws CException вызывается, если переданный индекс превышает границы списка или список только для чтения
 	 */
 	public function insertAt($index,$item)
@@ -164,7 +164,7 @@ class CList extends CComponent implements IteratorAggregate,ArrayAccess,Countabl
 	 * Удаляет элемент из списка.
 	 * Сначала выполняется поиск элемента в списке.
 	 * Первый найденный элемент удаляется из списка.
-	 * @param mixed удаляемый элемент.
+	 * @param mixed $item удаляемый элемент.
 	 * @return integer индекс, из которого был удален элемент
 	 * @throws CException вызывается, если элемент не существует
 	 */
@@ -181,7 +181,7 @@ class CList extends CComponent implements IteratorAggregate,ArrayAccess,Countabl
 
 	/**
 	 * Удаляет элемент из определенной позиции.
-	 * @param integer индекс удаляемого элемента.
+	 * @param integer $index индекс удаляемого элемента.
 	 * @return mixed удаленный элемент.
 	 * @throws CException вызывается, если переданный индекс превышает границы списка или список только для чтения
 	 */
@@ -219,7 +219,7 @@ class CList extends CComponent implements IteratorAggregate,ArrayAccess,Countabl
 	}
 
 	/**
-	 * @param mixed элемент
+	 * @param mixed $item элемент
 	 * @return boolean содержит ли список элемент
 	 */
 	public function contains($item)
@@ -228,7 +228,7 @@ class CList extends CComponent implements IteratorAggregate,ArrayAccess,Countabl
 	}
 
 	/**
-	 * @param mixed элемент
+	 * @param mixed $item элемент
 	 * @return integer индекс элемнта в списке (начало счета с 0); -1, если не найден.
 	 */
 	public function indexOf($item)
@@ -250,7 +250,7 @@ class CList extends CComponent implements IteratorAggregate,ArrayAccess,Countabl
 	/**
 	 * Копирует итерируемые данные в список.
 	 * Примечание: существующие данные сначала будут очищены.
-	 * @param mixed копируемые данные; должны быть массивом или Traversable-объектом
+	 * @param mixed $data копируемые данные; должны быть массивом или Traversable-объектом
 	 * @throws CException вызывается, если данные не являются ни массивом ни итератором.
 	 */
 	public function copyFrom($data)
@@ -271,7 +271,7 @@ class CList extends CComponent implements IteratorAggregate,ArrayAccess,Countabl
 	/**
 	 * Сливает итерируемые данные в список.
 	 * Новые данные будут добавлены в конец существующих данных.
-	 * @param mixed данные для слияния; должны быть массивом или Traversable-объектом
+	 * @param mixed $data данные для слияния; должны быть массивом или Traversable-объектом
 	 * @throws CException вызывается, если данные не являются ни массивом ни итератором.
 	 */
 	public function mergeWith($data)
@@ -290,7 +290,7 @@ class CList extends CComponent implements IteratorAggregate,ArrayAccess,Countabl
 	/**
 	 * Находится ли элемент на данном смещении (ключе).
 	 * Метод требуется интерфейсом ArrayAccess.
-	 * @param mixed смещение для проверки
+	 * @param mixed $offset смещение для проверки
 	 * @return boolean
 	 */
 	public function offsetExists($offset)
@@ -301,7 +301,7 @@ class CList extends CComponent implements IteratorAggregate,ArrayAccess,Countabl
 	/**
 	 * Возвращает элемент на данном смещении (ключе).
 	 * Метод требуется интерфейсом ArrayAccess.
-	 * @param integer смещение для получения элемента.
+	 * @param integer $offset смещение для получения элемента.
 	 * @return mixed элемент на данном смещении (ключе)
 	 * @throws CException вызывается, если смещения неверно
 	 */
@@ -313,8 +313,8 @@ class CList extends CComponent implements IteratorAggregate,ArrayAccess,Countabl
 	/**
 	 * Устанавливает элемент в определенное смещение.
 	 * Метод требуется интерфейсом ArrayAccess.
-	 * @param integer смещение для установки элемента
-	 * @param mixed элемент
+	 * @param integer $offset смещение для установки элемента
+	 * @param mixed $item элемент
 	 */
 	public function offsetSet($offset,$item)
 	{
@@ -330,7 +330,7 @@ class CList extends CComponent implements IteratorAggregate,ArrayAccess,Countabl
 	/**
 	 * Удаляет элемент на определенном смещении.
 	 * Метод требуется интерфейсом ArrayAccess.
-	 * @param mixed смещение для удаления элемента
+	 * @param mixed $offset смещение для удаления элемента
 	 */
 	public function offsetUnset($offset)
 	{

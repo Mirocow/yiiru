@@ -14,7 +14,7 @@
  * Позволяет экземпляру класса CMap возвращать новый итератор для обхода элементов карты.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMapIterator.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CMapIterator.php 2499 2010-09-23 14:14:20Z mdomba $
  * @package system.collections
  * @since 1.0
  */
@@ -35,7 +35,7 @@ class CMapIterator implements Iterator
 
 	/**
 	 * Конструктор.
-	 * @param array данные, подлежащие итерации
+	 * @param array $data данные, подлежащие итерации
 	 */
 	public function __construct(&$data)
 	{

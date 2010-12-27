@@ -21,7 +21,7 @@
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CQueue.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CQueue.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.collections
  * @since 1.0
  */
@@ -41,7 +41,7 @@ class CQueue extends CComponent implements IteratorAggregate,Countable
 	/**
 	 * Конструктор.
 	 * Инициализирует очередь массивом или объектом-итератором.
-	 * @param array начальные данные. По умолчанию равно null, что означает без инициализации.
+	 * @param array $data начальные данные. По умолчанию равно null, что означает без инициализации.
 	 * @throws CException вызывается, если данные не null и не являются ни массивом ни итератором.
 	 */
 	public function __construct($data=null)
@@ -61,7 +61,7 @@ class CQueue extends CComponent implements IteratorAggregate,Countable
 	/**
 	 * Копирует итерируемые данные в очередь.
 	 * Помните, что существующие данные стираются перед копированием.
-	 * @param mixed копируемые данные, должен быть массивом или объектом, класс которого реализует интерфейс Traversable
+	 * @param mixed $data копируемые данные, должен быть массивом или объектом, класс которого реализует интерфейс Traversable
 	 * @throws CException вызывается, если данные не являются ни массивом ни Traversable-объектом.
 	 */
 	public function copyFrom($data)
@@ -89,7 +89,7 @@ class CQueue extends CComponent implements IteratorAggregate,Countable
 	}
 
 	/**
-	 * @param mixed элемент
+	 * @param mixed $item элемент
 	 * @return boolean есть ли элемент в очереди
 	 */
 	public function contains($item)
@@ -128,7 +128,7 @@ class CQueue extends CComponent implements IteratorAggregate,Countable
 
 	/**
 	 * Добавляет объект в конец очереди.
-	 * @param mixed добавляемый в очередь элемент
+	 * @param mixed $item добавляемый в очередь элемент
 	 */
 	public function enqueue($item)
 	{

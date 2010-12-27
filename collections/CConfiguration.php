@@ -16,13 +16,11 @@
  *
  * Данные конфигурации могут быть получены из PHP-скрипта. Например,
  * <pre>
- * &lt;?php
  * return array
  * (
  *     'name'=>'Моё приложение',
  *     'defaultController'=>'index',
  * );
- * ?&gt;
  * </pre>
  * Используйте следующий код для загрузки данных конфигурации, написанных выше:
  * <pre>
@@ -37,7 +35,7 @@
  * быть использован в качестве ассоциативного массива. За подробностями обращайтесь к классу {@link CMap}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CConfiguration.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CConfiguration.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.collections
  * @since 1.0
  */
@@ -45,7 +43,7 @@ class CConfiguration extends CMap
 {
 	/**
 	 * Конструктор.
-	 * @param mixed если передается строка, то она представляет собой
+	 * @param mixed $data если передается строка, то она представляет собой
 	 * путь к файлу конфигурации (PHP-скрипт, возвращающий конфигурацию как массив);
 	 * если передается массив, то это данные конфигурации.
 	 */
@@ -69,7 +67,7 @@ class CConfiguration extends CMap
 	 * );
 	 * </pre>
 	 *
-	 * @param string путь к файлу конфигурации (при использовании относительного пути,
+	 * @param string $configFile путь к файлу конфигурации (при использовании относительного пути,
 	 * будьте уверены в правильности текущего)
 	 * @see mergeWith
 	 */
@@ -95,7 +93,7 @@ class CConfiguration extends CMap
 	/**
 	 * Применяет конфигурацию к объекту.
 	 * Каждая пара (key,value) в данных конфигурации применяется к объекту как: $object->$key=$value.
-	 * @param object объект, к которому применяется конфигурация
+	 * @param object $object объект, к которому применяется конфигурация
 	 */
 	public function applyTo($object)
 	{
@@ -109,7 +107,7 @@ class CConfiguration extends CMap
 	 * МЕТОД ЯВЛЯЕТСЯ УСТАРЕВШИМ С ВЕРСИИ 1.0.1.
 	 * ПИспользуйте вместо него метод {@link YiiBase::createComponent Yii::createComponent}.
 	 *
-	 * @param mixed конфигурация. Может быть либо строкой либо массивом.
+	 * @param mixed $config конфигурация. Может быть либо строкой либо массивом.
 	 * @return mixed созданный объект
 	 * @throws CException вызывается, если конфигурация не содержит значения с ключом 'class'
 	 */
