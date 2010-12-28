@@ -51,7 +51,7 @@
  * Для этого установите свойство {@link useMemcached} в значение true.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMemCache.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CMemCache.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
  * @package system.caching
  * @since 1.0
  */
@@ -119,7 +119,7 @@ class CMemCache extends CCache
 	}
 
 	/**
-	 * @param array список конфигураций сервера memcache. Каждый элемент должен быть массивом
+	 * @param array $config список конфигураций сервера memcache. Каждый элемент должен быть массивом
 	 * со следующими ключами: host, port, persistent, weight, timeout, retryInterval, status.
 	 * @see http://www.php.net/manual/en/function.Memcache-addServer.php
 	 */
@@ -132,7 +132,7 @@ class CMemCache extends CCache
 	/**
 	 * Получает значение из кэша по определенному ключу.
 	 * Метод переопределяет реализацию класса-родителя.
-	 * @param string уникальный ключ, идентифицирующий кэшированное значение
+	 * @param string $key уникальный ключ, идентифицирующий кэшированное значение
 	 * @return string хранимое в кэше значение; false, если значения в кэше нет или его срок годности истек
 	 */
 	protected function getValue($key)
@@ -142,7 +142,7 @@ class CMemCache extends CCache
 
 	/**
 	 * Получает из кэша несколько значений с определенными ключами.
-	 * @param array список ключей, идентифицирующих кэшированные значения
+	 * @param array $keys список ключей, идентифицирующих кэшированные значения
 	 * @return array список кэшированных значений, индексированный по ключам
 	 * @since 1.0.8
 	 */
@@ -154,9 +154,9 @@ class CMemCache extends CCache
 	/**
 	 * Сохраняет в кэше значение, идентифицируемое ключом.
 	 * Метод переопределяет реализацию класса-родителя.
-	 * @param string ключ, идентифицирующий кэшируемое значение
-	 * @param string кэшируемое значение
-	 * @param integer количество секунд срока годности кэшируемого значения. 0 - без срока годности
+	 * @param string $key ключ, идентифицирующий кэшируемое значение
+	 * @param string $value кэшируемое значение
+	 * @param integer $expire количество секунд срока годности кэшируемого значения. 0 - без срока годности
 	 * @return boolean true, если значение успешно сохранено в кэше, иначе false
 	 */
 	protected function setValue($key,$value,$expire)
@@ -172,9 +172,9 @@ class CMemCache extends CCache
 	/**
 	 * Сохраняет в кэше значение, идентифицируемое ключом, если кэш не содержит данный ключ.
 	 * Метод переопределяет реализацию класса-родителя.
-	 * @param string ключ, идентифицирующий кэшируемое значение
-	 * @param string кэшируемое значение
-	 * @param integer количество секунд срока годности кэшируемого значения. 0 - без срока годности
+	 * @param string $key ключ, идентифицирующий кэшируемое значение
+	 * @param string $value кэшируемое значение
+	 * @param integer $expire количество секунд срока годности кэшируемого значения. 0 - без срока годности
 	 * @return boolean true, если значение успешно сохранено в кэше, иначе false
 	 */
 	protected function addValue($key,$value,$expire)
@@ -190,7 +190,7 @@ class CMemCache extends CCache
 	/**
 	 * Удаляет из кеша значение по определенному ключу.
 	 * Метод переопределяет реализацию класса-родителя.
-	 * @param string ключ удаляемого значения
+	 * @param string $key ключ удаляемого значения
 	 * @return boolean true, если в процессе удаления не произошло ошибок
 	 */
 	protected function deleteValue($key)
@@ -200,9 +200,11 @@ class CMemCache extends CCache
 
 	/**
 	 * Удаляет все значения из кэша.
-	 * Будьте осторожны при выполнении данной операции, если кэш доступен в нескольких приложениях.
+	 * Это реализация метода, объявленного в классе-родителе
+	 * @return boolean успешно ли выполнилась операция очистки
+	 * @since 1.1.5
 	 */
-	public function flush()
+	protected function flushValues()
 	{
 		return $this->_cache->flush();
 	}
@@ -215,7 +217,7 @@ class CMemCache extends CCache
  * детальными объяснениями по каждому свойству конфигурации.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMemCache.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CMemCache.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
  * @package system.caching
  * @since 1.0
  */
@@ -252,7 +254,7 @@ class CMemCacheServerConfiguration extends CComponent
 
 	/**
 	 * Конструктор.
-	 * @param array список конфигураций сервера memcache
+	 * @param array $config список конфигураций сервера memcache
 	 * @throws CException вызывается, если конфигурации - не массив
 	 */
 	public function __construct($config)

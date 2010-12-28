@@ -12,7 +12,7 @@
  * Класс CExceptionEvent представляет параметр для события {@link CApplication::onException onException}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CExceptionEvent.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CExceptionEvent.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.base
  * @since 1.0
  */
@@ -25,8 +25,8 @@ class CExceptionEvent extends CEvent
 
 	/**
 	 * Конструктор.
-	 * @param mixed отправитель события
-	 * @param CException исключение
+	 * @param mixed $sender отправитель события
+	 * @param CException $exception исключение
 	 */
 	public function __construct($sender,$exception)
 	{

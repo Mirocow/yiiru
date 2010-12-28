@@ -17,7 +17,7 @@
  * в свойстве {@link stateName} имя глобального состояния.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CGlobalStateCacheDependency.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CGlobalStateCacheDependency.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.caching.dependencies
  * @since 1.0
  */
@@ -32,7 +32,7 @@ class CGlobalStateCacheDependency extends CCacheDependency
 
 	/**
 	 * Конструктор.
-	 * @param string имя глобального состояния
+	 * @param string $name имя глобального состояния
 	 */
 	public function __construct($name=null)
 	{

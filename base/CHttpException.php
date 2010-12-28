@@ -15,7 +15,7 @@
  * Обработчики ошибок могут использовать этот код для решения о том, как форматировать страницу ошибки.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CHttpException.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CHttpException.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.base
  * @since 1.0
  */
@@ -28,9 +28,9 @@ class CHttpException extends CException
 
 	/**
 	 * Конструктор.
-	 * @param integer код ошибки HTTP, например, 403, 404, 500 и др.
-	 * @param string сообщение об ошибке
-	 * @param integer код ошибки
+	 * @param integer $status код ошибки HTTP, например, 403, 404, 500 и др.
+	 * @param string $message сообщение об ошибке
+	 * @param integer $code код ошибки
 	 */
 	public function __construct($status,$message=null,$code=0)
 	{

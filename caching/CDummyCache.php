@@ -17,7 +17,7 @@
  * режима без кэша на режим с кэшем.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDummyCache.php 2327 2010-08-20 17:06:54Z qiang.xue $
+ * @version $Id: CDummyCache.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
  * @package system.caching
  * @since 1.0
  */
@@ -42,7 +42,7 @@ class CDummyCache extends CApplicationComponent implements ICache, ArrayAccess
 
 	/**
 	 * Получает значение из кэша по определенному ключу
-	 * @param string ключ, идентифицирующий значение кэша
+	 * @param string $id ключ, идентифицирующий значение кэша
 	 * @return mixed значение, сохраненное в кэше; false, если значения нет в кэше, срок годности истек или зависимость изменена
 	 */
 	public function get($id)
@@ -55,7 +55,7 @@ class CDummyCache extends CApplicationComponent implements ICache, ArrayAccess
 	 * Некоторые кэши (такие как memcache, apc) позволяют одновременно получать несколько значений из кэша,
 	 * что может увеличить производительность из-за снижения количества соединений.
 	 * Если кэш не поддерживает данную функцию, данный метод симулирует её.
-	 * @param array список ключей, идентифицирующих кэшированные значения
+	 * @param array $ids список ключей, идентифицирующих кэшированные значения
 	 * @return array список кэшированных значений, соответствующих переданным ключам.
 	 * Возвращается массив пар (ключ, значение). Если значения нет в кэше или его срок
 	 * годности истек, соответствующее значение массива будет равно значению false
@@ -73,10 +73,10 @@ class CDummyCache extends CApplicationComponent implements ICache, ArrayAccess
 	 * Сохраняет значение, идентифицируемое по ключу, в кэше.
 	 * Если кэш уже содержит такой ключ, существующее значение и срок годности будут заменены на новые.
 	 *
-	 * @param string ключ, идентифицирующий кэшируемое значение
-	 * @param mixed кэшируемое значение
-	 * @param integer количество секунд, через которое истечет срок годности кэшируемого значения. 0 означает бесконечный срок годности
-	 * @param ICacheDependency зависимость кэшируемого элемента. Если зависимость изменяется, элемент помечается как недействительный
+	 * @param string $id ключ, идентифицирующий кэшируемое значение
+	 * @param mixed $value кэшируемое значение
+	 * @param integer $expire количество секунд, через которое истечет срок годности кэшируемого значения. 0 означает бесконечный срок годности
+	 * @param ICacheDependency $dependency зависимость кэшируемого элемента. Если зависимость изменяется, элемент помечается как недействительный
 	 * @return boolean true, если значение успешно сохранено в кэше, иначе - false
 	 */
 	public function set($id,$value,$expire=0,$dependency=null)
@@ -87,10 +87,10 @@ class CDummyCache extends CApplicationComponent implements ICache, ArrayAccess
 	/**
 	 * Сохраняет в кэш значение, идентифицируемое ключом, если кэш не содержит данный ключ.
 	 * Если такой ключ уже содержится в кэше, ничего не будет выполнено.
-	 * @param string ключ, идентифицирующий кэшируемое значение
-	 * @param mixed кэшируемое значение
-	 * @param integer количество секунд, через которое истечет срок годности кэшируемого значения. 0 означает бесконечный срок годности
-	 * @param ICacheDependency зависимость кэшируемого элемента. Если зависимость изменяется, элемент помечается как недействительный
+	 * @param string $id ключ, идентифицирующий кэшируемое значение
+	 * @param mixed $value кэшируемое значение
+	 * @param integer $expire количество секунд, через которое истечет срок годности кэшируемого значения. 0 означает бесконечный срок годности
+	 * @param ICacheDependency $dependency зависимость кэшируемого элемента. Если зависимость изменяется, элемент помечается как недействительный
 	 * @return boolean true, если значение успешно сохранено в кэше, иначе - false
 	 */
 	public function add($id,$value,$expire=0,$dependency=null)
@@ -100,7 +100,7 @@ class CDummyCache extends CApplicationComponent implements ICache, ArrayAccess
 
 	/**
 	 * Удаляет из кеша значение по определенному ключу.
-	 * @param string ключ удаляемого значения
+	 * @param string $id ключ удаляемого значения
 	 * @return boolean true, если в процессе удаления не произошло ошибок
 	 */
 	public function delete($id)
@@ -111,17 +111,18 @@ class CDummyCache extends CApplicationComponent implements ICache, ArrayAccess
 	/**
 	 * Удаляет все значения из кэша.
 	 * Будьте осторожны при выполнении данной операции, если кэш является общим для нескольких приложений.
-	 * Классы-наследники могут реализовывать данный метод для создания своего варианта операции очистки.
+	 * @return boolean успешно ли выполнилась операция очистки
 	 * @throws CException вызывается, если метод не переопределен классом-наследником
 	 */
 	public function flush()
 	{
+		return true;
 	}
 
 	/**
 	 * Существует ли запись в кэше с заданным ключом.
 	 * Метод требуется интерфейсом ArrayAccess.
-	 * @param string ключ, идентифицирующий кэшированное значение
+	 * @param string $id ключ, идентифицирующий кэшированное значение
 	 * @return boolean
 	 */
 	public function offsetExists($id)
@@ -132,7 +133,7 @@ class CDummyCache extends CApplicationComponent implements ICache, ArrayAccess
 	/**
 	 * Получает значение из кэша по определенному ключу.
 	 * Метод требуется интерфейсом ArrayAccess.
-	 * @param string ключ, идентифицирующий кэшированное значение
+	 * @param string $id ключ, идентифицирующий кэшированное значение
 	 * @return mixed кэшированное значение; false, если значения в кэше нет или его срок годности истек
 	 */
 	public function offsetGet($id)
@@ -145,8 +146,8 @@ class CDummyCache extends CApplicationComponent implements ICache, ArrayAccess
 	 * Если кэш уже содержит значение с таким ключом, существующее значение будет
 	 * заменено новым. Для добавления срока годности и зависимостей, используйте метод set().
 	 * Метод требуется интерфейсом ArrayAccess.
-	 * @param string ключ, идентифицирующий кэшируемое значение
-	 * @param mixed кэшируемое значение
+	 * @param string $id ключ, идентифицирующий кэшируемое значение
+	 * @param mixed $value кэшируемое значение
 	 */
 	public function offsetSet($id, $value)
 	{
@@ -155,7 +156,7 @@ class CDummyCache extends CApplicationComponent implements ICache, ArrayAccess
 	/**
 	 * Удаляет из кеша значение по определенному ключу.
 	 * Метод требуется интерфейсом ArrayAccess.
-	 * @param string ключ, идентифицирующий удаляемое значение
+	 * @param string $id ключ, идентифицирующий удаляемое значение
 	 * @return boolean true, если в процессе удаления не произошло ошибок
 	 */
 	public function offsetUnset($id)

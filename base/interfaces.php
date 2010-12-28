@@ -15,7 +15,7 @@
  * загруженного компонента приложения.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: interfaces.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
  * @package system.base
  * @since 1.0
  */
@@ -38,7 +38,7 @@ interface IApplicationComponent
  * Данный интерфейс должен реализовываться классами, поддерживающими функцию кэширования.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: interfaces.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
  * @package system.caching
  * @since 1.0
  */
@@ -46,7 +46,7 @@ interface ICache
 {
 	/**
 	 * Получает значение из кэша по определенному ключу.
-	 * @param string ключ, идентифицирующий кэшированное значение
+	 * @param string $id ключ, идентифицирующий кэшированное значение
 	 * @return mixed сохранненое в кэше значение; false, если значения в кэше нет или у него истек срок годности
 	 */
 	public function get($id);
@@ -55,7 +55,7 @@ interface ICache
 	 * Некоторые кэш-хранилища (такие, как memcache, apc) позволяют получать за раз несколько значений,
 	 * что может улучшить производительность за счет уменьшения издержек соединения.
 	 * Если кэш-хранилище не поддерживает данную функцию, данный метод будет сымитирован.
-	 * @param array список ключей, идентифицирующих значения кэша
+	 * @param array $ids список ключей, идентифицирующих значения кэша
 	 * @return array список кэшированных значений, соответствующих определенным ключам.
 	 * Возвращается массив пар (ключ, значение). Если значения нет в кэше или его срок
 	 * годности истек, соответствующее значение массива будет равно значению false
@@ -66,26 +66,26 @@ interface ICache
 	 * Сохраняет значение, идентифицируемое по ключу, в кэше.
 	 * Если кэш уже содержит такой ключ, существующее значение и срок годности будут заменены на новые.
 	 *
-	 * @param string ключ, идентифицирующий кэшируемое значение
-	 * @param mixed кэшируемое значение
-	 * @param integer количество секунд, через которое истечет срок годности кэшируемого значения. 0 означает бесконечный срок годности
-	 * @param ICacheDependency зависимость кэшируемого элемента. Если зависимость изменяется, элемент помечается как недействительный
+	 * @param string $id ключ, идентифицирующий кэшируемое значение
+	 * @param mixed $value кэшируемое значение
+	 * @param integer $expire количество секунд, через которое истечет срок годности кэшируемого значения. 0 означает бесконечный срок годности
+	 * @param ICacheDependency $dependency зависимость кэшируемого элемента. Если зависимость изменяется, элемент помечается как недействительный
 	 * @return boolean true, если значение успешно сохранено в кэше, иначе - false
 	 */
 	public function set($id,$value,$expire=0,$dependency=null);
 	/**
 	 * Сохраняет в кэш значение, идентифицируемое ключом, если кэш не содержит данный ключ.
 	 * Если такой ключ уже содержится в кэше, ничего не будет выполнено.
-	 * @param string ключ, идентифицирующий кэшируемое значение
-	 * @param mixed кэшируемое значение
-	 * @param integer количество секунд, через которое истечет срок годности кэшируемого значения. 0 означает бесконечный срок годности
-	 * @param ICacheDependency зависимость кэшируемого элемента. Если зависимость изменяется, элемент помечается как недействительный
+	 * @param string $id ключ, идентифицирующий кэшируемое значение
+	 * @param mixed $value кэшируемое значение
+	 * @param integer $expire количество секунд, через которое истечет срок годности кэшируемого значения. 0 означает бесконечный срок годности
+	 * @param ICacheDependency $dependency зависимость кэшируемого элемента. Если зависимость изменяется, элемент помечается как недействительный
 	 * @return boolean true, если значение успешно сохранено в кэше, иначе - false
 	 */
 	public function add($id,$value,$expire=0,$dependency=null);
 	/**
 	 * Удаляет из кэша значение по определенному ключу.
-	 * @param string ключ удаляемого значения
+	 * @param string $id ключ удаляемого значения
 	 * @return boolean не было ли ошибок при удалении; true - успешное удаление
 	 */
 	public function delete($id);
@@ -93,6 +93,7 @@ interface ICache
 	 * Удаляет все значения из кэша.
 	 * Будьте осторожны при выполнении данной операции, если кэш доступен в нескольких приложениях.
 	 * Классы-потомки могут реализовать этот метод для создания операции очистки.
+	 * @return boolean whether the flush operation was successful.
 	 */
 	public function flush();
 }
@@ -105,7 +106,7 @@ interface ICache
  * Объекты, реализующие данный интерфейс, должны быть сериализуемы и десереализумы.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: interfaces.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
  * @package system.caching
  * @since 1.0
  */
@@ -128,7 +129,7 @@ interface ICacheDependency
  *
  * Данный интерфейс должен реализовываться всеми классами постоянного состояния (такими, как {@link CStatePersister})
  *
- * @version $Id: interfaces.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: interfaces.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
  * @package system.base
  * @since 1.0
  */
@@ -141,7 +142,7 @@ interface IStatePersister
 	public function load();
 	/**
 	 * Сохраняет состояние приложения в постоянное хранилище.
-	 * @param mixed данные состояния
+	 * @param mixed $state данные состояния
 	 */
 	public function save($state);
 }
@@ -150,7 +151,7 @@ interface IStatePersister
 /**
  * IFilter - это интерфейс, который должен быть реализован фильтрами действий.
  *
- * @version $Id: interfaces.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: interfaces.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
  * @package system.base
  * @since 1.0
  */
@@ -161,7 +162,7 @@ interface IFilter
 	 * Метод должен реализовываться для выполнения реальной фильтрации.
 	 * Если фильтр хочет, чтобы выполнение действия продолжалось, он должен вызвать метод
 	 * <code>$filterChain->run()</code>.
-	 * @param CFilterChain цепочка фильтров, в которой находится фильтр
+	 * @param CFilterChain $filterChain цепочка фильтров, в которой находится фильтр
 	 */
 	public function filter($filterChain);
 }
@@ -170,7 +171,7 @@ interface IFilter
 /**
  * IAction - это интерфейс, который должен быть реализован действиями контроллера.
  *
- * @version $Id: interfaces.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: interfaces.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
  * @package system.base
  * @since 1.0
  */
@@ -198,7 +199,7 @@ interface IAction
  * Если реализован данный интерфейс, экземпляр провайдера сможет перехватывать
  * вызов удаленного метода (например, для целей журналирования или аутентификации).
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: interfaces.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
  * @package system.base
  * @since 1.0
  */
@@ -206,13 +207,13 @@ interface IWebServiceProvider
 {
 	/**
 	 * Метод вызывается перед вызовом запрошенного удаленного метода.
-	 * @param CWebService запрашиваемый в данный момент веб-сервис
+	 * @param CWebService $service запрашиваемый в данный момент веб-сервис
 	 * @return boolean должен ли выполнится удаленный метод
 	 */
 	public function beforeWebMethod($service);
 	/**
 	 * Метод вызывается после вызова запрошенного удаленного метода.
-	 * @param CWebService запрашиваемый в данный момент веб-сервис
+	 * @param CWebService $service запрашиваемый в данный момент веб-сервис
 	 */
 	public function afterWebMethod($service);
 }
@@ -226,7 +227,7 @@ interface IWebServiceProvider
  * {@link CBaseController}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: interfaces.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
  * @package system.base
  * @since 1.0
  */
@@ -234,10 +235,10 @@ interface IViewRenderer
 {
 	/**
 	 * Рендерит файл представления.
-	 * @param CBaseController контроллер или виджет, рендерящий файл представления
-	 * @param string путь к файлу представления
-	 * @param mixed данные, передаваемые в представление
-	 * @param boolean должен ли возвращаться результат рендера
+	 * @param CBaseController $context контроллер или виджет, рендерящий файл представления
+	 * @param string $file путь к файлу представления
+	 * @param mixed $data данные, передаваемые в представление
+	 * @param boolean $return должен ли возвращаться результат рендера
 	 * @return mixed результат рендера; null, если результат не требуется
 	 */
 	public function renderFile($context,$file,$data,$return);
@@ -252,7 +253,7 @@ interface IViewRenderer
  * с {@link CWebApplication::user пользовательским компонентом приложения}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: interfaces.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
  * @package system.base
  * @since 1.0
  */
@@ -294,7 +295,7 @@ interface IUserIdentity
  * Пользовательский компонент приложения представляет информацию, идентифицирующую текущего пользователя.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: interfaces.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
  * @package system.base
  * @since 1.0
  */
@@ -317,8 +318,8 @@ interface IWebUser
 	public function getIsGuest();
 	/**
 	 * Выполняет проверку доступа для данного пользователя.
-	 * @param string имя проверяемой операции
-	 * @param array пары имя-значение, которые будут переданы в бизнес-правила, ассоциированные
+	 * @param string $operation имя проверяемой операции
+	 * @param array $params пары имя-значение, которые будут переданы в бизнес-правила, ассоциированные
 	 * с задачами и ролями, заданными для пользователя
 	 * @return boolean может ли данный пользователь выполнять операции
 	 */
@@ -332,7 +333,7 @@ interface IWebUser
  * В основном менеджер аутентификации отвечает за обеспечение контроля доступа, основанного на ролях (RBAC).
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: interfaces.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
  * @package system.base
  * @since 1.0
  */
@@ -340,10 +341,10 @@ interface IAuthManager
 {
 	/**
 	 * Выполняет проверку возможности доступа для определенного пользователя.
-	 * @param string имя проверяемой на доступ операции
-	 * @param mixed идентификатор пользователя. Должен быть либо целым числом либо строкой,
+	 * @param string $itemName имя проверяемой на доступ операции
+	 * @param mixed $userId идентификатор пользователя. Должен быть либо целым числом либо строкой,
 	 * представляющей уникальный идентификатор пользователя. См. {@link IWebUser::getId}.
-	 * @param array пары имя-значение, которые будут переданы в бизнес-правила, ассоциированные
+	 * @param array $params пары имя-значение, которые будут переданы в бизнес-правила, ассоциированные
 	 * с задачами и ролями, заданными для пользователя
 	 * @return boolean может ли данный пользователь выполнять операции
 	 */
@@ -355,69 +356,69 @@ interface IAuthManager
 	 * Он имеет три типа: операция (operation), задача (task) и роль (role).
 	 * Элементы авторизации образуют иерархию. Более высокие уровни элементов наследуют разрешения от
 	 * более низких уровней.
-	 * @param string имя элемента. Должен быть уникальным идентификатором
-	 * @param integer тип элемента (0: оперция, 1: задача, 2: роль).
-	 * @param string описание элемента
-	 * @param string бизнес-правило, ассоциированное с элементом. Это блок
+	 * @param string $name имя элемента. Должен быть уникальным идентификатором
+	 * @param integer $type тип элемента (0: операция, 1: задача, 2: роль).
+	 * @param string $description описание элемента
+	 * @param string $bizRule бизнес-правило, ассоциированное с элементом. Это блок
 	 * PHP-кода, выполняемого при вызове метода {@link checkAccess} для элемента
-	 * @param mixed дополнительные данные, ассоциированные с элементом
+	 * @param mixed $data дополнительные данные, ассоциированные с элементом
 	 * @return CAuthItem элемент авторизации
 	 * @throws CException вызывается, если элемент с таким именем уже существует
 	 */
 	public function createAuthItem($name,$type,$description='',$bizRule=null,$data=null);
 	/**
 	 * Удаляет определенный элемент авторизации.
-	 * @param string имя удаляемого элемента
+	 * @param string $name имя удаляемого элемента
 	 * @return boolean находился ли элемент в хранилище и был ли удален
 	 */
 	public function removeAuthItem($name);
 	/**
 	 * Возвращает элементы авторизации по определенным типу и пользователю.
-	 * @param integer тип элемента (0: оперция, 1: задача, 2: роль). По умолчанию - null,
+	 * @param integer $type тип элемента (0: оперция, 1: задача, 2: роль). По умолчанию - null,
 	 * т.е. возвращаются все элементы независимо от их типа
-	 * @param mixed идентификатор пользователя. По умолчанию - null, т.е. возвращаются все элементы,
+	 * @param mixed $userId идентификатор пользователя. По умолчанию - null, т.е. возвращаются все элементы,
 	 * даже если они не заданы для пользователя
 	 * @return array элементы авторизации определенного типа
 	 */
 	public function getAuthItems($type=null,$userId=null);
 	/**
 	 * Возвращает элементы авторизации по определенному имени.
-	 * @param string имя элемента
+	 * @param string $name имя элемента
 	 * @return CAuthItem элемент авторизации. Null, если элемент не может быть найден
 	 */
 	public function getAuthItem($name);
 	/**
 	 * Сохраняет элемент авторизации в постоянное хранилище.
-	 * @param CAuthItem сохраняемый элемент
-	 * @param string старое имя элемента. Если null, то имя элемента не меняется
+	 * @param CAuthItem $item сохраняемый элемент
+	 * @param string $oldName старое имя элемента. Если null, то имя элемента не меняется
 	 */
 	public function saveAuthItem($item,$oldName=null);
 
 	/**
 	 * Добавляет к элементу дочерний элемент.
-	 * @param string имя родительского элемента
-	 * @param string имя дочернего элемента
+	 * @param string $itemName имя родительского элемента
+	 * @param string $childName имя дочернего элемента
 	 * @throws CException вызывается, если родитель или дочерний элемент не существует или замечен цикл в иерархии
 	 */
 	public function addItemChild($itemName,$childName);
 	/**
 	 * Удаляет дочерний элемент от его родителя.
 	 * Примечание: сам дочерний элемент не удаляется, удаляется только связь родитель-потомок.
-	 * @param string имя родительского элемента
-	 * @param string имя элемента-потомка
+	 * @param string $itemName имя родительского элемента
+	 * @param string $childName имя элемента-потомка
 	 * @return boolean успешно ли удаление
 	 */
 	public function removeItemChild($itemName,$childName);
 	/**
 	 * Возвращает значение, показывающее, существует ли дочерний элемент для данного родителя.
-	 * @param string имя родительского элемента
-	 * @param string имя элемента-потомка
+	 * @param string $itemName имя родительского элемента
+	 * @param string $childName имя элемента-потомка
 	 * @return boolean существует ли дочерний элемент
 	 */
 	public function hasItemChild($itemName,$childName);
 	/**
 	 * Возвращает дочерние элементы определенного элемента.
-	 * @param mixed имя родительского элемента. Может быть строкой или массивом.
+	 * @param mixed $itemName имя родительского элемента. Может быть строкой или массивом.
 	 * Массив представляет список имен элементов (доступно с версии 1.0.5)
 	 * @return array все дочерние элементы определенного элемента
 	 */
@@ -425,47 +426,47 @@ interface IAuthManager
 
 	/**
 	 * Присваивает элемент авторизации пользователю.
-	 * @param string имя элемента
-	 * @param mixed идентификатор пользователя (see {@link IWebUser::getId})
-	 * @param string бизнес-правило, выполняемое при вызове метода {@link checkAccess}
+	 * @param string $itemName имя элемента
+	 * @param mixed $userId идентификатор пользователя (см. {@link IWebUser::getId})
+	 * @param string $bizRule бизнес-правило, выполняемое при вызове метода {@link checkAccess}
 	 * для данного конкретного элемента авторизации
-	 * @param mixed дополнительные данные, ассоциированные с данным присваиванием
+	 * @param mixed $data дополнительные данные, ассоциированные с данным присваиванием
 	 * @return CAuthAssignment информация присваивания авторизации
 	 * @throws CException вызывается, если элемент не существует или уже присвоен пользователю
 	 */
 	public function assign($itemName,$userId,$bizRule=null,$data=null);
 	/**
 	 * Удаляет элемент авторизации от пользователя.
-	 * @param string имя элемента
-	 * @param mixed идентификатор пользователя (см. {@link IWebUser::getId})
+	 * @param string $itemName имя элемента
+	 * @param mixed $userId идентификатор пользователя (см. {@link IWebUser::getId})
 	 * @return boolean успешно ли удаление
 	 */
 	public function revoke($itemName,$userId);
 	/**
 	 * Возвращает значение, показывающее, присвоен ли элемент пользователю.
-	 * @param string имя элемента
-	 * @param mixed идентификатор пользователя (см. {@link IWebUser::getId})
+	 * @param string $itemName имя элемента
+	 * @param mixed $userId идентификатор пользователя (см. {@link IWebUser::getId})
 	 * @return boolean присвоен ли элемент авторизации пользователю
 	 */
 	public function isAssigned($itemName,$userId);
 	/**
 	 * Возвращает информацию элемента привязки (item assignment).
-	 * @param string имя элемента
-	 * @param mixed идентификатор пользователя (см. {@link IWebUser::getId})
+	 * @param string $itemName имя элемента
+	 * @param mixed $userId идентификатор пользователя (см. {@link IWebUser::getId})
 	 * @return CAuthAssignment информация элемента привязки (item assignment). 
 	 * Если элемент не присвоен пользователю, то возвращается значение null
 	 */
 	public function getAuthAssignment($itemName,$userId);
 	/**
 	 * Возвращает элементы привязки определенного пользователя.
-	 * @param mixed идентификатор пользователя (см. {@link IWebUser::getId})
+	 * @param mixed $userId идентификатор пользователя (см. {@link IWebUser::getId})
 	 * @return array элементы привязки (item assignment) пользователя. Если элементов,
 	 * присвоенных пользователю, нет, возвращается пустой массив
 	 */
 	public function getAuthAssignments($userId);
 	/**
 	 * Сохраняет изменения элемента привязки.
-	 * @param CAuthAssignment изменяемый элемент привязки
+	 * @param CAuthAssignment $assignment изменяемый элемент привязки
 	 */
 	public function saveAuthAssignment($assignment);
 
@@ -488,9 +489,9 @@ interface IAuthManager
 	/**
 	 * Выполняет бизнес-правило.
 	 * Бизнес-правило - это кусок PHP кода, выполняемый при вызове метода {@link checkAccess}.
-	 * @param string выполняемое бизнес-правило
-	 * @param array дополнительные параметры, передаваемые в бизнес-правило при выполнении
-	 * @param mixed дополнительные данные, ассоциированные с соответствующими элементом авторизации или привязкой
+	 * @param string $bizRule выполняемое бизнес-правило
+	 * @param array $params дополнительные параметры, передаваемые в бизнес-правило при выполнении
+	 * @param mixed $data дополнительные данные, ассоциированные с соответствующими элементом авторизации или привязкой
 	 * @return boolean возвращает ли результат выполнения бизнес-правила значение true.
 	 * Если бизнес-правило пусто, также возвращается значение true
 	 */
@@ -505,7 +506,7 @@ interface IAuthManager
  * и не доступными в классе компонента.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: interfaces.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
  * @package system.base
  * @since 1.0.2
  */
@@ -513,12 +514,12 @@ interface IBehavior
 {
 	/**
 	 * Присоединяет объект поведения к компоненту.
-	 * @param CComponent компонент, к которому присоединяется поведение
+	 * @param CComponent $component компонент, к которому присоединяется поведение
 	 */
 	public function attach($component);
 	/**
 	 * Отсоединяет объект поведения от компонента.
-	 * @param CComponent компонент, от которого отсоединяется поведение
+	 * @param CComponent $component компонент, от которого отсоединяется поведение
 	 */
 	public function detach($component);
 	/**
@@ -526,7 +527,7 @@ interface IBehavior
 	 */
 	public function getEnabled();
 	/**
-	 * @param boolean включено ли данное поведение
+	 * @param boolean $value включено ли данное поведение
 	 */
 	public function setEnabled($value);
 }
@@ -538,7 +539,7 @@ interface IBehavior
  * виджета вызовом метода {@link CBaseController::createWidget}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: interfaces.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
  * @package system.web
  * @since 1.1
  */
@@ -546,9 +547,9 @@ interface IWidgetFactory
 {
 	/**
 	 * Создает новый виджет с переданным именем и начальными параметрами.
-	 * @param CBaseController контроллер-владелец нового виджета
-	 * @param string имя класса виджета. Может быть псевдонимом пути (например, system.web.widgets.COutputCache)
-	 * @param array начальные значения параметров виджета (имя=>значение)
+	 * @param CBaseController $owner контроллер-владелец нового виджета
+	 * @param string $className имя класса виджета. Может быть псевдонимом пути (например, system.web.widgets.COutputCache)
+	 * @param array $properties начальные значения параметров виджета (имя=>значение)
 	 * @return CWidget созданный виджет с параметрами, проинициализированными начальными значениями
 	 */
 	public function createWidget($owner,$className,$properties=array());
@@ -561,7 +562,7 @@ interface IWidgetFactory
  * Кроме передаваемых данных, провайдеры поддерживают пагинацию и сортировку.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: interfaces.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
  * @package system.web
  * @since 1.1
  */
@@ -575,26 +576,26 @@ interface IDataProvider
 	 * Возвращает количество элементов данных на текущей странице.
 	 * Эквивалентно <code>count($provider->getData())</code>.
 	 * Если параметр {@link pagination} установлен в значение false, возвращается значение, равное {@link totalItemCount}.
-	 * @param boolean должно ли быть пересчитано количество элементов данных
+	 * @param boolean $refresh должно ли быть пересчитано количество элементов данных
 	 * @return integer количество элементов данных на текущей странице
 	 */
 	public function getItemCount($refresh=false);
 	/**
 	 * Возвращает общее количество элементов.
 	 * Если параметр {@link pagination} установлен в значение false, возвращается значение, равное {@link itemCount}.
-	 * @param boolean должно ли быть пересчитано общее количество элементов данных
+	 * @param boolean $refresh должно ли быть пересчитано общее количество элементов данных
 	 * @return integer обще количество элементов данных
 	 */
 	public function getTotalItemCount($refresh=false);
 	/**
 	 * Возвращает доступные в данный момент элементы данных.
-	 * @param boolean должны ли быть данные перезагружены из постоянного хранилища
+	 * @param boolean $refresh должны ли быть данные перезагружены из постоянного хранилища
 	 * @return array список доступных в данный момент в данном провайдере данных элементов данных
 	 */
 	public function getData($refresh=false);
 	/**
 	 * Возвращает значения ключей, ассоциированных с элементами данных.
-	 * @param boolean должны ли ключи быть пересчитаны
+	 * @param boolean $refresh должны ли ключи быть пересчитаны
 	 * @return array список значений ключей, соответствующих {@link data}. Каждый элемент данных в свойстве {@link data}
 	 * уникально идентифицируем соответствующим значением ключа в массиве
 	 */

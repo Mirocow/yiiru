@@ -16,7 +16,7 @@
  * Обратитесь к документации {@link CCache} за информацией об обычных операциях кэша, поддерживаемых компонентом WinCache.
  *
  * @author Alexander Makarov <sam@rmcreative.ru>
- * @version $Id: CWinCache.php 1942 2010-03-21 00:48:04Z alexander.makarow $
+ * @version $Id: CWinCache.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
  * @package system.caching
  * @since 1.1.2
  */
@@ -39,7 +39,7 @@ class CWinCache extends CCache {
 	/**
 	 * Получает значение из кэша по определенному ключу.
 	 * Метод переопределяет реализацию класса-родителя.
-	 * @param string уникальный ключ, идентифицирующий кэшированное значение
+	 * @param string $key уникальный ключ, идентифицирующий кэшированное значение
 	 * @return string хранимое в кэше значение; false, если значения в кэше нет или его срок годности истек
 	 */
 	protected function getValue($key)
@@ -49,7 +49,7 @@ class CWinCache extends CCache {
 
 	/**
 	 * Получает из кэша несколько значений с определенными ключами.
-	 * @param array список ключей, идентифицирующих кэшированные значения
+	 * @param array $keys список ключей, идентифицирующих кэшированные значения
 	 * @return array список кэшированных значений, индексированный по ключам
 	 */
 	protected function getValues($keys)
@@ -60,9 +60,9 @@ class CWinCache extends CCache {
 	/**
 	 * Сохраняет в кэше значение, идентифицируемое ключом.
 	 * Метод переопределяет реализацию класса-родителя.
-	 * @param string ключ, идентифицирующий кэшируемое значение
-	 * @param string кэшируемое значение
-	 * @param integer количество секунд срока годности кэшируемого значения. 0 - без срока годности
+	 * @param string $key ключ, идентифицирующий кэшируемое значение
+	 * @param string $value кэшируемое значение
+	 * @param integer $expire количество секунд срока годности кэшируемого значения. 0 - без срока годности
 	 * @return boolean true, если значение успешно сохранено в кэше, иначе false
 	 */
 	protected function setValue($key,$value,$expire)
@@ -73,9 +73,9 @@ class CWinCache extends CCache {
 	/**
 	 * Сохраняет в кэше значение, идентифицируемое ключом, если кэш не содержит данный ключ.
 	 * Метод переопределяет реализацию класса-родителя.
-	 * @param string ключ, идентифицирующий кэшируемое значение
-	 * @param string кэшируемое значение
-	 * @param integer количество секунд срока годности кэшируемого значения. 0 - без срока годности
+	 * @param string $key ключ, идентифицирующий кэшируемое значение
+	 * @param string $value кэшируемое значение
+	 * @param integer $expire количество секунд срока годности кэшируемого значения. 0 - без срока годности
 	 * @return boolean true, если значение успешно сохранено в кэше, иначе false
 	 */
 	protected function addValue($key,$value,$expire)
@@ -86,7 +86,7 @@ class CWinCache extends CCache {
 	/**
 	 * Удаляет из кеша значение по определенному ключу.
 	 * Метод переопределяет реализацию класса-родителя.
-	 * @param string ключ удаляемого значения
+	 * @param string $key ключ удаляемого значения
 	 * @return boolean true, если в процессе удаления не произошло ошибок
 	 */
 	protected function deleteValue($key)
@@ -96,9 +96,11 @@ class CWinCache extends CCache {
 
 	/**
 	 * Удаляет все значения из кэша.
-	 * Будьте осторожны при выполнении данной операции, если кэш доступен в нескольких приложениях.
+	 * Это реализация метода, объявленного в классе-родителе
+	 * @return boolean успешно ли выполнилась операция очистки
+	 * @since 1.1.5
 	 */
-	public function flush()
+	protected function flushValues()
 	{
 		return wincache_ucache_clear();
 	}

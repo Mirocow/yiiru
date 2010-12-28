@@ -41,7 +41,7 @@
  * Класс CCache также реализует интерфейс ArrayAccess, и поэтому может использоваться как массив.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCache.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CCache.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
  * @package system.caching
  * @since 1.0
  */
@@ -65,7 +65,7 @@ abstract class CCache extends CApplicationComponent implements ICache, ArrayAcce
 	}
 
 	/**
-	 * @param string ключ, идентифицирующий кэшируемое значение
+	 * @param string $key ключ, идентифицирующий кэшируемое значение
 	 * @return sring уникальный ключ, сгенерированный из переданного ключа с префиксом
 	 */
 	protected function generateUniqueKey($key)
@@ -75,7 +75,7 @@ abstract class CCache extends CApplicationComponent implements ICache, ArrayAcce
 
 	/**
 	 * Получает значение из кэша по определенному ключу
-	 * @param string ключ, идентифицирующий значение кэша
+	 * @param string $id ключ, идентифицирующий значение кэша
 	 * @return mixed значение, сохраненное в кэше; false, если значения нет в кэше, срок годности истек или зависимость изменена
 	 */
 	public function get($id)
@@ -99,7 +99,7 @@ abstract class CCache extends CApplicationComponent implements ICache, ArrayAcce
 	 * Некоторые кэши (такие как memcache, apc) позволяют одновременно получать несколько значений из кэша,
 	 * что может увеличить производительность из-за снижения количества соединений.
 	 * Если кэш не поддерживает данную функцию, данный метод симулирует её.
-	 * @param array список ключей, идентифицирующих кэшированные значения
+	 * @param array $ids список ключей, идентифицирующих кэшированные значения
 	 * @return array список кэшированных значений, соответствующих переданным ключам.
 	 * Возвращается массив пар (ключ, значение). Если значения нет в кэше или его срок
 	 * годности истек, соответствующее значение массива будет равно значению false
@@ -133,10 +133,10 @@ abstract class CCache extends CApplicationComponent implements ICache, ArrayAcce
 	 * Сохраняет значение, идентифицируемое по ключу, в кэше.
 	 * Если кэш уже содержит такой ключ, существующее значение и срок годности будут заменены на новые.
 	 *
-	 * @param string ключ, идентифицирующий кэшируемое значение
-	 * @param mixed кэшируемое значение
-	 * @param integer количество секунд, через которое истечет срок годности кэшируемого значения. 0 означает бесконечный срок годности
-	 * @param ICacheDependency зависимость кэшируемого элемента. Если зависимость изменяется, элемент помечается как недействительный
+	 * @param string $id ключ, идентифицирующий кэшируемое значение
+	 * @param mixed $value кэшируемое значение
+	 * @param integer $expire количество секунд, через которое истечет срок годности кэшируемого значения. 0 означает бесконечный срок годности
+	 * @param ICacheDependency $dependency зависимость кэшируемого элемента. Если зависимость изменяется, элемент помечается как недействительный
 	 * @return boolean true, если значение успешно сохранено в кэше, иначе - false
 	 */
 	public function set($id,$value,$expire=0,$dependency=null)
@@ -151,10 +151,10 @@ abstract class CCache extends CApplicationComponent implements ICache, ArrayAcce
 	/**
 	 * Сохраняет в кэш значение, идентифицируемое ключом, если кэш не содержит данный ключ.
 	 * Если такой ключ уже содержится в кэше, ничего не будет выполнено.
-	 * @param string ключ, идентифицирующий кэшируемое значение
-	 * @param mixed кэшируемое значение
-	 * @param integer количество секунд, через которое истечет срок годности кэшируемого значения. 0 означает бесконечный срок годности
-	 * @param ICacheDependency зависимость кэшируемого элемента. Если зависимость изменяется, элемент помечается как недействительный
+	 * @param string $id ключ, идентифицирующий кэшируемое значение
+	 * @param mixed $value кэшируемое значение
+	 * @param integer $expire количество секунд, через которое истечет срок годности кэшируемого значения. 0 означает бесконечный срок годности
+	 * @param ICacheDependency $dependency зависимость кэшируемого элемента. Если зависимость изменяется, элемент помечается как недействительный
 	 * @return boolean true, если значение успешно сохранено в кэше, иначе - false
 	 */
 	public function add($id,$value,$expire=0,$dependency=null)
@@ -168,26 +168,24 @@ abstract class CCache extends CApplicationComponent implements ICache, ArrayAcce
 
 	/**
 	 * Удаляет из кэша значение по определенному ключу.
-	 * @param string ключ удаляемого значения
+	 * @param string $id ключ удаляемого значения
 	 * @return boolean не было ли ошибок при удалении; true - успешное удаление
 	 */
 	public function delete($id)
 	{
-		Yii::trace('Deleting "'.$id.'" to cache','system.caching.'.get_class($this));
+		Yii::trace('Deleting "'.$id.'" from cache','system.caching.'.get_class($this));
 		return $this->deleteValue($this->generateUniqueKey($id));
 	}
 
 	/**
 	 * Удаляет все значения из кэша.
 	 * Будьте осторожны при выполнении данной операции, если кэш доступен в нескольких приложениях.
-	 * Классы-потомки могут реализовать этот метод для создания операции очистки.
-	 * @throws CException вызывается, если метод не переопределен классом-потомком
+	 * @return boolean whether the flush operation was successful.
 	 */
 	public function flush()
 	{
-		Yii::trace('Flushign cache','system.caching.'.get_class($this));
-		throw new CException(Yii::t('yii','{className} does not support flush() functionality.',
-			array('{className}'=>get_class($this))));
+		Yii::trace('Flushing cache','system.caching.'.get_class($this));
+		return $this->flushValues();
 	}
 
 	/**
@@ -195,8 +193,9 @@ abstract class CCache extends CApplicationComponent implements ICache, ArrayAcce
 	 * Метод должен переопределяться в классах-потомках для получения данных из конкретного кэш-хранилища.
 	 * Уникальность и зависимость уже обработаны в методе {@link get()}. Поэтому
 	 * необходима только реализация получения данных.
-	 * @param string уникальный ключ, идентифицирующий кэшированное значение
+	 * @param string $key уникальный ключ, идентифицирующий кэшированное значение
 	 * @return string хранимое в кэше значение; false, если значения в кэше нет или его срок годности истек
+	 * @throws CException if this method is not overridden by child classes
 	 */
 	protected function getValue($key)
 	{
@@ -210,7 +209,7 @@ abstract class CCache extends CApplicationComponent implements ICache, ArrayAcce
 	 * для получения кэшированных значений одно за другим.
 	 * Если основное кэш-хранилище поддерживает мультизапрос кэшированных значений, метод
 	 * должен быть переопределен, чтобы воспользоваться данной функцией.
-	 * @param array список ключей, идентифицирующих кэшированные значения
+	 * @param array $keys список ключей, идентифицирующих кэшированные значения
 	 * @return array список кэшированных значений, индексированный по ключам
 	 * @since 1.0.8
 	 */
@@ -227,10 +226,11 @@ abstract class CCache extends CApplicationComponent implements ICache, ArrayAcce
 	 * Метод должен реализовываться классами-потомками для сохранения данных в конкретном кэш-хранилище.
 	 * Уникальность и зависимость уже обработаны в методе {@link get()}. Поэтому
 	 * необходима только реализация сохранения данных.
-	 * @param string ключ, идентифицирующий кэшируемое значение
-	 * @param string кэшируемое значение
-	 * @param integer количество секунд срока годности кэшируемого значения. 0 - без срока годности
+	 * @param string $key ключ, идентифицирующий кэшируемое значение
+	 * @param string $value кэшируемое значение
+	 * @param integer $expire количество секунд срока годности кэшируемого значения. 0 - без срока годности
 	 * @return boolean true, если значение успешно сохранено в кэше, иначе false
+	 * @throws CException вызывается, если данный метод не переопределен классами-потомками
 	 */
 	protected function setValue($key,$value,$expire)
 	{
@@ -243,10 +243,11 @@ abstract class CCache extends CApplicationComponent implements ICache, ArrayAcce
 	 * Метод должен реализовываться классами-потомками для сохранения данных в конкретном кэш-хранилище.
 	 * Уникальность и зависимость уже обработаны в методе {@link get()}. Поэтому
 	 * необходима только реализация сохранения данных.
-	 * @param string ключ, идентифицирующий кэшируемое значение
-	 * @param string кэшируемое значение
-	 * @param integer количество секунд срока годности кэшируемого значения. 0 - без срока годности
+	 * @param string $key ключ, идентифицирующий кэшируемое значение
+	 * @param string $value кэшируемое значение
+	 * @param integer $expire количество секунд срока годности кэшируемого значения. 0 - без срока годности
 	 * @return boolean true, если значение успешно сохранено в кэше, иначе false
+	 * @throws CException вызывается, если данный метод не переопределен классами-потомками
 	 */
 	protected function addValue($key,$value,$expire)
 	{
@@ -257,8 +258,9 @@ abstract class CCache extends CApplicationComponent implements ICache, ArrayAcce
 	/**
 	 * Удаляет из кеша значение по определенному ключу.
 	 * Метод должен реализовываться классами-потомками для удаления данных из конкретного кэш-хранилища.
-	 * @param string ключ удаляемого значения
+	 * @param string $key ключ удаляемого значения
 	 * @return boolean true, если в процессе удаления не произошло ошибок
+	 * @throws CException вызывается, если данный метод не переопределен классами-потомками
 	 */
 	protected function deleteValue($key)
 	{
@@ -267,9 +269,22 @@ abstract class CCache extends CApplicationComponent implements ICache, ArrayAcce
 	}
 
 	/**
+	 * Удаляет все значения из кэша.
+	 * Классы-потомки могут расширять данный метод для реализации операции очистки
+	 * @return boolean успешно ли выполнилась операция очистки
+	 * @throws CException вызывается, если данный метод не переопределен классами-потомками
+	 * @since 1.1.5
+	 */
+	protected function flushValues()
+	{
+		throw new CException(Yii::t('yii','{className} does not support flushValues() functionality.',
+			array('{className}'=>get_class($this))));
+	}
+
+	/**
 	 * Существует ли запись в кэше с заданным ключом.
 	 * Метод требуется интерфейсом ArrayAccess.
-	 * @param string ключ, идентифицирующий кэшированное значение
+	 * @param string $id ключ, идентифицирующий кэшированное значение
 	 * @return boolean
 	 */
 	public function offsetExists($id)
@@ -280,7 +295,7 @@ abstract class CCache extends CApplicationComponent implements ICache, ArrayAcce
 	/**
 	 * Получает значение из кэша по определенному ключу.
 	 * Метод требуется интерфейсом ArrayAccess.
-	 * @param string ключ, идентифицирующий кэшированное значение
+	 * @param string $id ключ, идентифицирующий кэшированное значение
 	 * @return mixed кэшированное значение; false, если значения в кэше нет или его срок годности истек
 	 */
 	public function offsetGet($id)
@@ -293,8 +308,8 @@ abstract class CCache extends CApplicationComponent implements ICache, ArrayAcce
 	 * Если кэш уже содержит значение с таким ключом, существующее значение будет
 	 * заменено новым. Для добавления срока годности и зависимостей, используйте метод set().
 	 * Метод требуется интерфейсом ArrayAccess.
-	 * @param string ключ, идентифицирующий кэшируемое значение
-	 * @param mixed кэшируемое значение
+	 * @param string $id ключ, идентифицирующий кэшируемое значение
+	 * @param mixed $value кэшируемое значение
 	 */
 	public function offsetSet($id, $value)
 	{
@@ -304,7 +319,7 @@ abstract class CCache extends CApplicationComponent implements ICache, ArrayAcce
 	/**
 	 * Удаляет из кеша значение по определенному ключу.
 	 * Метод требуется интерфейсом ArrayAccess.
-	 * @param string ключ, идентифицирующий удаляемое значение
+	 * @param string $id ключ, идентифицирующий удаляемое значение
 	 * @return boolean true, если в процессе удаления не произошло ошибок
 	 */
 	public function offsetUnset($id)

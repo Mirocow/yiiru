@@ -12,7 +12,7 @@
  * Класс CModelBehavior - это базовый класс для поведений, присоединяемых к компоненту модели.
  * Модель должна наследовать класс {@link CModel} или его классы-потомки.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CModelBehavior.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CModelBehavior.php 2604 2010-11-02 18:03:49Z qiang.xue $
  * @package system.base
  * @since 1.0.2
  */
@@ -28,16 +28,26 @@ class CModelBehavior extends CBehavior
 	public function events()
 	{
 		return array(
+			'onAfterConstruct'=>'afterConstruct',
 			'onBeforeValidate'=>'beforeValidate',
 			'onAfterValidate'=>'afterValidate',
 		);
 	}
 
 	/**
+	 * Реагирует на событие {@link CModel::onAfterConstruct}.
+	 * Переопределите данный метод, если вы хотите обрабатывать соответствующее событие в {@link owner контроллере-собственнике}.
+	 * @param CModelEvent $event параметр события
+	 */
+	public function afterConstruct($event)
+	{
+	}
+
+	/**
 	 * Реагирует на событие {@link CModel::onBeforeValidate}.
 	 * Переопределите данный метод, если вы хотите обрабатывать соответствующее событие в {@link owner контроллере-собственнике}.
 	 * Вы можете установить свойство {@link CModelEvent::isValid} в значение false для прекращения выполнения процесса валидации.
-	 * @param CModelEvent параметр события
+	 * @param CModelEvent $event параметр события
 	 */
 	public function beforeValidate($event)
 	{
@@ -46,7 +56,7 @@ class CModelBehavior extends CBehavior
 	/**
 	 * Реагирует на событие {@link CModel::onAfterValidate} event.
 	 * Переопределите данный метод, если вы хотите обрабатывать соответствующее событие в {@link owner контроллере-собственнике}.
-	 * @param CEvent параметр события
+	 * @param CEvent $event параметр события
 	 */
 	public function afterValidate($event)
 	{

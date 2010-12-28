@@ -14,7 +14,7 @@
  * В основном CModule управляет компонентами приложения и подмодулями.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CModule.php 2094 2010-05-05 00:51:49Z qiang.xue $
+ * @version $Id: CModule.php 2584 2010-10-29 20:27:32Z qiang.xue $
  * @package system.base
  * @since 1.0.4
  */
@@ -44,9 +44,9 @@ abstract class CModule extends CComponent
 
 	/**
 	 * Конструктор.
-	 * @param string идентификатор данного модуля
-	 * @param CModule модуль-родитель (если есть)
-	 * @param mixed конфигурация модуля. Либо массив либо путь к файлу
+	 * @param string $id идентификатор данного модуля
+	 * @param CModule $parent модуль-родитель (если есть)
+	 * @param mixed $config конфигурация модуля. Либо массив либо путь к файлу
 	 * PHP, возвращающему массив конфигурации.
 	 */
 	public function __construct($id,$parent,$config=null)
@@ -77,7 +77,7 @@ abstract class CModule extends CComponent
 	 * "Магический" геттер.
 	 * Метод переопределяет родительский метод для поддержки доступа к компонентам приложения
 	 * как к свойствам модуля.
-	 * @param string компонент приложения или имя свойства
+	 * @param string $name компонент приложения или имя свойства
 	 * @return mixed именованное значение свойства
 	 */
 	public function __get($name)
@@ -92,7 +92,7 @@ abstract class CModule extends CComponent
 	 * Проверяет, существует ли значение свойства.
 	 * Метод переопределяет родительскую реализацию проверкой,
 	 * загружен ли именованный компонент приложения.
-	 * @param string имя свойства или имя события
+	 * @param string $name имя свойства или имя события
 	 * @return boolean существует ли значение свойства (null ли оно)
 	 */
 	public function __isset($name)
@@ -104,6 +104,7 @@ abstract class CModule extends CComponent
 	}
 
 	/**
+	 * Возвращает идентификатор модуля
 	 * @return string идентификатор модуля
 	 */
 	public function getId()
@@ -112,7 +113,8 @@ abstract class CModule extends CComponent
 	}
 
 	/**
-	 * @param string идентификатор модуля
+	 * Устанавливает идентификатор модуля
+	 * @param string $id идентификатор модуля
 	 */
 	public function setId($id)
 	{
@@ -120,6 +122,7 @@ abstract class CModule extends CComponent
 	}
 
 	/**
+	 * Возвращает корневую директорию модуля
 	 * @return string корневая директория модуля. По умолчанию - директория, содержащая класс модуля
 	 */
 	public function getBasePath()
@@ -135,7 +138,7 @@ abstract class CModule extends CComponent
 	/**
 	 * Устанавливает корневую директорию модуля.
 	 * Метод может быть вызван только в начале конструктора.
-	 * @param string корневая директория модуля
+	 * @param string $path корневая директория модуля
 	 * @throws CException вызывается, если директория не существует
 	 */
 	public function setBasePath($path)
@@ -146,6 +149,7 @@ abstract class CModule extends CComponent
 	}
 
 	/**
+	 * Возвращает пользовательские параметры
 	 * @return CAttributeCollection список пользовательских параметров
 	 */
 	public function getParams()
@@ -161,7 +165,8 @@ abstract class CModule extends CComponent
 	}
 
 	/**
-	 * @param array пользовательские параметры. Должны быть в виде пар имя-значение
+	 * Устанавливает пользовательские параметры
+	 * @param array $value пользовательские параметры. Должны быть в виде пар имя-значение
 	 */
 	public function setParams($value)
 	{
@@ -171,6 +176,7 @@ abstract class CModule extends CComponent
 	}
 
 	/**
+	 * Возвращает директорию, хранящую модули приложения
 	 * @return string директория, хранящая модули приложения. По умолчанию - поддиректория 'modules' директории {@link basePath}.
 	 */
 	public function getModulePath()
@@ -182,7 +188,8 @@ abstract class CModule extends CComponent
 	}
 
 	/**
-	 * @param string директория, хранящая модули приложения
+	 * Устанавливает директорию, хранящую модули приложения
+	 * @param string $value директория, хранящая модули приложения
 	 * @throws CException вызывается, если директория не существует
 	 */
 	public function setModulePath($value)
@@ -194,7 +201,7 @@ abstract class CModule extends CComponent
 
 	/**
 	 * Устанавливает псевдонимы, используемые в модуле.
-	 * @param array список импортируемых псевдонимов
+	 * @param array $aliases список импортируемых псевдонимов
 	 */
 	public function setImport($aliases)
 	{
@@ -204,7 +211,7 @@ abstract class CModule extends CComponent
 
 	/**
 	 * Определяет корневые псевдонимы.
-	 * @param array список определяемых псевдонимов. Ключи массива - это корневые псевдонимы,
+	 * @param array $mappings список определяемых псевдонимов. Ключи массива - это корневые псевдонимы,
 	 * а значения массива - пути или псевдонимы, соответствующие корневым псевдонимам.
 	 * Например,
 	 * <pre>
@@ -228,6 +235,7 @@ abstract class CModule extends CComponent
 	}
 
 	/**
+	 * Возвращает родительский модуль
 	 * @return CModule родительский модуль. Null, если модуль не имеет родителя
 	 */
 	public function getParentModule()
@@ -239,7 +247,7 @@ abstract class CModule extends CComponent
 	 * Получает именованный модуль приложения.
 	 * Модуль должен быть объявлен в свойстве {@link modules}. Будет создан новый экземпляр
 	 * при первом вызове метода с переданным идентификатором.
-	 * @param string идентификатор модуля приложения (регистрозависимe)
+	 * @param string $id идентификатор модуля приложения (регистрозависимe)
 	 * @return CModule экземпляр модуля; null, если модуль отклчен или не существует.
 	 */
 	public function getModule($id)
@@ -265,7 +273,7 @@ abstract class CModule extends CComponent
 
 	/**
 	 * Возвращает значение, показывающее, установлен ли определенный модуль.
-	 * @param string идентификатор модуля
+	 * @param string $id идентификатор модуля
 	 * @return boolean установлен ли определенный модуль
 	 * @since 1.1.2
 	 */
@@ -275,6 +283,7 @@ abstract class CModule extends CComponent
 	}
 
 	/**
+	 * Возвращает конфигурацию установленных модулей
 	 * @return array конфигурация установленных модулей (идентификатор модуля => конфигурация)
 	 */
 	public function getModules()
@@ -306,7 +315,7 @@ abstract class CModule extends CComponent
 	 *
 	 * Вы можете также включать или выключать модуль, определяя опцию 'enabled' в конфигурации.
 	 *
-	 * @param array конфигурации модулей.
+	 * @param array $modules конфигурации модулей.
 	 */
 	public function setModules($modules)
 	{
@@ -331,7 +340,8 @@ abstract class CModule extends CComponent
 	}
 
 	/**
-	 * @param string идентификатор компонента приложения
+	 * Проверяет, существует ли именованный компонент приложения
+	 * @param string $id идентификатор компонента приложения
 	 * @return boolean существует ли именованный компонент приложения (включая и загруженные и отключенные модули)
 	 */
 	public function hasComponent($id)
@@ -341,8 +351,8 @@ abstract class CModule extends CComponent
 
 	/**
 	 * Получает именованный компонент приложения.
-	 * @param string идентификатор компонента приложения (регистрозависим)
-	 * @param boolean создавать ли компонент, если он еще не существует. Данный параметр
+	 * @param string $id идентификатор компонента приложения (регистрозависим)
+	 * @param boolean $createIfNull создавать ли компонент, если он еще не существует. Данный параметр
 	 * доступен с версии 1.0.6.
 	 * @return IApplicationComponent экземпляр компонента приложения; null, если компонент приложения отключен или не существует
 	 * @see hasComponent
@@ -354,7 +364,6 @@ abstract class CModule extends CComponent
 		else if(isset($this->_componentConfig[$id]) && $createIfNull)
 		{
 			$config=$this->_componentConfig[$id];
-			unset($this->_componentConfig[$id]);
 			if(!isset($config['enabled']) || $config['enabled'])
 			{
 				Yii::trace("Loading \"$id\" application component",'system.CModule');
@@ -369,27 +378,25 @@ abstract class CModule extends CComponent
 	/**
 	 * Передает компонент под управление модуля.
 	 * Если компонент не инициализирован, это будет сделано (вызовом его метода {@link CApplicationComponent::init() init()}).
-	 * @param string component ID
-	 * @param IApplicationComponent the component
+	 * @param string $id идентификатор компонента
+	 * @param IApplicationComponent $component добавляемый в модуль компонент.
+	 * Если равен null, то компонент с переданным идентификатором будет удален из модуля
 	 */
 	public function setComponent($id,$component)
 	{
-		$this->_components[$id]=$component;
-		if(!$component->getIsInitialized())
-			$component->init();
-	}
-
-	/**
-	 * @return array загруженные в данный момент компоненты (индексированные по их идентификаторам)
-	 */
-	public function getComponents()
-	{
-		return $this->_components;
+		if($component===null)
+			unset($this->_components[$id]);
+		else
+		{
+			$this->_components[$id]=$component;
+			if(!$component->getIsInitialized())
+				$component->init();
+		}
 	}
 
 	/**
 	 * Возвращает компоненты приложения.
-	 * @param boolean возвращать ли только загруженные компоненты. Если установлено в значение false,
+	 * @param boolean $loadedOnly возвращать только загруженные компоненты. Если установлено в значение false,
 	 * то будут возвращены все компоненты, определенные в конфигурации, загружены они или нет.
 	 * Загруженные компоненты будут возвращены в виде объектов, а незагруженные в виде массивов конфигураций.
 	 * Параметр доступен с версии 1.1.3.
@@ -429,15 +436,18 @@ abstract class CModule extends CComponent
 	 * )
 	 * </pre>
 	 *
-	 * @param array компоненты приложения (идентификатор=>конфигурация компонента или экземпляры компонентов)
+	 * @param array $components компоненты приложения (идентификатор=>конфигурация компонента или экземпляры компонентов)
+	 * @param boolean $merge сливать ли новую конфигурацию компонента с уже существующей.
+	 * По умолчанию - true, т.е., ранее зарегистрированная конфигурация компонента с таким же идентификатором
+	 * будет слита с новой конфигурацией. Если значение равно false, существующая конфигурация будет полностью заменена
 	 */
-	public function setComponents($components)
+	public function setComponents($components,$merge=true)
 	{
 		foreach($components as $id=>$component)
 		{
 			if($component instanceof IApplicationComponent)
 				$this->setComponent($id,$component);
-			else if(isset($this->_componentConfig[$id]))
+			else if(isset($this->_componentConfig[$id]) && $merge)
 				$this->_componentConfig[$id]=CMap::mergeArray($this->_componentConfig[$id],$component);
 			else
 				$this->_componentConfig[$id]=$component;
@@ -446,7 +456,7 @@ abstract class CModule extends CComponent
 
 	/**
 	 * Настраивает модуль определенной конфигурацией.
-	 * @param array массив конфигурации
+	 * @param array $config массив конфигурации
 	 */
 	public function configure($config)
 	{

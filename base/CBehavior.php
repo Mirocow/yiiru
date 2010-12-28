@@ -11,7 +11,7 @@
 /**
  * CBehavior - это базовый класс для классов поведений.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CBehavior.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CBehavior.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.base
  * @since 1.0.2
  */
@@ -38,7 +38,7 @@ class CBehavior extends CComponent implements IBehavior
 	 * Реализация по умолчанию устанавливает свойство {@link owner} и
 	 * присоединяет обработчик события как это объявлено в методе {@link events}.
 	 * Убедитесь, что вызываете реализацию метода родителя, если переопределяете данный метод.
-	 * @param CComponent компонент, к которому присоединяется поведение.
+	 * @param CComponent $owner компонент, к которому присоединяется поведение.
 	 */
 	public function attach($owner)
 	{
@@ -52,7 +52,7 @@ class CBehavior extends CComponent implements IBehavior
 	 * Реализация по умолчанию очищает свойство {@link owner} и
 	 * отсоединяет обработчик события, объявленный в методе {@link events}.
 	 * Убедитесь, что вызываете реализацию метода родителя, если переопределяете данный метод.
-	 * @param CComponent компонент, от которого отсоединяется поведение.
+	 * @param CComponent $owner компонент, от которого отсоединяется поведение.
 	 */
 	public function detach($owner)
 	{
@@ -78,10 +78,23 @@ class CBehavior extends CComponent implements IBehavior
 	}
 
 	/**
-	 * @param boolean активно ли поведение
+	 * @param boolean $value активно ли поведение
 	 */
 	public function setEnabled($value)
 	{
+		if($this->_enabled!=$value && $this->_owner)
+		{
+			if($value)
+			{
+				foreach($this->events() as $event=>$handler)
+					$this->_owner->attachEventHandler($event,array($this,$handler));
+			}
+			else
+			{
+				foreach($this->events() as $event=>$handler)
+					$this->_owner->detachEventHandler($event,array($this,$handler));
+			}
+		}
 		$this->_enabled=$value;
 	}
 }

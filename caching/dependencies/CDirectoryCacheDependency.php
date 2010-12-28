@@ -24,7 +24,7 @@
  * включает в себя доступ ко времени модификации многих файлов в директории.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDirectoryCacheDependency.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CDirectoryCacheDependency.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.caching.dependencies
  * @since 1.0
  */
@@ -50,7 +50,7 @@ class CDirectoryCacheDependency extends CCacheDependency
 
 	/**
 	 * Конструктор.
-	 * @param string директория для проверки
+	 * @param string $directory директория для проверки
 	 */
 	public function __construct($directory=null)
 	{
@@ -73,8 +73,8 @@ class CDirectoryCacheDependency extends CCacheDependency
 	/**
 	 * Определяет время последней модификации файлов в директории.
 	 * Метод может пройти рекурсивно в поддиректории, если свойство {@link recursiveLevel} не равно 0.
-	 * @param string имя директории
-	 * @param int уровень рекурсии
+	 * @param string $directory имя директории
+	 * @param integer $level уровень рекурсии
 	 * @return array список времени модификации файлов, индексированный по пути файла
 	 */
 	protected function generateTimestamps($directory,$level=0)
@@ -106,12 +106,12 @@ class CDirectoryCacheDependency extends CCacheDependency
 	}
 
 	/**
-	 * Checks to see if the file should be checked for dependency.
-	 * This method is invoked when dependency of the whole directory is being checked.
-	 * By default, it always returns true, meaning the file should be checked.
-	 * You may override this method to check only certain files.
-	 * @param string the name of the file that may be checked for dependency.
-	 * @return boolean whether this file should be checked.
+	 * Показывает, должен ли файл быть проверен для зависимости.
+	 * Метод вызывается, когда проверяется зависимость целой директории.
+	 * По умолчанию всегда возвращает значение true, т.е., файл должен быть проверен.
+	 * Вы можете переопределить метод для проверки только некоторых файлов
+	 * @param string $fileName имя файла, который может быть проверен для зависимости
+	 * @return boolean должен ли проверяться данный файл
 	 */
 	protected function validateFile($fileName)
 	{
@@ -119,12 +119,12 @@ class CDirectoryCacheDependency extends CCacheDependency
 	}
 
 	/**
-	 * Checks to see if the specified subdirectory should be checked for dependency.
-	 * This method is invoked when dependency of the whole directory is being checked.
-	 * By default, it always returns true, meaning the subdirectory should be checked.
-	 * You may override this method to check only certain subdirectories.
-	 * @param string the name of the subdirectory that may be checked for dependency.
-	 * @return boolean whether this subdirectory should be checked.
+	 * Показывает, должна ли определенная директория быть проверена для зависимости.
+	 * Метод вызывается, когда проверяется зависимость целой директории.
+	 * По умолчанию всегда возвращает значение true, т.е., поддиректория должна быть проверена.
+	 * Вы можете переопределить метод для проверки только некоторых поддиректорий
+	 * @param string $directory имя поддиректории, которая может быть проверена для зависимости
+	 * @return boolean должна ли проверяться данная поддиректория
 	 */
 	protected function validateDirectory($directory)
 	{

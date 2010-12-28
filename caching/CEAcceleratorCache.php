@@ -15,11 +15,11 @@
  *
  * Обратитесь к документации {@link CCache} за информацией об обычных операциях кэша, поддерживаемых компонентом CEAccelerator.
  * 
- * Please note that as of v0.9.6, eAccelerator no longer supports data caching.
- * This means if you still want to use this component, your eAccelerator should be of 0.9.5.x or lower version.
+ * Пожалуйста, обратите внимание, что с версии 0.9.6 eAccelerator больше не поддерживает кэширование данных.
+ * Это значит, что если вы все еще хотите использовать данный компонент, то должны использовать eAccelerator версии 0.9.5.x или ниже.
  *
  * @author Steffen Dietz <steffo.dietz[at]googlemail[dot]com>
- * @version $Id: CEAcceleratorCache.php 1854 2010-03-03 13:10:50Z qiang.xue $
+ * @version $Id: CEAcceleratorCache.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
  * @package system.caching
  * @since 1.0.4
  */
@@ -41,7 +41,7 @@ class CEAcceleratorCache extends CCache
 	/**
 	 * Получает значение из кэша по определенному ключу.
 	 * Метод переопределяет реализацию класса-родителя.
-	 * @param string уникальный ключ, идентифицирующий кэшированное значение
+	 * @param string $key уникальный ключ, идентифицирующий кэшированное значение
 	 * @return string хранимое в кэше значение; false, если значения в кэше нет или его срок годности истек
 	 */
 	protected function getValue($key)
@@ -53,9 +53,9 @@ class CEAcceleratorCache extends CCache
 	/**
 	 * Сохраняет в кэше значение, идентифицируемое ключом.
 	 * Метод переопределяет реализацию класса-родителя.
-	 * @param string ключ, идентифицирующий кэшируемое значение
-	 * @param string кэшируемое значение
-	 * @param integer количество секунд срока годности кэшируемого значения. 0 - без срока годности
+	 * @param string $key ключ, идентифицирующий кэшируемое значение
+	 * @param string $value кэшируемое значение
+	 * @param integer $expire количество секунд срока годности кэшируемого значения. 0 - без срока годности
 	 * @return boolean true, если значение успешно сохранено в кэше, иначе false
 	 */
 	protected function setValue($key,$value,$expire)
@@ -66,9 +66,9 @@ class CEAcceleratorCache extends CCache
 	/**
 	 * Сохраняет в кэше значение, идентифицируемое ключом, если кэш не содержит данный ключ.
 	 * Метод переопределяет реализацию класса-родителя.
-	 * @param string ключ, идентифицирующий кэшируемое значение
-	 * @param string кэшируемое значение
-	 * @param integer количество секунд срока годности кэшируемого значения. 0 - без срока годности
+	 * @param string $key ключ, идентифицирующий кэшируемое значение
+	 * @param string $value кэшируемое значение
+	 * @param integer $expire количество секунд срока годности кэшируемого значения. 0 - без срока годности
 	 * @return boolean true, если значение успешно сохранено в кэше, иначе false
 	 */
 	protected function addValue($key,$value,$expire)
@@ -79,7 +79,7 @@ class CEAcceleratorCache extends CCache
 	/**
 	 * Удаляет из кеша значение по определенному ключу.
 	 * Метод переопределяет реализацию класса-родителя.
-	 * @param string ключ удаляемого значения
+	 * @param string $key ключ удаляемого значения
 	 * @return boolean true, если в процессе удаления не произошло ошибок
 	 */
 	protected function deleteValue($key)
@@ -89,17 +89,19 @@ class CEAcceleratorCache extends CCache
 
 	/**
 	 * Удаляет все значения из кэша.
-	 * Будьте осторожны при выполнении данной операции, если кэш доступен в нескольких приложениях.
+	 * Это реализация метода, объявленного в классе-родителе
+	 * @return boolean успешно ли выполнилась операция очистки
+	 * @since 1.1.5
 	 */
-	public function flush()
+	protected function flushValues()
 	{
 		// first, remove expired content from cache
 		eaccelerator_gc();
-
 		// now, remove leftover cache-keys
 		$keys = eaccelerator_list_keys();
 		foreach($keys as $key)
 			$this->deleteValue(substr($key['name'], 1));
+		return true;
 	}
 }
 

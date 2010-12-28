@@ -46,7 +46,7 @@ Yii::import('CHtml',true);
  * CErrorHandler - это компонент ядра приложения, доступный методом {@link CApplication::getErrorHandler()}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CErrorHandler.php 2366 2010-08-29 14:11:34Z keyboard.idol@gmail.com $
+ * @version $Id: CErrorHandler.php 2768 2010-12-24 00:46:28Z alexander.makarow $
  * @package system.base
  * @since 1.0
  */
@@ -56,6 +56,12 @@ class CErrorHandler extends CApplicationComponent
 	 * @var integer максимальное количество строк исходного кода, отображаемых в представлениях. По умолчанию - 25.
 	 */
 	public $maxSourceLines=25;
+
+	/**
+	 * @var integer максимальное число отображаемых строк трассированного кода. По умолчанию - 10
+	 * @since 1.1.6
+	 */
+	public $maxTraceSourceLines = 10;
 	/**
 	 * @var string информация администратора приложения (может быть имененм или ссылкой email).
 	 * Отображается на странице ошибки конечным пользователям. По умолчанию - 'the webmaster'.
@@ -78,7 +84,7 @@ class CErrorHandler extends CApplicationComponent
 	/**
 	 * Обрабатывает событие ошибки/исключения.
 	 * Метод вызывается приложением всякий раз, когда оно перехватывает исключение или ошибку PHP.
-	 * @param CEvent событие, содержащее информацию об ошибке/исключении
+	 * @param CEvent $event событие, содержащее информацию об ошибке/исключении
 	 */
 	public function handle($event)
 	{
@@ -118,7 +124,7 @@ class CErrorHandler extends CApplicationComponent
 
 	/**
 	 * Обрабатывает исключение.
-	 * @param Exception перехваченное исключение
+	 * @param Exception $exception перехваченное исключение
 	 */
 	protected function handleException($exception)
 	{
@@ -135,20 +141,40 @@ class CErrorHandler extends CApplicationComponent
 				$fileName=$trace['file'];
 				$errorLine=$trace['line'];
 			}
+
+			$trace = $exception->getTrace();
+
+			foreach($trace as $i=>$t)
+			{
+				if(!isset($t['file']))
+					$trace[$i]['file']='unknown';
+
+				if(!isset($t['line']))
+					$trace[$i]['line']=0;
+
+				if(!isset($t['function']))
+					$trace[$i]['function']='unknown';
+
+				unset($trace[$i]['object']);
+			}
+
 			$this->_error=$data=array(
 				'code'=>($exception instanceof CHttpException)?$exception->statusCode:500,
 				'type'=>get_class($exception),
+				'errorCode'=>$exception->getCode(),
 				'message'=>$exception->getMessage(),
 				'file'=>$fileName,
 				'line'=>$errorLine,
 				'trace'=>$exception->getTraceAsString(),
-				'source'=>$this->getSourceLines($fileName,$errorLine),
+				'traces'=>$trace,
 			);
 
 			if(!headers_sent())
 				header("HTTP/1.0 {$data['code']} ".get_class($exception));
 			if($exception instanceof CHttpException || !YII_DEBUG)
 				$this->render('error',$data);
+			else if($this->isAjaxRequest())
+				$app->displayException($exception);
 			else
 				$this->render('exception',$data);
 		}
@@ -158,7 +184,7 @@ class CErrorHandler extends CApplicationComponent
 
 	/**
 	 * Обрабатывает ошибку PHP.
-	 * @param CErrorEvent событие ошибки PHP
+	 * @param CErrorEvent $event событие ошибки PHP
 	 */
 	protected function handleError($event)
 	{
@@ -170,15 +196,20 @@ class CErrorHandler extends CApplicationComponent
 		foreach($trace as $i=>$t)
 		{
 			if(!isset($t['file']))
-				$t['file']='unknown';
+				$trace[$i]['file']='unknown';
+
 			if(!isset($t['line']))
-				$t['line']=0;
+				$trace[$i]['line']=0;
+
 			if(!isset($t['function']))
-				$t['function']='unknown';
-			$traceString.="#$i {$t['file']}({$t['line']}): ";
+				$trace[$i]['function']='unknown';
+
+			$traceString.="#$i {$trace[$i]['file']}({$trace[$i]['line']}): ";
 			if(isset($t['object']) && is_object($t['object']))
 				$traceString.=get_class($t['object']).'->';
-			$traceString.="{$t['function']}()\n";
+			$traceString.="{$trace[$i]['function']}()\n";
+
+			unset($trace[$i]['object']);
 		}
 
 		$app=Yii::app();
@@ -191,11 +222,13 @@ class CErrorHandler extends CApplicationComponent
 				'file'=>$event->file,
 				'line'=>$event->line,
 				'trace'=>$traceString,
-				'source'=>$this->getSourceLines($event->file,$event->line),
+				'traces'=>$trace,
 			);
 			if(!headers_sent())
 				header("HTTP/1.0 500 PHP Error");
-			if(YII_DEBUG)
+			if($this->isAjaxRequest())
+				$app->displayError($event->code,$event->message,$event->file,$event->line);
+			else if(YII_DEBUG)
 				$this->render('exception',$data);
 			else
 				$this->render('error',$data);
@@ -205,13 +238,21 @@ class CErrorHandler extends CApplicationComponent
 	}
 
 	/**
-	 * @param Exception неперехваченное исключение
+	 * @return boolean является ли текущий запрос ajax-запросом
+	 */
+	protected function isAjaxRequest()
+	{
+		return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH']==='XMLHttpRequest';
+	}
+
+	/**
+	 * @param Exception $exception неперехваченное исключение
 	 * @return array точный трассированный путь до точки возникновения проблемы
 	 */
 	protected function getExactTrace($exception)
 	{
 		$traces=$exception->getTrace();
-		
+
 		foreach($traces as $trace)
 		{
 			// property access exception
@@ -223,9 +264,9 @@ class CErrorHandler extends CApplicationComponent
 
 	/**
 	 * Рендерит представление.
-	 * @param string имя представления (имя файла без расширения).
+	 * @param string $view имя представления (имя файла без расширения).
 	 * Обратитесь к {@link getViewFile}, чтобы узнать, где находится файл представления в соответствии с его именем.
-	 * @param array передаваемые в представление данные
+	 * @param array $data передаваемые в представление данные
 	 */
 	protected function render($view,$data)
 	{
@@ -243,8 +284,8 @@ class CErrorHandler extends CApplicationComponent
 
 	/**
 	 * Определяет используемый файл представления.
-	 * @param string имя представления (либо 'exception' либо 'error')
-	 * @param integer код ошибки HTTP
+	 * @param string $view имя представления (либо 'exception' либо 'error')
+	 * @param integer $code код ошибки HTTP
 	 * @return string путь к файлу представления
 	 */
 	protected function getViewFile($view,$code)
@@ -268,10 +309,10 @@ class CErrorHandler extends CApplicationComponent
 
 	/**
 	 * Ищет представление в определенной директории.
-	 * @param string директория, содержащая представление
-	 * @param string имя представления (либо 'exception' либо 'error')
-	 * @param integer код ошибки HTTP
-	 * @param string язык представления
+	 * @param string $viewPath директория, содержащая представление
+	 * @param string $view имя представления (либо 'exception' либо 'error')
+	 * @param integer $code код ошибки HTTP
+	 * @param string $srcLanguage язык представления
 	 * @return string путь к файлу представления
 	 */
 	protected function getViewFileInternal($viewPath,$view,$code,$srcLanguage=null)
@@ -284,12 +325,12 @@ class CErrorHandler extends CApplicationComponent
 				$viewFile=$app->findLocalizedFile($viewPath.DIRECTORY_SEPARATOR.'error.php',$srcLanguage);
 		}
 		else
-			$viewFile=$app->findLocalizedFile($viewPath.DIRECTORY_SEPARATOR."exception.php",$srcLanguage);
+			$viewFile=$viewPath.DIRECTORY_SEPARATOR."exception.php";
 		return $viewFile;
 	}
 
 	/**
-	 * @return string информация о версии сервера. Если приложение в производственом режиме, ничего не возвращается.
+	 * @return string информация о версии сервера. Если приложение в производственном режиме, ничего не возвращается.
 	 */
 	protected function getVersionInfo()
 	{
@@ -305,10 +346,98 @@ class CErrorHandler extends CApplicationComponent
 	}
 
 	/**
+	 * Конвертирует массив аргументов в его строковое представление
+	 *
+	 * @param array $args массив аргументов
+	 * @return string массив аргументов в его строковом представлении
+	 */
+	protected function argumentsToString($args)
+	{
+		$count=0;
+		foreach($args as $key => $value)
+		{
+			$count++;
+			if($count>5)
+			{
+				$args[$key]='...';
+				break;
+			}
+
+			if(is_object($value))
+				$args[$key] = get_class($value);
+			else if(is_bool($value))
+				$args[$key] = $value ? 'true' : 'false';
+			else if(is_string($value))
+			{
+				if(strlen($value)>64)
+					$args[$key] = '"'.substr($value,0,64).'..."';
+				else
+					$args[$key] = '"'.$value.'"';
+			}
+			else if(is_array($value))
+				$args[$key] = 'array('.$this->argumentsToString($value).')';
+			else if($value===null)
+				$args[$key] = 'null';
+			else if(is_resource($value))
+				$args[$key] = 'resource';
+		}
+
+		$out = implode(", ", $args);
+
+		return $out;
+	}
+
+	/**
+	 * Возвращает значение, показывающее, является ли стек вызова кодом приложения
+	 * @param array $trace данные для трассировки
+	 * @return boolean является ли стек вызова кодом приложения
+	 */
+	protected function isCoreCode($trace)
+	{
+		if(isset($trace['file']))
+		{
+			$systemPath=realpath(dirname(__FILE__).'/..');
+			return $trace['file']==='unknown' || strpos(realpath($trace['file']),$systemPath.DIRECTORY_SEPARATOR)===0;
+		}
+		return false;
+	}
+
+	/**
+	 * Генерирует отображение строк исходного кода, окружающих строку с ошибкой.
+	 * @param string $file путь к файлу исходного кода
+	 * @param integer $line номер строки с ошибкой
+	 * @param integer $maxLines максимальное число отображаемых строк
+	 * @return string результат рендера
+	 */
+	protected function renderSourceCode($file,$errorLine,$maxLines)
+	{
+		$errorLine--;	// adjust line number to 0-based from 1-based
+		if($errorLine<0 || ($lines=@file($file))===false || ($lineCount=count($lines))<=$errorLine)
+			return '';
+
+		$halfLines=(int)($maxLines/2);
+		$beginLine=$errorLine-$halfLines>0 ? $errorLine-$halfLines:0;
+		$endLine=$errorLine+$halfLines<$lineCount?$errorLine+$halfLines:$lineCount-1;
+		$lineNumberWidth=strlen($endLine+1);
+
+		$output='';
+		for($i=$beginLine;$i<=$endLine;++$i)
+		{
+			$isErrorLine = $i===$errorLine;
+			$code=sprintf("<span class=\"ln".($isErrorLine?' error-ln':'')."\">%0{$lineNumberWidth}d</span> %s",$i+1,CHtml::encode(str_replace("\t",'    ',$lines[$i])));
+			if(!$isErrorLine)
+				$output.=$code;
+			else
+				$output.='<span class="error">'.$code.'</span>';
+		}
+		return '<div class="code"><pre>'.$output.'</pre></div>';
+	}
+
+	/**
 	 * Возвращает строки исходного кода, окружающие строку с ошибкой.
 	 * Возвратится не более {@link maxSourceLines} строк кода.
-	 * @param string путь к файлу исходного кода
-	 * @param integer номер строки с ошибкой
+	 * @param string $file путь к файлу исходного кода
+	 * @param integer $line номер строки с ошибкой
 	 * @return array строки исходного кода, окружающие строку с ошибкой, индексированные по номерам строк
 	 */
 	protected function getSourceLines($file,$line)

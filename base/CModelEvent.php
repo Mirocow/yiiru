@@ -15,7 +15,7 @@
  * Класс CModelEvent представляет параметры события, необходимые для перехвата события моделью.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CModelEvent.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CModelEvent.php 2639 2010-11-11 16:12:42Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -30,4 +30,11 @@ class CModelEvent extends CEvent
 	 * выполнение валидации и вызов метода {@link CModel::afterValidate}.
 	 */
 	public $isValid=true;
+	/**
+	 * @var CDbCrireria критерий запроса, передаваемый в качестве параметра в метод find класса {@link CActiveRecord}.
+	 * Помните, что данное свойство используется только событием {@link CActiveRecord::onBeforeFind}.
+	 * Данное свойство может принимать значение null.
+	 * @since 1.1.5
+	 */
+	public $criteria;
 }

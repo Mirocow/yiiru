@@ -31,13 +31,13 @@
  * php путь/к/скрипту-точке-входа.php <имя-команды> [param 1] [param 2] ...
  * </pre>
  *
- * Вы можете использовать слудующую команду для просмотра информации о команде:
+ * Вы можете использовать следующую команду для просмотра информации о команде:
  * <pre>
  * php путь/к/скрипту-точке-входа.php help <имя-команды>
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CConsoleApplication.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CConsoleApplication.php 2690 2010-11-29 17:16:44Z qiang.xue $
  * @package system.console
  * @since 1.0
  */
@@ -101,23 +101,39 @@ class CConsoleApplication extends CApplication
 	 * Отображает захваченную PHP-ошибку.
 	 * Метод отображает ошибку в консольном режиме в отсутствие активного
 	 * обработчика ошибок.
-	 * @param integer код ошибки
-	 * @param string сообщение ошибки
-	 * @param string файл, в котором произошла ошибка
-	 * @param string линия, в которой произошла ошибка
+	 * @param integer $code код ошибки
+	 * @param string $message сообщение ошибки
+	 * @param string $file файл, в котором произошла ошибка
+	 * @param string $line строка, в которой произошла ошибка
 	 */
 	public function displayError($code,$message,$file,$line)
 	{
 		echo "PHP Error[$code]: $message\n";
-		echo "in file $file at line $line\n";
-		debug_print_backtrace();
+		echo "    in file $file at line $line\n";
+		$trace=debug_backtrace();
+		// skip the first 4 stacks as they do not tell the error position
+		if(count($trace)>4)
+			$trace=array_slice($trace,4);
+		foreach($trace as $i=>$t)
+		{
+			if(!isset($t['file']))
+				$t['file']='unknown';
+			if(!isset($t['line']))
+				$t['line']=0;
+			if(!isset($t['function']))
+				$t['function']='unknown';
+			echo "#$i {$t['file']}({$t['line']}): ";
+			if(isset($t['object']) && is_object($t['object']))
+				echo get_class($t['object']).'->';
+			echo "{$t['function']}()\n";
+		}
 	}
 
 	/**
 	 * Отображает неперехваченное PHP-исключение.
 	 * Метод отображает исключение в консольном режиме в отсутствие
 	 * активного обработчика ошибок.
-	 * @param Exception неперехваченное исключение
+	 * @param Exception $exception неперехваченное исключение
 	 */
 	public function displayException($exception)
 	{
@@ -135,7 +151,7 @@ class CConsoleApplication extends CApplication
 	}
 
 	/**
-	 * @param string директория, содержащая классы команды
+	 * @param string $value директория, содержащая классы команды
 	 * @throws CException вызывается, если директория неверна
 	 */
 	public function setCommandPath($value)

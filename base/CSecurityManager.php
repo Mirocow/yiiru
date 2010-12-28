@@ -35,7 +35,7 @@
  * {@link CApplication::getSecurityManager()}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CSecurityManager.php 2278 2010-07-21 14:08:46Z qiang.xue $
+ * @version $Id: CSecurityManager.php 2607 2010-11-02 20:35:59Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -45,22 +45,23 @@ class CSecurityManager extends CApplicationComponent
 	const STATE_ENCRYPTION_KEY='Yii.CSecurityManager.encryptionkey';
 
 	/**
-	 * @var string the name of the hashing algorithm to be used by {@link computeHMAC}.
-	 * See {@link http://php.net/manual/en/function.hash-algos.php hash-algos} for the list of possible
-	 * hash algorithms. Note that if you are using PHP 5.1.1 or below, you can only use 'sha1' or 'md5'.
+	 * @var string название алгоритма хэширования, используемого в методе {@link computeHMAC}.
+	 * См. {@link http://php.net/manual/en/function.hash-algos.php hash-algos} - список возможных
+	 * алгоритмов хэширования. Помните, что при использовании PHP версии 5.1.1 или ниже вы можете использовать только
+	 * алгоритмы 'sha1' или 'md5'.
 	 *
-	 * Defaults to 'sha1', meaning using SHA1 hash algorithm.
+	 * По умолчанию - 'sha1', т.е., используется алгоритм хэширования SHA1
 	 * @since 1.1.3
 	 */
 	public $hashAlgorithm='sha1';
 	/**
-	 * @var mixed the name of the crypt algorithm to be used by {@link encrypt} and {@link decrypt}.
-	 * This will be passed as the first parameter to {@link http://php.net/manual/en/function.mcrypt-module-open.php mcrypt_module_open}.
+	 * @var mixed название алгоритма шифрования, используемого в методах {@link encrypt} и {@link decrypt}.
+	 * Передается первым параметром в функцию {@link http://php.net/manual/en/function.mcrypt-module-open.php mcrypt_module_open}.
 	 *
-	 * This property can also be configured as an array. In this case, the array elements will be passed in order
-	 * as parameters to mcrypt_module_open. For example, <code>array('rijndael-256', '', 'ofb', '')</code>.
+	 * Свойство также может быть задано как массив. В этом случае элементы массива будут переданы по порядку в качестве
+	 * параметров в функцию mcrypt_module_open. Например, массив <code>array('rijndael-256', '', 'ofb', '')</code>.
 	 *
-	 * Defaults to 'des', meaning using DES crypt algorithm.
+	 * По умолчанию - 'des', т.е., используется алгоритм шифрования DES
 	 * @since 1.1.3
 	 */
 	public $cryptAlgorithm='des';
@@ -73,7 +74,7 @@ class CSecurityManager extends CApplicationComponent
 	 */
 	protected function generateRandomKey()
 	{
-		return rand().rand().rand().rand();
+		return sprintf('%08x%08x%08x%08x',mt_rand(),mt_rand(),mt_rand(),mt_rand());
 	}
 
 	/**
@@ -99,7 +100,7 @@ class CSecurityManager extends CApplicationComponent
 	}
 
 	/**
-	 * @param string ключ, используемый при генерации HMAC
+	 * @param string $value ключ, используемый при генерации HMAC
 	 * @throws CException вызывается, если ключ пустой
 	 */
 	public function setValidationKey($value)
@@ -133,7 +134,7 @@ class CSecurityManager extends CApplicationComponent
 	}
 
 	/**
-	 * @param string секретный ключ, используемый для шифрования/дешифровки данных.
+	 * @param string $value секретный ключ, используемый для шифрования/дешифровки данных.
 	 * @throws CException вызывается, если ключ пустой
 	 */
 	public function setEncryptionKey($value)
@@ -164,8 +165,8 @@ class CSecurityManager extends CApplicationComponent
 
 	/**
 	 * Шифрует данные.
-	 * @param string шифруемые данные
-	 * @param string ключ шифрования. По умолчанию - null, т.е., используется {@link getEncryptionKey EncryptionKey}
+	 * @param string $data шифруемые данные
+	 * @param string $key ключ шифрования. По умолчанию - null, т.е., используется {@link getEncryptionKey EncryptionKey}
 	 * @return string шифрованные данные
 	 * @throws CException вызывается, если расширение PHP Mcrypt не загружено
 	 */
@@ -184,8 +185,8 @@ class CSecurityManager extends CApplicationComponent
 
 	/**
 	 * Дешифрует данные.
-	 * @param string дешифруемые данные
-	 * @param string ключ шифрования. По умолчанию - null, т.е., используется {@link getEncryptionKey EncryptionKey}
+	 * @param string $data дешифруемые данные
+	 * @param string $key ключ шифрования. По умолчанию - null, т.е., используется {@link getEncryptionKey EncryptionKey}
 	 * @return string дешифрованные данные
 	 * @throws CException вызывается, если расширение PHP Mcrypt не загружено
 	 */
@@ -227,8 +228,8 @@ class CSecurityManager extends CApplicationComponent
 
 	/**
 	 * Добавляет префикс в виде HMAC к данным.
-	 * @param string хешируемые данные.
-	 * @param string частный ключ, испльзуемый для генерации HMAC. По умолчанию - null, т.е., используется {@link validationKey}
+	 * @param string $data хешируемые данные.
+	 * @param string $key частный ключ, испльзуемый для генерации HMAC. По умолчанию - null, т.е., используется {@link validationKey}
 	 * @return string данные, с префиксом в виде HMAC
 	 */
 	public function hashData($data,$key=null)
@@ -238,9 +239,9 @@ class CSecurityManager extends CApplicationComponent
 
 	/**
 	 * Проверяет, поддельные ли данные.
-	 * @param string проверяемые данные. Данные должны быть предварительно сгенерированы
+	 * @param string $data проверяемые данные. Данные должны быть предварительно сгенерированы
 	 * методом {@link hashData()}.
-	 * @param string частный ключ, испльзуемый для генерации HMAC. По умолчанию - null, т.е., используется {@link validationKey}
+	 * @param string $key частный ключ, испльзуемый для генерации HMAC. По умолчанию - null, т.е., используется {@link validationKey}
 	 * @return string реальные данные с префиксом в виде HMAC. False, если данные подделаны
 	 */
 	public function validateData($data,$key=null)
@@ -258,8 +259,8 @@ class CSecurityManager extends CApplicationComponent
 
 	/**
 	 * Вычисляет HMAC для данных, используя {@link getValidationKey ValidationKey}.
-	 * @param string данные, для которых должен быть сгенерирован HMAC
-	 * @param string частный ключ, испльзуемый для генерации HMAC. По умолчанию - null, т.е., используется {@link validationKey}
+	 * @param string $data данные, для которых должен быть сгенерирован HMAC
+	 * @param string $key частный ключ, испльзуемый для генерации HMAC. По умолчанию - null, т.е., используется {@link validationKey}
 	 * @return string HMAC для данных
 	 */
 	protected function computeHMAC($data,$key=null)

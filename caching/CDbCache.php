@@ -23,7 +23,7 @@
  * Обратитесь к документации {@link CCache} за информацией об обычных операциях кэша, поддерживаемых компонентом CDbCache.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbCache.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CDbCache.php 2567 2010-10-22 18:10:54Z qiang.xue $
  * @package system.caching
  * @since 1.0
  */
@@ -59,16 +59,6 @@ class CDbCache extends CCache
 	private $_db;
 	private $_gcProbability=100;
 	private $_gced=false;
-
-	/**
-	 * Деструктор.
-	 * Отсоединяет БД
-	 */
-	public function __destruct()
-	{
-		if($this->_db!==null)
-			$this->_db->setActive(false);
-	}
 
 	/**
 	 * Инициализирует данный компонент приложения.
@@ -108,7 +98,7 @@ class CDbCache extends CCache
 	}
 
 	/**
-	 * @param integer вероятность (частей на миллион) выполнения "сбора мусора" (GC) при сохранении
+	 * @param integer $value вероятность (частей на миллион) выполнения "сбора мусора" (GC) при сохранении
 	 * части данных в кэше. По умолчанию - 100, что означает 0.01% шанс.
 	 * Число должно быть в диапазоне 0 и 1000000. Значение 0 означает, что сбор мусора производиться не будет
 	 * @since 1.0.9
@@ -125,8 +115,8 @@ class CDbCache extends CCache
 
 	/**
 	 * Создает в БД таблицу для хранения кэша.
-	 * @param CDbConnection соединение БД
-	 * @param string имя создаваемой таблицы
+	 * @param CDbConnection $db соединение БД
+	 * @param string $tableName имя создаваемой таблицы
 	 */
 	protected function createCacheTable($db,$tableName)
 	{
@@ -152,7 +142,7 @@ EOD;
 	 * @return CDbConnection экземпляр соединения БД
 	 * @throws CException вызывается, если {@link connectionID} не указывает на доступный компонент приложения
 	 */
-	protected function getDbConnection()
+	public function getDbConnection()
 	{
 		if($this->_db!==null)
 			return $this->_db;
@@ -172,9 +162,19 @@ EOD;
 	}
 
 	/**
+	 * Устанавливает соединение БД, используемое компонентом кэша
+	 * @param CDbConnection $value экземпляр соединения БД
+	 * @since 1.1.5
+	 */
+	public function setDbConnection($value)
+	{
+		$this->_db=$value;
+	}
+
+	/**
 	 * Получает значение из кэша по определенному ключу.
 	 * Метод переопределяет реализацию класса-родителя.
-	 * @param string уникальный ключ, идентифицирующий кэшированное значение
+	 * @param string $key уникальный ключ, идентифицирующий кэшированное значение
 	 * @return string хранимое в кэше значение; false, если значения в кэше нет или его срок годности истек
 	 */
 	protected function getValue($key)
@@ -186,7 +186,7 @@ EOD;
 
 	/**
 	 * Получает из кэша несколько значений с определенными ключами.
-	 * @param array список ключей, идентифицирующих кэшированные значения
+	 * @param array $keys список ключей, идентифицирующих кэшированные значения
 	 * @return array список кэшированных значений, индексированный по ключам
 	 * @since 1.0.8
 	 */
@@ -210,9 +210,9 @@ EOD;
 	/**
 	 * Сохраняет в кэше значение, идентифицируемое ключом.
 	 * Метод переопределяет реализацию класса-родителя.
-	 * @param string ключ, идентифицирующий кэшируемое значение
-	 * @param string кэшируемое значение
-	 * @param integer количество секунд срока годности кэшируемого значения. 0 - без срока годности
+	 * @param string $key ключ, идентифицирующий кэшируемое значение
+	 * @param string $value кэшируемое значение
+	 * @param integer $expire количество секунд срока годности кэшируемого значения. 0 - без срока годности
 	 * @return boolean true, если значение успешно сохранено в кэше, иначе false
 	 */
 	protected function setValue($key,$value,$expire)
@@ -224,9 +224,9 @@ EOD;
 	/**
 	 * Сохраняет в кэше значение, идентифицируемое ключом, если кэш не содержит данный ключ.
 	 * Метод переопределяет реализацию класса-родителя.
-	 * @param string ключ, идентифицирующий кэшируемое значение
-	 * @param string кэшируемое значение
-	 * @param integer количество секунд срока годности кэшируемого значения. 0 - без срока годности
+	 * @param string $key ключ, идентифицирующий кэшируемое значение
+	 * @param string $value кэшируемое значение
+	 * @param integer $expire количество секунд срока годности кэшируемого значения. 0 - без срока годности
 	 * @return boolean true, если значение успешно сохранено в кэше, иначе false
 	 */
 	protected function addValue($key,$value,$expire)
@@ -258,7 +258,7 @@ EOD;
 	/**
 	 * Удаляет из кеша значение по определенному ключу.
 	 * Метод переопределяет реализацию класса-родителя.
-	 * @param string ключ удаляемого значения
+	 * @param string $key ключ удаляемого значения
 	 * @return boolean true, если в процессе удаления не произошло ошибок
 	 */
 	protected function deleteValue($key)
@@ -279,9 +279,11 @@ EOD;
 
 	/**
 	 * Удаляет все значения из кэша.
-	 * Будьте осторожны при выполнении данной операции, если кэш доступен в нескольких приложениях.
+	 * Это реализация метода, объявленного в классе-родителе
+	 * @return boolean успешно ли выполнилась операция очистки
+	 * @since 1.1.5
 	 */
-	public function flush()
+	protected function flushValues()
 	{
 		$this->getDbConnection()->createCommand("DELETE FROM {$this->cacheTableName}")->execute();
 		return true;

@@ -18,7 +18,7 @@
  * Обратитесь к документации {@link CCache} за информацией об обычных операциях кэша, поддерживаемых компонентом CFileCache.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFileCache.php 1942 2010-03-21 00:48:04Z alexander.makarow $
+ * @version $Id: CFileCache.php 2641 2010-11-12 01:53:28Z qiang.xue $
  * @package system.caching
  * @since 1.0.6
  */
@@ -47,6 +47,8 @@ class CFileCache extends CCache
 	/**
 	 * Инициализирует данный компонент приложения.
 	 * Метод требуется интерфейсом {@link IApplicationComponent}.
+	 * It checks the availability of memcache.
+	 * @throws CException if APC cache extension is not loaded or is disabled.
 	 */
 	public function init()
 	{
@@ -67,7 +69,7 @@ class CFileCache extends CCache
 	}
 
 	/**
-	 * @param integer вероятность (частей на миллион) выполнения "сбора мусора" (GC) при сохранении
+	 * @param integer $value вероятность (частей на миллион) выполнения "сбора мусора" (GC) при сохранении
 	 * части данных в кэше. По умолчанию - 100, что означает 0.01% шанс.
 	 * Число должно быть в диапазоне 0 и 1000000. Значение 0 означает, что сбор мусора производиться не будет
 	 */
@@ -83,9 +85,11 @@ class CFileCache extends CCache
 
 	/**
 	 * Удаляет все значения из кэша.
-	 * Будьте осторожны при выполнении данной операции, если кэш доступен в нескольких приложениях.
+	 * Это реализация метода, объявленного в классе-родителе
+	 * @return boolean успешно ли выполнилась операция очистки
+	 * @since 1.1.5
 	 */
-	public function flush()
+	protected function flushValues()
 	{
 		return $this->gc(false);
 	}
@@ -93,7 +97,7 @@ class CFileCache extends CCache
 	/**
 	 * Получает значение из кэша по определенному ключу.
 	 * Метод переопределяет реализацию класса-родителя.
-	 * @param string уникальный ключ, идентифицирующий кэшированное значение
+	 * @param string $key уникальный ключ, идентифицирующий кэшированное значение
 	 * @return string хранимое в кэше значение; false, если значения в кэше нет или его срок годности истек
 	 */
 	protected function getValue($key)
@@ -109,9 +113,9 @@ class CFileCache extends CCache
 	/**
 	 * Сохраняет в кэше значение, идентифицируемое ключом.
 	 * Метод переопределяет реализацию класса-родителя.
-	 * @param string ключ, идентифицирующий кэшируемое значение
-	 * @param string кэшируемое значение
-	 * @param integer количество секунд срока годности кэшируемого значения. 0 - без срока годности
+	 * @param string $key ключ, идентифицирующий кэшируемое значение
+	 * @param string $value кэшируемое значение
+	 * @param integer $expire количество секунд срока годности кэшируемого значения. 0 - без срока годности
 	 * @return boolean true, если значение успешно сохранено в кэше, иначе false
 	 */
 	protected function setValue($key,$value,$expire)
@@ -129,7 +133,7 @@ class CFileCache extends CCache
 		$cacheFile=$this->getCacheFile($key);
 		if($this->directoryLevel>0)
 			@mkdir(dirname($cacheFile),0777,true);
-		if(@file_put_contents($cacheFile,$value,LOCK_EX)==strlen($value))
+		if(@file_put_contents($cacheFile,$value,LOCK_EX)!==false)
 		{
 			@chmod($cacheFile,0777);
 			return @touch($cacheFile,$expire);
@@ -141,9 +145,9 @@ class CFileCache extends CCache
 	/**
 	 * Сохраняет в кэше значение, идентифицируемое ключом, если кэш не содержит данный ключ.
 	 * Метод переопределяет реализацию класса-родителя.
-	 * @param string ключ, идентифицирующий кэшируемое значение
-	 * @param string кэшируемое значение
-	 * @param integer количество секунд срока годности кэшируемого значения. 0 - без срока годности
+	 * @param string $key ключ, идентифицирующий кэшируемое значение
+	 * @param string $value кэшируемое значение
+	 * @param integer $expire количество секунд срока годности кэшируемого значения. 0 - без срока годности
 	 * @return boolean true, если значение успешно сохранено в кэше, иначе false
 	 */
 	protected function addValue($key,$value,$expire)
@@ -157,7 +161,7 @@ class CFileCache extends CCache
 	/**
 	 * Удаляет из кеша значение по определенному ключу.
 	 * Метод переопределяет реализацию класса-родителя.
-	 * @param string ключ удаляемого значения
+	 * @param string $key ключ удаляемого значения
 	 * @return boolean true, если в процессе удаления не произошло ошибок
 	 */
 	protected function deleteValue($key)
@@ -168,7 +172,7 @@ class CFileCache extends CCache
 
 	/**
 	 * Возвращает путь в файлу кэша по переданному ключу.
-	 * @param string ключ кэша
+	 * @param string $key ключ кэша
 	 * @return string путь к файлу кэша
 	 */
 	protected function getCacheFile($key)
@@ -189,9 +193,9 @@ class CFileCache extends CCache
 
 	/**
 	 * Удаляет файлы кэша с истекшим сроком годности.
-	 * @param boolean удалять ли только файлы кэша с истекшим сроком годности.
+	 * @param boolean $expiredOnly удалять только файлы кэша с истекшим сроком годности.
 	 * Если true, будут удалены все файлы кэша в директории {@link cachePath}.
-	 * @param string путь для очистки. Если null, будет использоваться путь, заданный свойством {@link cachePath}.
+	 * @param string $path путь для очистки. Если null, будет использоваться путь, заданный свойством {@link cachePath}.
 	 */
 	protected function gc($expiredOnly=true,$path=null)
 	{

@@ -18,7 +18,7 @@
  * компонент приложения может быть настроен через конфигурацию приложения.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CApplicationComponent.php 2359 2010-08-28 23:10:51Z mdomba $
+ * @version $Id: CApplicationComponent.php 2560 2010-10-18 12:26:43Z mdomba $
  * @package system.base
  * @since 1.0
  */
@@ -47,6 +47,7 @@ abstract class CApplicationComponent extends CComponent implements IApplicationC
 	}
 
 	/**
+	 * Проверяет, был ли компонент приложения инициализирован
 	 * @return boolean был ли компонент приложения инициализирован (т.е., вызывался ли метод {@link init()})
 	 */
 	public function getIsInitialized()

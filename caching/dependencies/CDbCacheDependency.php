@@ -17,7 +17,7 @@
  * Это соединение БД, используемое для выполнения запроса.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbCacheDependency.php 2300 2010-08-03 01:45:21Z qiang.xue $
+ * @version $Id: CDbCacheDependency.php 2645 2010-11-12 14:51:13Z qiang.xue $
  * @package system.caching.dependencies
  * @since 1.0
  */
@@ -43,7 +43,7 @@ class CDbCacheDependency extends CCacheDependency
 
 	/**
 	 * Конструктор.
-	 * @param string SQL выражение, результат которого используется для проверки изменения зависимости.
+	 * @param string $sql SQL выражение, результат которого используется для проверки изменения зависимости.
 	 */
 	public function __construct($sql=null)
 	{
@@ -94,7 +94,7 @@ class CDbCacheDependency extends CCacheDependency
 			if(($this->_db=Yii::app()->getComponent($this->connectionID)) instanceof CDbConnection)
 				return $this->_db;
 			else
-				throw new CException(Yii::t('yii','CDbHttpSession.connectionID "{id}" is invalid. Please make sure it refers to the ID of a CDbConnection application component.',
+				throw new CException(Yii::t('yii','CDbCacheDependency.connectionID "{id}" is invalid. Please make sure it refers to the ID of a CDbConnection application component.',
 					array('{id}'=>$this->connectionID)));
 		}
 	}

@@ -16,7 +16,7 @@
  * Зависимость является неизменной только в случае, если время последней модификации файла остается неизменным.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFileCacheDependency.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CFileCacheDependency.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.caching.dependencies
  * @since 1.0
  */
@@ -30,7 +30,7 @@ class CFileCacheDependency extends CCacheDependency
 
 	/**
 	 * Конструктор.
-	 * @param string имя файла, чьё время последней модификации используется для проверки изменения зависимости.
+	 * @param string $fileName имя файла, время последней модификации которого используется для проверки изменения зависимости.
 	 */
 	public function __construct($fileName=null)
 	{

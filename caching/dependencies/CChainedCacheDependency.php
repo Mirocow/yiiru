@@ -20,7 +20,7 @@
  * (за подробностями обратитесь к классу {@link CList}).
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CChainedCacheDependency.php 2282 2010-07-22 02:05:03Z qiang.xue $
+ * @version $Id: CChainedCacheDependency.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.caching.dependencies
  * @since 1.0
  */
@@ -30,7 +30,7 @@ class CChainedCacheDependency extends CComponent implements ICacheDependency
 
 	/**
 	 * Конструктор.
-	 * @param array зависимости, добавляемые в данную цепочку
+	 * @param array $dependencies зависимости, добавляемые в данную цепочку
 	 * @since 1.1.4
 	 */
 	public function __construct($dependencies=array())
@@ -50,7 +50,7 @@ class CChainedCacheDependency extends CComponent implements ICacheDependency
 	}
 
 	/**
-	 * @param array список объектов зависимости или конфигураций, добавляемых к данной цепочке.
+	 * @param array $values список объектов зависимости или конфигураций, добавляемых к данной цепочке.
 	 * Если зависимость определена конфигурацией, то конфигурация должна быть массивом, который
 	 * может быть распознан методом {@link YiiBase::createComponent}
 	 * @since 1.0.10

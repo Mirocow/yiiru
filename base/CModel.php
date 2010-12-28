@@ -15,7 +15,7 @@
  * CModel определяет базовый каркас для моделей данных, которым необходима валидация.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CModel.php 2365 2010-08-29 14:10:01Z qiang.xue $
+ * @version $Id: CModel.php 2604 2010-11-02 18:03:49Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -132,7 +132,7 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	 *
 	 * Ошибки, возникающие при валидации, можно получить методом {@link getErrors}.
 	 *
-	 * @param array список валидируемых атрибутов. По умолчанию - null,
+	 * @param array $attributes список валидируемых атрибутов. По умолчанию - null,
 	 * т.е. проверяться должны все атрибуты, перечисленные в применяемых
 	 * правилах валидации. Если данный параметр передан в виде списка атрибутов,
 	 * валидироваться будут только перечисленные атрибуты.
@@ -152,6 +152,18 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 		}
 		else
 			return false;
+	}
+
+	/**
+	 * Метод вызывается после создания экземпляра модели новым оператором.
+	 * По умолчанию реализация метода вызывает событие {@link onAfterConstruct}.
+	 * Вы можете переопределить данный метод для реализации постобработки после создания модели.
+	 * Убедитесь, что вы вызываете родительскую реализацию метода, чтобы событие вызывалось правильно
+	 */
+	protected function afterConstruct()
+	{
+		if($this->hasEventHandler('onAfterConstruct'))
+			$this->onAfterConstruct(new CEvent($this));
 	}
 
 	/**
@@ -181,8 +193,18 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	}
 
 	/**
+	 * This event is raised after the model instance is created by new operator.
+	 * @param CEvent $event the event parameter
+	 * @since 1.0.2
+	 */
+	public function onAfterConstruct($event)
+	{
+		$this->raiseEvent('onAfterConstruct',$event);
+	}
+
+	/**
 	 * Данное событие вызывается перед выполнением валидации.
-	 * @param CModelEvent параметр события
+	 * @param CModelEvent $event параметр события
 	 * @since 1.0.2
 	 */
 	public function onBeforeValidate($event)
@@ -192,7 +214,7 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 
 	/**
 	 * Данное событие вызывается после выполнения валидации.
-	 * @param CModelEvent параметр события
+	 * @param CModelEvent $event параметр события
 	 * @since 1.0.2
 	 */
 	public function onAfterValidate($event)
@@ -221,7 +243,7 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 
 	/**
 	 * Возвращает валидаторы, применимые к текущему {@link scenario сценарию}.
-	 * @param string имя атрибута, валидаторы которого должны буть вовращены.
+	 * @param string $attribute имя атрибута, валидаторы которого должны буть вовращены.
 	 * Если null, будут возвращены валидаторы для ВСЕХ атрибутов модели.
 	 * @return array валидаторы, применимые к текущему {@link scenario сценарию}.
 	 * @since 1.0.1
@@ -267,7 +289,7 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	 * Возвращает значение, показывающее, требуется ли атрибут.
 	 * Определяется проверкой, ассоциирован ли атрибут с правилом валидации
 	 * {@link CRequiredValidator} в текущем {@link scenario сценарии}.
-	 * @param string имя атрибута
+	 * @param string $attribute имя атрибута
 	 * @return boolean требуется ли атрибут
 	 * @since 1.0.2
 	 */
@@ -283,7 +305,7 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 
 	/**
 	 * Возвращает значение, показывающее, безопасен ли атрибут для массового присваивания.
-	 * @param string имя атрибута
+	 * @param string $attribute имя атрибута
 	 * @return boolean безопасен ли атрибут для массового присваивания
 	 * @since 1.1
 	 */
@@ -295,7 +317,7 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 
 	/**
 	 * Возвращает текст ярлыка для определенного атрибута.
-	 * @param string имя атрибута
+	 * @param string $attribute имя атрибута
 	 * @return string ярлык атрибута
 	 * @see generateAttributeLabel
 	 * @see attributeLabels
@@ -311,7 +333,7 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 
 	/**
 	 * Возвращает значение, показывающее, есть ли ошибки валидации.
-	 * @param string имя атрибута. Для проверки всех атрибутов, используйте значение null
+	 * @param string $attribute имя атрибута. Для проверки всех атрибутов, используйте значение null
 	 * @return boolean есть ли ошибки
 	 */
 	public function hasErrors($attribute=null)
@@ -324,7 +346,7 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 
 	/**
 	 * Возвращает ошибки для всех атрибутов или определенного атрибута.
-	 * @param string имя атрибута. Для получения ошибок всех атрибутов, используйте значение null
+	 * @param string $attribute имя атрибута. Для получения ошибок всех атрибутов, используйте значение null
 	 * @return array ошибки для всех атрибутов или определенного атрибута. Если ошибок нет, возвращается пустой массив
 	 */
 	public function getErrors($attribute=null)
@@ -337,7 +359,7 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 
 	/**
 	 * Возвращает первую ошибку определенного атрибута.
-	 * @param string имя атрибута
+	 * @param string $attribute имя атрибута
 	 * @return string сообщение об ошибке. Null, если ошибок нет
 	 * @since 1.0.2
 	 */
@@ -348,8 +370,8 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 
 	/**
 	 * Добавляет новую ошибку к определенному атрибуту.
-	 * @param string имя атрибута
-	 * @param string новое сообщение об ошибке
+	 * @param string $attribute имя атрибута
+	 * @param string $error новое сообщение об ошибке
 	 */
 	public function addError($attribute,$error)
 	{
@@ -358,7 +380,7 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 
 	/**
 	 * Добавляет список ошибок.
-	 * @param array список ошибок. Ключи массива должны быть именами атрибутов.
+	 * @param array $errors список ошибок. Ключи массива должны быть именами атрибутов.
 	 * Значения массива должны быть сообщениями об ошибках. Если атрибут имеет несколько ошибок,
 	 * эти ошибки должны передаваться в виде массива.
 	 * Вы можете использовать результат выполнения метода {@link getErrors} в качестве значения данного параметра
@@ -380,7 +402,7 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 
 	/**
 	 * Удаляет ошибки для всех атрибутов или одного атрибута.
-	 * @param string имя атрибута. Для удаления ошибок всех атрибутов, используйте значение null
+	 * @param string $attribute имя атрибута. Для удаления ошибок всех атрибутов, используйте значение null
 	 */
 	public function clearErrors($attribute=null)
 	{
@@ -395,7 +417,7 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	 * Это делается заменой подчеркиваний или дефисов пробелами и
 	 * изменением первой буквы каждого слова на заглавную.
 	 * Например, 'department_name' или 'DepartmentName' станет 'Department Name'.
-	 * @param string имя атрибута
+	 * @param string $name имя атрибута
 	 * @return string ярлык атрибута
 	 */
 	public function generateAttributeLabel($name)
@@ -405,7 +427,7 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 
 	/**
 	 * Возвращает значения всех атрибутов.
-	 * @param array список атрибутов, значения которых необходимо возвратить.
+	 * @param array $names список атрибутов, значения которых необходимо возвратить.
 	 * По умолчанию - null, т.е. будут возвращены все атрибуты, перечисленные в свойстве {@link attributeNames}.
 	 * Если это массив, будут возвращены только атрибуты этого массива.
 	 * @return array attribute values (name=>value).
@@ -429,8 +451,8 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 
 	/**
 	 * Массово устанавливает значения атрибутов.
-	 * @param array устанавливаемые значения атрибутов (имя=>значение).
-	 * @param boolean должна ли привязка проводиться только для безопасных атрибутов.
+	 * @param array $values устанавливаемые значения атрибутов (имя=>значение).
+	 * @param boolean $safeOnly должна ли привязка проводиться только для безопасных атрибутов.
 	 * Безопасный атрибут - это атрибут, ассоциированный с правилом валидации в текущем {@link scenario сценарии}.
 	 * @see getSafeAttributeNames
 	 * @see attributeNames
@@ -468,8 +490,8 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	 * This method is invoked when an unsafe attribute is being massively assigned.
 	 * The default implementation will log a warning message if YII_DEBUG is on.
 	 * It does nothing otherwise.
-	 * @param string the unsafe attribute name
-	 * @param mixed the attribute value
+	 * @param string $name the unsafe attribute name
+	 * @param mixed $value the attribute value
 	 * @since 1.1.1
 	 */
 	public function onUnsafeAttribute($name,$value)
@@ -501,6 +523,7 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	}
 
 	/**
+	 * Устанавливает сценарий, в котором используется данная модель.
 	 * @param string сценарий, в котором используется данная модель
 	 * @see getScenario
 	 * @since 1.0.4

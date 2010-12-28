@@ -12,7 +12,7 @@
  * Класс CErrorEvent представляет параметр для события {@link CApplication::onError onError}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CErrorEvent.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CErrorEvent.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.base
  * @since 1.0
  */
@@ -37,11 +37,11 @@ class CErrorEvent extends CEvent
 
 	/**
 	 * Конструктор.
-	 * @param mixed отправитель события
-	 * @param string код ошибки
-	 * @param string сообщение об ошибке
-	 * @param string файл, в котором произошла ошибка
-	 * @param integer строка, в которой произошла ошибка
+	 * @param mixed $sender отправитель события
+	 * @param string $code код ошибки
+	 * @param string $message сообщение об ошибке
+	 * @param string $file файл, в котором произошла ошибка
+	 * @param integer $line строка, в которой произошла ошибка
 	 */
 	public function __construct($sender,$code,$message,$file,$line)
 	{

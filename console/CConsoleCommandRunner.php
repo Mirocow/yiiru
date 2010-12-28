@@ -12,7 +12,7 @@
  * CConsoleCommandRunner управляет командами и вполняет запрошенную команду.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CConsoleCommandRunner.php 1832 2010-02-20 03:22:45Z qiang.xue $
+ * @version $Id: CConsoleCommandRunner.php 2684 2010-11-28 23:07:10Z qiang.xue $
  * @package system.console
  * @since 1.0
  */
@@ -42,7 +42,7 @@ class CConsoleCommandRunner extends CComponent
 
 	/**
 	 * Выполняет запрошенную команду.
-	 * @param array список введенных пользователем параметров (включая имя скрипта точки входа имя команды)
+	 * @param array $args список введенных пользователем параметров (включая имя скрипта точки входа имя команды)
 	 */
 	public function run($args)
 	{
@@ -58,6 +58,7 @@ class CConsoleCommandRunner extends CComponent
 
 		if(($command=$this->createCommand($name))===null)
 			$command=$this->createCommand('help');
+		$command->init();
 		$command->run($args);
 	}
 
@@ -72,7 +73,7 @@ class CConsoleCommandRunner extends CComponent
 
 	/**
 	 * Ищет команды в определенной директории.
-	 * @param string директория, содержащая файлы классов команд
+	 * @param string $path директория, содержащая файлы классов команд
 	 * @return array список команд (имя команды => файл класса команды)
 	 */
 	public function findCommands($path)
@@ -93,7 +94,7 @@ class CConsoleCommandRunner extends CComponent
 	/**
 	 * Добавляет команды по определенному командному пути.
 	 * Если команда уже существует, новая будет проигнорирована.
-	 * @param string псевдоним директории, содержащей файлы классов команд
+	 * @param string $path псевдоним директории, содержащей файлы классов команд
 	 */
 	public function addCommands($path)
 	{
@@ -109,7 +110,7 @@ class CConsoleCommandRunner extends CComponent
 
 	/**
 	 * Создает объект команды по ее имени.
-	 * @param string имя команды (регистронезависимо)
+	 * @param string $name имя команды (регистронезависимо)
 	 * @return CConsoleCommand объект команды. Если имя неверно, возвращается значение null
 	 */
 	public function createCommand($name)

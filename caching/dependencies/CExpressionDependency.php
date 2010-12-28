@@ -16,7 +16,7 @@
  * результат, вычисленный при сохранении данных в кэш.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CExpressionDependency.php 1678 2010-01-07 21:02:00Z qiang.xue $
+ * @version $Id: CExpressionDependency.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.caching.dependencies
  * @since 1.0
  */
@@ -33,7 +33,7 @@ class CExpressionDependency extends CCacheDependency
 
 	/**
 	 * Конструктор.
-	 * @param string PHP-выражение, результат которого используется для определения зависимости.
+	 * @param string $expression PHP-выражение, результат которого используется для определения зависимости.
 	 */
 	public function __construct($expression='true')
 	{

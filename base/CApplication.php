@@ -44,9 +44,30 @@
  * приложение переключается на его обработчик ошибок и после переходит к шагу 6.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CApplication.php 1789 2010-02-02 18:38:56Z qiang.xue $
+ * @version $Id: CApplication.php 2729 2010-12-08 17:49:20Z alexander.makarow $
  * @package system.base
  * @since 1.0
+ *
+ * @property string $basePath Возвращает корневую директорию приложения
+ * @property CCache $cache Возвращает  компонент приложения кэша
+ * @property CPhpMessageSource $coreMessages Возвращает компонент приложения, отвечающий за перевод сообщений ядра
+ * @property CDateFormatter $dateFormatter Возвращает локалезависимый менеджер форматирования дат
+ * @property CDbConnection $db Возвращает компонент соединения с базой
+ * @property CErrorHandler $errorHandler Возвращает комопонент приложения, отвечающий за обработку ошибок
+ * @property string $extensionPath Возвращает корневую директорию, хранящую все сторонние расширения
+ * @property string $id Возвращает уникальный идентификатор приложения
+ * @property string $language Возвращает язык, используемый пользователем и приложением
+ * @property CLocale $locale Возвращает экземпляр локали
+ * @property string $localeDataPath Возвращает директорию, содержащую данные локали
+ * @property CMessageSource $messages Возвращает компонент приложения, отвечающий за перевод сообщений приложения
+ * @property CNumberFormatter $numberFormatter Возвращает локалезависимый менеджер форматирования чисел
+ * @property CHttpRequest $request Возвращает компонент запроса
+ * @property string $runtimePath Возвращает директорию, хранящую рабочие файлы
+ * @property CSecurityManager $securityManager Возвращает компонент приложения, отвечающий за безопасность
+ * @property CStatePersister $statePersister Возвращает компонент приложения, представляющий постоянное состояние (state persister)
+ * @property string $timeZone Возвращает временную зону, используемую приложением
+ * @property CUrlManager $urlManager Возвращает менеджер URL маршрутов
+ * @property mixed $globalState Возвращает глобальное значение
  */
 abstract class CApplication extends CModule
 {
@@ -82,7 +103,7 @@ abstract class CApplication extends CModule
 
 	/**
 	 * Конструктор.
-	 * @param mixed конфигурация приложения.
+	 * @param mixed $config конфигурация приложения.
 	 * Если передана строка, она считается путем к файлу, содержащему конфигурацию;
 	 * если передан массив, он считается реальной информацией конфигурации.
 	 * Убедитесь, что свойство {@link getBasePath basePath} определено в конфигурации и
@@ -137,20 +158,22 @@ abstract class CApplication extends CModule
 
 	/**
 	 * Завершает приложение.
-	 * Метод заменяет PHP функцию exit() вызовом метода
-	 * {@link onEndRequest} перед выходом.
-	 * @param integer статус выхода (значение 0 означает нормальный выход, другое значение означает выход с ошибкой)
+	 * Метод заменяет PHP функцию exit() вызовом метода {@link onEndRequest} перед выходом.
+	 * @param integer $status статус выхода (значение 0 означает нормальный выход, другое значение означает выход с ошибкой)
+	 * @param boolean $exit завершить ли текущий запрос. Данный параметр доступен с версии 1.1.5.
+	 * По умолчанию - true, т.е., PHP функция exit() будет вызываться в конце данного метода
 	 */
-	public function end($status=0)
+	public function end($status=0, $exit=true)
 	{
 		if($this->hasEventHandler('onEndRequest'))
 			$this->onEndRequest(new CEvent($this));
-		exit($status);
+		if($exit)
+			exit($status);
 	}
 
 	/**
-	 * Выполняется прямо ПЕРЕД обработкой запроса приложением.
-	 * @param CEvent параметр события
+	 * Выполняется непосредственно ПЕРЕД обработкой запроса приложением.
+	 * @param CEvent $event параметр события
 	 */
 	public function onBeginRequest($event)
 	{
@@ -159,7 +182,7 @@ abstract class CApplication extends CModule
 
 	/**
 	 * Выполняется сразу ПОСЛЕ обработки запроса приложением.
-	 * @param CEvent параметр события
+	 * @param CEvent $event параметр события
 	 */
 	public function onEndRequest($event)
 	{
@@ -171,6 +194,7 @@ abstract class CApplication extends CModule
 	}
 
 	/**
+	 * Возвращает уникальный идентификатор приложения
 	 * @return string уникальный идентификатор приложения
 	 */
 	public function getId()
@@ -182,7 +206,8 @@ abstract class CApplication extends CModule
 	}
 
 	/**
-	 * @param string уникальный идентификатор приложения
+	 * Устанавливает уникальный идентификатор приложения
+	 * @param string $id уникальный идентификатор приложения
 	 */
 	public function setId($id)
 	{
@@ -190,7 +215,8 @@ abstract class CApplication extends CModule
 	}
 
 	/**
-	 * @return string корневая директория приложения. По умолчанию - 'protected'.
+	 * Возвращает корневую директорию приложения
+	 * @return string корневая директория приложения. По умолчанию - 'protected'
 	 */
 	public function getBasePath()
 	{
@@ -199,8 +225,8 @@ abstract class CApplication extends CModule
 
 	/**
 	 * Устанавливает корневую директорию приложения.
-	 * Метод может быть вызван только в начале конструктора.
-	 * @param string корневая директорию приложения
+	 * Метод может быть вызван только в начале конструктора
+	 * @param string $path корневая директория приложения
 	 * @throws CException вызывается, если директория не существует
 	 */
 	public function setBasePath($path)
@@ -211,7 +237,8 @@ abstract class CApplication extends CModule
 	}
 
 	/**
-	 * @return string директория, хранящая рабочие файлы. По умолчанию - 'protected/runtime'.
+	 * Возвращает директорию, хранящую рабочие файлы
+	 * @return string директория, хранящая рабочие файлы. По умолчанию - 'protected/runtime'
 	 */
 	public function getRuntimePath()
 	{
@@ -225,7 +252,8 @@ abstract class CApplication extends CModule
 	}
 
 	/**
-	 * @param string директория, хранящая рабочие файлы
+	 * Устанавливает директорию, хранящую рабочие файлы
+	 * @param string $path директория, хранящая рабочие файлы
 	 * @throws CException вызывается, если директория не существует или недоступна для записи
 	 */
 	public function setRuntimePath($path)
@@ -237,7 +265,7 @@ abstract class CApplication extends CModule
 	}
 
 	/**
-	 * Возвращает корневую директорию, хранящую все сторонние расширения.
+	 * Возвращает корневую директорию, хранящую все сторонние расширения
 	 * @return string директория, содержащая все расширения. По умолчанию - директория 'extensions' в директории 'protected'
 	 */
 	public function getExtensionPath()
@@ -246,7 +274,8 @@ abstract class CApplication extends CModule
 	}
 
 	/**
-	 * @param string директория, содержащая все сторонние расширения
+	 * Устанавливает корневую директорию, хранящую все сторонние расширения
+	 * @param string $path директория, содержащая все сторонние расширения
 	 */
 	public function setExtensionPath($path)
 	{
@@ -257,6 +286,7 @@ abstract class CApplication extends CModule
 	}
 
 	/**
+	 * Возвращает язык, используемый пользователем и приложением
 	 * @return string язык, используемый пользователем и приложением.
 	 * По умолчанию задан свойством {@link sourceLanguage}.
 	 */
@@ -272,8 +302,8 @@ abstract class CApplication extends CModule
 	 * Если null, будет использован язык, заданный свойством {@link sourceLanguage}.
 	 *
 	 * Если ваше приложение должно поддерживать несколько языков, вы должны всегда
-	 * устанавливать данный язык в null для улучшения производительности приложения.
-	 * @param string язык пользователя (например, 'en_US', 'zh_CN').
+	 * устанавливать данный язык в null для улучшения производительности приложения
+	 * @param string $language язык пользователя (например, 'en_US', 'zh_CN').
 	 * Если null, будет использован язык, заданный свойством {@link sourceLanguage}.
 	 */
 	public function setLanguage($language)
@@ -283,7 +313,7 @@ abstract class CApplication extends CModule
 
 	/**
 	 * Возвращает временную зону, используемую приложением.
-	 * Это простая обертка PHP-функции date_default_timezone_get().
+	 * Это простая обертка PHP-функции date_default_timezone_get()
 	 * @return string временная зона, используемая приложением
 	 * @see http://php.net/manual/en/function.date-default-timezone-get.php
 	 * @since 1.0.9
@@ -295,8 +325,8 @@ abstract class CApplication extends CModule
 
 	/**
 	 * Устанавливает временную зону, используемую приложением.
-	 * Это простая обертка PHP-функции date_default_timezone_set().
-	 * @param string временная зона, используемая приложением
+	 * Это простая обертка PHP-функции date_default_timezone_set()
+	 * @param string $value временная зона, используемая приложением
 	 * @see http://php.net/manual/en/function.date-default-timezone-set.php
 	 * @since 1.0.9
 	 */
@@ -315,11 +345,11 @@ abstract class CApplication extends CModule
 	 * "path/to/zh_cn/view.php". Если файл не найден, будет возвращен оригинальный файл.
 	 *
 	 * Для согласованности рекомендуется передавать идентификатор локали
-	 * в нижнем регистре и в формате идентификаторЯзыка_идентификаторРегиона (например, "en_us").
+	 * в нижнем регистре и в формате идентификаторЯзыка_идентификаторРегиона (например, "en_us")
 	 *
-	 * @param string оригинальный файл
-	 * @param string язык оригинального файла. Если null, используется язык, заданный свойством {@link sourceLanguage}
-	 * @param string желаемый язык, локализованная версия файла которого требуется. Если null, используется {@link getLanguage язык приложения}
+	 * @param string $srcFile оригинальный файл
+	 * @param string $srcLanguage язык оригинального файла. Если null, используется язык, заданный свойством {@link sourceLanguage}
+	 * @param string $language желаемый язык, локализованная версия файла которого требуется. Если null, используется {@link getLanguage язык приложения}
 	 * @return string соответствующий локализованный файл. Если локализованныя версия не найдена или исходный язык равен желаемомоу, возвращается оригинальный файл
 	 */
 	public function findLocalizedFile($srcFile,$srcLanguage=null,$language=null)
@@ -335,7 +365,8 @@ abstract class CApplication extends CModule
 	}
 
 	/**
-	 * @param string идентификатор локали (например, en_US). Если null, используется идентификатор {@link getLanguage языка приложения}
+	 * Возвращает экземпляр локали
+	 * @param string $localeID идентификатор локали (например, en_US). Если null, используется идентификатор {@link getLanguage языка приложения}
 	 * @return CLocale экземпляр локали
 	 */
 	public function getLocale($localeID=null)
@@ -344,6 +375,7 @@ abstract class CApplication extends CModule
 	}
 
 	/**
+	 * Возвращает директорию, содержащую данные локали
 	 * @return string директория, содержащая данные локали. По умолчанию - 'framework/i18n/data'
 	 * @since 1.1.0
 	 */
@@ -353,7 +385,8 @@ abstract class CApplication extends CModule
 	}
 
 	/**
-	 * @param string директория, содержащая данные локали
+	 * Устанавливает директорию, содержащую данные локали
+	 * @param string $value директория, содержащая данные локали
 	 * @since 1.1.0
 	 */
 	public function setLocaleDataPath($value)
@@ -362,6 +395,7 @@ abstract class CApplication extends CModule
 	}
 
 	/**
+	 * Возвращает локалезависимый менеджер форматирования чисел
 	 * @return CNumberFormatter локалезависимый менеджер форматирования чисел.
 	 * Используется текущая {@link getLocale локаль приложения}.
 	 */
@@ -371,6 +405,7 @@ abstract class CApplication extends CModule
 	}
 
 	/**
+	 * Возвращает локалезависимый менеджер форматирования дат
 	 * @return CDateFormatter локалезависимый менеджер форматирования дат.
 	 * Используется текущая {@link getLocale локаль приложения}.
 	 */
@@ -380,6 +415,7 @@ abstract class CApplication extends CModule
 	}
 
 	/**
+	 * Возвращает компонент соединения с базой
 	 * @return CDbConnection компонент соединения с базой
 	 */
 	public function getDb()
@@ -388,6 +424,7 @@ abstract class CApplication extends CModule
 	}
 
 	/**
+	 * Возвращает комопонент приложения, отвечающий за обработку ошибок
 	 * @return CErrorHandler комопонент приложения, отвечающий за обработку ошибок
 	 */
 	public function getErrorHandler()
@@ -396,6 +433,7 @@ abstract class CApplication extends CModule
 	}
 
 	/**
+	 * Возвращает компонент приложения, отвечающий за безопасность
 	 * @return CSecurityManager компонент приложения, отвечающий за безопасность
 	 */
 	public function getSecurityManager()
@@ -404,6 +442,7 @@ abstract class CApplication extends CModule
 	}
 
 	/**
+	 * Возвращает компонент приложения, представляющий постоянное состояние (state persister)
 	 * @return CStatePersister компонент приложения, представляющий постоянное состояние (state persister)
 	 */
 	public function getStatePersister()
@@ -412,7 +451,8 @@ abstract class CApplication extends CModule
 	}
 
 	/**
-	 * @return CCache компонент приложения кэша. Null, если компонент не включен.
+	 * Возвращает  компонент приложения кэша
+	 * @return CCache компонент приложения кэша. Null, если компонент не включен
 	 */
 	public function getCache()
 	{
@@ -420,6 +460,7 @@ abstract class CApplication extends CModule
 	}
 
 	/**
+	 * Возвращает компонент приложения, отвечающий за перевод сообщений ядра
 	 * @return CPhpMessageSource компонент приложения, отвечающий за перевод сообщений ядра
 	 */
 	public function getCoreMessages()
@@ -428,6 +469,7 @@ abstract class CApplication extends CModule
 	}
 
 	/**
+	 * Возвращает компонент приложения, отвечающий за перевод сообщений приложения
 	 * @return CMessageSource компонент приложения, отвечающий за перевод сообщений приложения
 	 */
 	public function getMessages()
@@ -436,6 +478,7 @@ abstract class CApplication extends CModule
 	}
 
 	/**
+	 * Возвращает компонент запроса
 	 * @return CHttpRequest компонент запроса
 	 */
 	public function getRequest()
@@ -444,6 +487,7 @@ abstract class CApplication extends CModule
 	}
 
 	/**
+	 * Возвращает менеджер URL маршрутов
 	 * @return CUrlManager менеджер URL маршрутов
 	 */
 	public function getUrlManager()
@@ -455,8 +499,8 @@ abstract class CApplication extends CModule
 	 * Возвращает глобальное значение.
 	 *
 	 * Глобальное значение - это постоянное для пользовательских сессий и запросов значение.
-	 * @param string имя возвращаемого значения
-	 * @param mixed значение по умолчанию. Возвращается, если именованное глобальное значение не было найдено.
+	 * @param string $key имя возвращаемого значения
+	 * @param mixed $defaultValue значение по умолчанию. Возвращается, если именованное глобальное значение не было найдено.
 	 * @return mixed именованное глобальное значение
 	 * @see setGlobalState
 	 */
@@ -475,37 +519,44 @@ abstract class CApplication extends CModule
 	 *
 	 * Глобальное значение - это постоянное для пользовательских сессий и запросов значение.
 	 * Убедитесь, что значение сериализуемо и десереализуемо.
-	 * @param string имя сохраняемого значения
-	 * @param mixed соххраняемое значение. Должно быть сериализуемо
-	 * @param mixed значение по умолчанию. Если именованое глобальное значение такое же как и данное, оно будет удалено из текущего хранилища
+	 * @param string $key имя сохраняемого значения
+	 * @param mixed $value сохраняемое значение. Должно быть сериализуемо
+	 * @param mixed $defaultValue значение по умолчанию. Если именованое глобальное значение такое же как и данное, оно будет удалено из текущего хранилища
 	 * @see getGlobalState
 	 */
 	public function setGlobalState($key,$value,$defaultValue=null)
 	{
 		if($this->_globalState===null)
 			$this->loadGlobalState();
-		$this->_stateChanged=true;
+
+		$changed=$this->_stateChanged;
 		if($value===$defaultValue)
+		{
+			if(isset($this->_globalState[$key]))
+			{
 			unset($this->_globalState[$key]);
-		else
+				$this->_stateChanged=true;
+			}
+		}
+		else if(!isset($this->_globalState[$key]) || $this->_globalState[$key]!==$value)
+		{
 			$this->_globalState[$key]=$value;
+			$this->_stateChanged=true;
+		}
+
+		if($this->_stateChanged!==$changed)
+			$this->attachEventHandler('onEndRequest',array($this,'saveGlobalState'));
 	}
 
 	/**
 	 * Очищает глобальное значение.
 	 *
 	 * Очищенное значение больше не будет доступно ни в данном запросе ни в последующих.
-	 * @param string имя очищаемого значения
+	 * @param string $key имя очищаемого значения
 	 */
 	public function clearGlobalState($key)
 	{
-		if($this->_globalState===null)
-			$this->loadGlobalState();
-		if(isset($this->_globalState[$key]))
-		{
-			$this->_stateChanged=true;
-			unset($this->_globalState[$key]);
-		}
+		$this->setGlobalState($key,true,true);
 	}
 
 	/**
@@ -513,13 +564,13 @@ abstract class CApplication extends CModule
 	 * @see getStatePersister
 	 * @throws CException вызывается, если менеджер постоянного состояния недоступен
 	 */
-	protected function loadGlobalState()
+	public function loadGlobalState()
 	{
 		$persister=$this->getStatePersister();
 		if(($this->_globalState=$persister->load())===null)
 			$this->_globalState=array();
 		$this->_stateChanged=false;
-		$this->attachEventHandler('onEndRequest',array($this,'saveGlobalState'));
+		$this->detachEventHandler('onEndRequest',array($this,'saveGlobalState'));
 	}
 
 	/**
@@ -527,13 +578,13 @@ abstract class CApplication extends CModule
 	 * @see getStatePersister
 	 * @throws CException вызывается, если менеджер постоянного состояния недоступен
 	 */
-	protected function saveGlobalState()
+	public function saveGlobalState()
 	{
 		if($this->_stateChanged)
 		{
-			$persister=$this->getStatePersister();
 			$this->_stateChanged=false;
-			$persister->save($this->_globalState);
+			$this->detachEventHandler('onEndRequest',array($this,'saveGlobalState'));
+			$this->getStatePersister()->save($this->_globalState);
 		}
 	}
 
@@ -549,7 +600,7 @@ abstract class CApplication extends CModule
 	 *
 	 * При вызове данного метода приложение завершается.
 	 *
-	 * @param Exception неперехваченное исключение
+	 * @param Exception $exception неперехваченное исключение
 	 */
 	public function handleException($exception)
 	{
@@ -583,7 +634,23 @@ abstract class CApplication extends CModule
 		{
 			$this->displayException($e);
 		}
+
+		try
+		{
 		$this->end(1);
+	}
+		catch(Exception $e)
+		{
+			// use the most primitive way to log error
+			$msg = get_class($e).': '.$e->getMessage().' ('.$e->getFile().':'.$e->getLine().")\n";
+			$msg .= $e->getTraceAsString()."\n";
+			$msg .= "Previous exception:\n";
+			$msg .= get_class($exception).': '.$exception->getMessage().' ('.$exception->getFile().':'.$exception->getLine().")\n";
+			$msg .= $exception->getTraceAsString()."\n";
+			$msg .= '$_SERVER='.var_export($_SERVER,true);
+			error_log($msg);
+			exit(1);
+		}
 	}
 
 	/**
@@ -598,10 +665,10 @@ abstract class CApplication extends CModule
 	 *
 	 * При вызове данного метода приложение завершается.
 	 *
-	 * @param integer уровень ошибки
-	 * @param string сообщение ошибки
-	 * @param string файл, в котором произошла ошибка
-	 * @param string строка кода, в которой произошла ошибка
+	 * @param integer $code уровень ошибки
+	 * @param string $message сообщение ошибки
+	 * @param string $file файл, в котором произошла ошибка
+	 * @param string $line строка кода, в которой произошла ошибка
 	 */
 	public function handleError($code,$message,$file,$line)
 	{
@@ -651,7 +718,22 @@ abstract class CApplication extends CModule
 			{
 				$this->displayException($e);
 			}
+
+			try
+			{
 			$this->end(1);
+		}
+			catch(Exception $e)
+			{
+				// use the most primitive way to log error
+				$msg = get_class($e).': '.$e->getMessage().' ('.$e->getFile().':'.$e->getLine().")\n";
+				$msg .= $e->getTraceAsString()."\n";
+				$msg .= "Previous error:\n";
+				$msg .= $log."\n";
+				$msg .= '$_SERVER='.var_export($_SERVER,true);
+				error_log($msg);
+				exit(1);
+			}
 		}
 	}
 
@@ -663,7 +745,7 @@ abstract class CApplication extends CModule
 	 * требуется. В ином случае, компонент приложения {@link getErrorHandler errorHandler}
 	 * будет продолжать обрабатывать ошибки.
 	 *
-	 * @param CErrorEvent параметр события
+	 * @param CExceptionEvent $event параметр события
 	 */
 	public function onException($event)
 	{
@@ -678,7 +760,7 @@ abstract class CApplication extends CModule
 	 * требуется. В ином случае, компонент приложения {@link getErrorHandler errorHandler}
 	 * будет продолжать обрабатывать ошибки.
 	 *
-	 * @param CErrorEvent параметр события
+	 * @param CErrorEvent $event параметр события
 	 */
 	public function onError($event)
 	{
@@ -689,10 +771,10 @@ abstract class CApplication extends CModule
 	 * Отображает перехваченную ошибку PHP.
 	 * Метод отображает ошибку в коде HTML, если
 	 * для нее нет обработчика.
-	 * @param integer код ошибки
-	 * @param string сообщение об ошибке
-	 * @param string файл, в котором произошла ошибка
-	 * @param string строка кода, в которой произошла ошибка
+	 * @param integer $code код ошибки
+	 * @param string $message сообщение об ошибке
+	 * @param string $file файл, в котором произошла ошибка
+	 * @param string $line строка кода, в которой произошла ошибка
 	 */
 	public function displayError($code,$message,$file,$line)
 	{
@@ -701,7 +783,25 @@ abstract class CApplication extends CModule
 			echo "<h1>PHP Error [$code]</h1>\n";
 			echo "<p>$message ($file:$line)</p>\n";
 			echo '<pre>';
-			debug_print_backtrace();
+
+			$trace=debug_backtrace();
+			// skip the first 3 stacks as they do not tell the error position
+			if(count($trace)>3)
+				$trace=array_slice($trace,3);
+			foreach($trace as $i=>$t)
+			{
+				if(!isset($t['file']))
+					$t['file']='unknown';
+				if(!isset($t['line']))
+					$t['line']=0;
+				if(!isset($t['function']))
+					$t['function']='unknown';
+				echo "#$i {$t['file']}({$t['line']}): ";
+				if(isset($t['object']) && is_object($t['object']))
+					echo get_class($t['object']).'->';
+				echo "{$t['function']}()\n";
+			}
+
 			echo '</pre>';
 		}
 		else
@@ -714,7 +814,7 @@ abstract class CApplication extends CModule
 	/**
 	 * Отображает неперехваченные исключения PHP.
 	 * Метод отображает исключения в HTML, когда нет активного обработчика ошибок.
-	 * @param Exception неперехваченное исключение
+	 * @param Exception $exception неперехваченное исключение
 	 */
 	public function displayException($exception)
 	{

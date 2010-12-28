@@ -81,7 +81,7 @@
  * определяемые геттерами и/или сеттерами) доступны из компонента, к которому присоединено поведение.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CComponent.php 2190 2010-06-15 20:47:31Z qiang.xue $
+ * @version $Id: CComponent.php 2757 2010-12-22 17:50:29Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -98,7 +98,7 @@ class CComponent
 	 * $value=$component->propertyName;
 	 * $handlers=$component->eventName;
 	 * </pre>
-	 * @param string имя свойства или события
+	 * @param string $name имя свойства или события
 	 * @return mixed значение свойства, обработчики события, присоединенные к событию, или именованное поведение (с версии 1.0.2)
 	 * @throws CException вызывается, если свойство или событие не определены
 	 * @see __set
@@ -138,8 +138,8 @@ class CComponent
 	 * $this->propertyName=$value;
 	 * $this->eventName=$callback;
 	 * </pre>
-	 * @param string имя свойства или события
-	 * @param mixed значение свойства или обратный вызов
+	 * @param string $name имя свойства или события
+	 * @param mixed $value значение свойства или обратный вызов
 	 * @throws CException вызывается, если свойство/событие не определены или свойство является свойством только для чтения.
 	 * @see __get
 	 */
@@ -176,7 +176,7 @@ class CComponent
 	 * Проверяет, нулевое (null) ли значение свойства.
 	 * Не вызывайте данный метод. Это "магический" метод PHP, который переопределяется,
 	 * чтобы можно было использовать фукцию isset() для определения, установлено свойство компонента или нет.
-	 * @param string имя свойства или события
+	 * @param string $name имя свойства или события
 	 * @since 1.0.1
 	 */
 	public function __isset($name)
@@ -206,7 +206,7 @@ class CComponent
 	 * Устанавливает свойство компонента в null.
 	 * Не вызывайте данный метод. Это "магический" метод PHP, который переопределяется,
 	 * чтобы можно было использовать фукцию unset() для установки свойства компонента в null.
-	 * @param string имя свойства или события
+	 * @param string $name имя свойства или события
 	 * @throws CException вызывается, если свойство является свойством только для чтения
 	 * @since 1.0.1
 	 */
@@ -244,8 +244,8 @@ class CComponent
 	 * Вызывает именованный метод, не являющийся методом класса.
 	 * Не вызывайте данный метод. Это "магический" метод PHP, который переопределяется
 	 * для реализации функции поведения.
-	 * @param string имя метода
-	 * @param array параметры метода
+	 * @param string $name имя метода
+	 * @param array $parameters параметры метода
 	 * @return mixed значение, возвращаемое методом
 	 * @since 1.0.2
 	 */
@@ -259,7 +259,7 @@ class CComponent
 					return call_user_func_array(array($object,$name),$parameters);
 			}
 		}
-		if(class_exists('Closure', false) && $this->$name instanceof Closure)
+		if(class_exists('Closure', false) && $this->canGetProperty($name) && $this->$name instanceof Closure)
 			return call_user_func_array($this->$name, $parameters);
 		throw new CException(Yii::t('yii','{class} does not have a method named "{name}".',
 			array('{class}'=>get_class($this), '{name}'=>$name)));
@@ -268,7 +268,7 @@ class CComponent
 	/**
 	 * Возвращает объект именованного поведения.
 	 * Имя 'asa' означает 'as a'.
-	 * @param string имя поведения
+	 * @param string $behavior имя поведения
 	 * @return IBehavior объект поведения; null, если поведение не существует
 	 * @since 1.0.2
 	 */
@@ -289,7 +289,7 @@ class CComponent
 	 *     'property2'=>'value2',
 	 * )
 	 * </pre>
-	 * @param array список присоединяемых к компоненту поведений
+	 * @param array $behaviors список присоединяемых к компоненту поведений
 	 * @since 1.0.2
 	 */
 	public function attachBehaviors($behaviors)
@@ -317,8 +317,8 @@ class CComponent
 	 * Метод создает объект поведения на основе переданной конфигурации.
 	 * После этого объект поведения инициализируется
 	 * вызовом его метода {@link IBehavior::attach}.
-	 * @param string имя поведения. Должен уникально идентифицировать данное поведение.
-	 * @param mixed конфигурация поведения. Передается первым параметром
+	 * @param string $name имя поведения. Должен уникально идентифицировать данное поведение.
+	 * @param mixed $behavior конфигурация поведения. Передается первым параметром
 	 * в метод {@link YiiBase::createComponent} для создания объекта поведения.
 	 * @return IBehavior объект поведения
 	 * @since 1.0.2
@@ -335,7 +335,7 @@ class CComponent
 	/**
 	 * Отсоединяет поведение от компонента.
 	 * Вызывается метод {@link IBehavior::detach} поведения.
-	 * @param string имя поведения. Уникально идентифицирует поведение
+	 * @param string $name имя поведения. Уникально идентифицирует поведение
 	 * @return IBehavior отсоединенное поведение. Null, если поведение не существует
 	 * @since 1.0.2
 	 */
@@ -380,7 +380,7 @@ class CComponent
 	 * Включает присоединенное поведение.
 	 * Поведение имеет действие только если включено.
 	 * При первом присоединении поведение включено.
-	 * @param string имя поведения. Уникально идентифицирует поведение
+	 * @param string $name имя поведения. Уникально идентифицирует поведение
 	 * @since 1.0.2
 	 */
 	public function enableBehavior($name)
@@ -392,7 +392,7 @@ class CComponent
 	/**
 	 * Откючает присоединенное поведение.
 	 * Поведение имеет действие только если включено.
-	 * @param string имя поведения. Уникально идентифицирует поведение
+	 * @param string $name имя поведения. Уникально идентифицирует поведение
 	 * @since 1.0.2
 	 */
 	public function disableBehavior($name)
@@ -405,7 +405,7 @@ class CComponent
 	 * Показывает, определено ли свойство.
 	 * Свойство определено, если для него в классе есть методы геттер и сеттер.
 	 * Примечание: имена свойств регистронезависимы.
-	 * @param string имя свойства
+	 * @param string $name имя свойства
 	 * @return boolean определено ли свойство
 	 * @see canGetProperty
 	 * @see canSetProperty
@@ -419,7 +419,7 @@ class CComponent
 	 * Определяет, может ли свойство быть прочитано.
 	 * Свойство читаемо, если класс имеет метод геттер для данного имени свойства.
 	 * Примечание: имена свойств регистронезависимы.
-	 * @param string имя свойства
+	 * @param string $name имя свойства
 	 * @return boolean может ли свойство быть прочитано
 	 * @see canSetProperty
 	 */
@@ -432,7 +432,7 @@ class CComponent
 	 * Определяет, может ли свойство быть установлено (записываемое ли).
 	 * Свойство записываемое, если класс имеет метод гсттер для данного имени свойства.
 	 * Примечание: имена свойств регистронезависимы.
-	 * @param string имя свойства
+	 * @param string $name имя свойства
 	 * @return boolean может ли свойство быть установлено (записываемое ли)
 	 * @see canGetProperty
 	 */
@@ -445,7 +445,7 @@ class CComponent
 	 * Показывает, определено ли событие.
 	 * Событие определено, если класс имеет метод с именем вида 'onXXX'.
 	 * Примечание: имена событий регистронезависимы.
-	 * @param string имя события
+	 * @param string $name имя события
 	 * @return boolean определено ли событие
 	 */
 	public function hasEvent($name)
@@ -455,7 +455,7 @@ class CComponent
 
 	/**
 	 * Проверяет, есть ли у именованного события присоединенные обработчики.
-	 * @param string имя события
+	 * @param string $name имя события
 	 * @return boolean есть ли у события присоединенные обработчики
 	 */
 	public function hasEventHandler($name)
@@ -466,7 +466,7 @@ class CComponent
 
 	/**
 	 * Возвращает список присоединенных обработчиков для события.
-	 * @param string имя события
+	 * @param string $name имя события
 	 * @return CList список присоединенных обработчиков для события
 	 * @throws CException вызывается, если событие не определено
 	 */
@@ -510,8 +510,8 @@ class CComponent
 	 * </pre>
 	 * устанавливает, что обработчик будет выполняться первым.
 	 *
-	 * @param string имя события
-	 * @param callback обработчик события
+	 * @param string $name имя события
+	 * @param callback $handler обработчик события
 	 * @throws CException вызывается, если событие не определено
 	 * @see detachEventHandler
 	 */
@@ -523,8 +523,8 @@ class CComponent
 	/**
 	 * Отсоединяет существующий обработчик события.
 	 * Метод противоположен методу {@link attachEventHandler}.
-	 * @param string имя события
-	 * @param callback удаляемый обработчик события
+	 * @param string $name имя события
+	 * @param callback $handler удаляемый обработчик события
 	 * @return boolean успешен ли процесс отсоединения обработчика
 	 * @see attachEventHandler
 	 */
@@ -540,8 +540,8 @@ class CComponent
 	 * Выполняет (запускает) событие.
 	 * Метод представляет собой наступление события. Он выполняет
 	 * все присоединенные к событию обработчики.
-	 * @param string имя события
-	 * @param CEvent параметр события
+	 * @param string $name имя события
+	 * @param CEvent $event параметр события
 	 * @throws CException вызывается, если событие неопределено или обработчик события является допустимым.
 	 */
 	public function raiseEvent($name,$event)
@@ -601,8 +601,8 @@ class CComponent
 	 * к функции {@link http://us.php.net/manual/en/function.extract.php PHP extract}.
 	 * Объект компонента доступен в выражении посредством $this.
 	 *
-	 * @var mixed выражение PHP или обратный вызов PHP для выполнения
-	 * @param array дополнительные параметры, передаваемые в выражение/обратный вызов
+	 * @param mixed $_expression_ выражение PHP или обратный вызов PHP для выполнения
+	 * @param array $_data_ дополнительные параметры, передаваемые в выражение/обратный вызов
 	 * @return mixed результат выражения
 	 * @since 1.1.0
 	 */
@@ -632,7 +632,7 @@ class CComponent
  * еще не выполненные обработчики выполняться не будут.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CComponent.php 2190 2010-06-15 20:47:31Z qiang.xue $
+ * @version $Id: CComponent.php 2757 2010-12-22 17:50:29Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -650,7 +650,7 @@ class CEvent extends CComponent
 
 	/**
 	 * Конструктор.
-	 * @param mixed отправитель события
+	 * @param mixed $sender отправитель события
 	 */
 	public function __construct($sender=null)
 	{
@@ -676,7 +676,7 @@ class CEvent extends CComponent
  * Тогда можно использовать перечисляемые значения так - TextAlign::Left и TextAlign::Right.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CComponent.php 2190 2010-06-15 20:47:31Z qiang.xue $
+ * @version $Id: CComponent.php 2757 2010-12-22 17:50:29Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
