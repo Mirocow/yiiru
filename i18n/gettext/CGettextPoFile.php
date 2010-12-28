@@ -12,7 +12,7 @@
  * Класс CGettextPoFile представляет PO-файл Gettext-сообщений.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CGettextPoFile.php 1845 2010-02-27 01:11:45Z qiang.xue $
+ * @version $Id: CGettextPoFile.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.i18n.gettext
  * @since 1.0
  */
@@ -20,8 +20,8 @@ class CGettextPoFile extends CGettextFile
 {
 	/**
 	 * Загружает сообщения из PO-файла.
-	 * @param string путь к файлу
-	 * @param string контектс сообщения
+	 * @param string $file путь к файлу
+	 * @param string $context контекст сообщения
 	 * @return array перевод сообщений (исходное сообщение => переведенное сообщение)
 	 */
 	public function load($file,$context)
@@ -46,8 +46,8 @@ class CGettextPoFile extends CGettextFile
 
 	/**
 	 * Сохраняет сообщения в PO-файле.
-	 * @param string путь к файлу
-	 * @param array переводы собщений (идентификатор сообщения => перевод сообщения).
+	 * @param string $file путь к файлу
+	 * @param array $messages переводы собщений (идентификатор сообщения => перевод сообщения).
 	 * Примечание: если сообщение имеет контекст, то идентификатор сообщения должен быть с префиксом
 	 * в виде контекста и символом-разделителем - chr(4)
 	 */
@@ -69,7 +69,7 @@ class CGettextPoFile extends CGettextFile
 
 	/**
 	 * Кодирует специальные символы в сообщении.
-	 * @param string кодируемое сообщение
+	 * @param string $string кодируемое сообщение
 	 * @return string кодированное сообщение
 	 */
 	protected function encode($string)
@@ -79,7 +79,7 @@ class CGettextPoFile extends CGettextFile
 
 	/**
 	 * Декодирует специальные символы в сообщении.
-	 * @param string декодируемое сообщение
+	 * @param string $string декодируемое сообщение
 	 * @return string декодированное сообщение
 	 */
 	protected function decode($string)

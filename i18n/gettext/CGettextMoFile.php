@@ -39,20 +39,20 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CGettextMoFile.php 2202 2010-06-16 19:52:29Z qiang.xue $
+ * @version $Id: CGettextMoFile.php 2497 2010-09-23 13:28:52Z mdomba $
  * @package system.i18n.gettext
  * @since 1.0
  */
 class CGettextMoFile extends CGettextFile
 {
 	/**
-	 * @var boolean использовать ли Big Endian при чтении и записи целых чисел
+	 * @var boolean использовать ли порядок байтов "Big Endian" при чтении и записи целых чисел
 	 */
 	public $useBigEndian=false;
 
 	/**
 	 * Конструктор.
-	 * @param boolean использовать ли Big Endian при чтении и записи целых чисел
+	 * @param boolean $useBigEndian использовать ли порядок байтов "Big Endian" при чтении и записи целых чисел
 	 */
 	public function __construct($useBigEndian=false)
 	{
@@ -61,8 +61,8 @@ class CGettextMoFile extends CGettextFile
 
 	/**
 	 * Загружает сообщения из MO-файла.
-	 * @param string путь к файлу
-	 * @param string контектс сообщения
+	 * @param string $file путь к файлу
+	 * @param string $context контекст сообщения
 	 * @return array перевод сообщений (исходное сообщение => переведенное сообщение)
 	 */
 	public function load($file,$context)
@@ -130,8 +130,8 @@ class CGettextMoFile extends CGettextFile
 
 	/**
 	 * Сохраняет сообщения в MO-файле.
-	 * @param string путь к файлу
-	 * @param array переводы собщений (идентификатор сообщения => перевод сообщения).
+	 * @param string $file путь к файлу
+	 * @param array $messages переводы собщений (идентификатор сообщения => перевод сообщения).
 	 * Примечание: если сообщение имеет контекст, то идентификатор сообщения должен быть с префиксом
 	 * в виде контекста и символом-разделителем - chr(4)
 	 */
@@ -200,8 +200,8 @@ class CGettextMoFile extends CGettextFile
 
 	/**
 	 * Читает один или несколько байтов.
-	 * @param resource дескриптор файла
-	 * @param integer количество считываемых байтаемыхnumber of bytes to read
+	 * @param resource $fr дескриптор файла
+	 * @param integer $n количество считываемых байт
 	 * @return string считанные байты
 	 */
 	protected function readByte($fr,$n=1)
@@ -212,8 +212,8 @@ class CGettextMoFile extends CGettextFile
 
 	/**
 	 * Записывает байты в файл.
-	 * @param resource дескриптор файла
-	 * @param string данные
+	 * @param resource $fw дескриптор файла
+	 * @param string $data данные
 	 * @return integer количество записанных байтов
 	 */
 	protected function writeByte($fw,$data)
@@ -223,7 +223,7 @@ class CGettextMoFile extends CGettextFile
 
 	/**
 	 * Читает 4х-байтовое целое число из файла.
-	 * @param resource дескриптор файла
+	 * @param resource $fr дескриптор файла
 	 * @return integer результат
 	 * @see useBigEndian
 	 */
@@ -234,8 +234,8 @@ class CGettextMoFile extends CGettextFile
 
 	/**
 	 * Записывает 4х-байтовое целое число в файл.
-	 * @param resource дескриптор файла
-	 * @param integer данные
+	 * @param resource $fw дескриптор файла
+	 * @param integer $data данные
 	 * @return integer количество записанных байтов
 	 */
 	protected function writeInteger($fw,$data)
@@ -245,9 +245,9 @@ class CGettextMoFile extends CGettextFile
 
 	/**
 	 * Читает строку из файла.
-	 * @param resource дескриптор файла
-	 * @param integer длина строки
-	 * @param integer смещение строки в файле. Если null, то чтение начинается с текущей позиции
+	 * @param resource $fr дескриптор файла
+	 * @param integer $length длина строки
+	 * @param integer $offset смещение строки в файле. Если null, то чтение начинается с текущей позиции
 	 * @return string результат
 	 */
 	protected function readString($fr,$length,$offset=null)
@@ -259,8 +259,8 @@ class CGettextMoFile extends CGettextFile
 
 	/**
 	 * Записывает строку в файл.
-	 * @param resource дескриптор файла
-	 * @param string строка
+	 * @param resource $fw дескриптор файла
+	 * @param string $data строка
 	 * @return integer количество записанных байтов
 	 */
 	protected function writeString($fw,$data)
