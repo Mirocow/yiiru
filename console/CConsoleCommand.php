@@ -9,36 +9,189 @@
  */
 
 /**
- * CConsoleCommand представляет собой выполняемую пользователем команду.
+ * Класс CConsoleCommand представляет выполняемую консольную команду.
  *
- * Метод {@link run} должен быть переопределен с реальной логикой выполнения команды.
- * Вы можете переопределить метод {@link getHelp} для получения более детализированного описания команды.
+ * Он работает как {@link CController} разбирая аргументы командной строки и отправляя запрос
+ * определенному действию с соответствующими значениями параметров.
+ *
+ * Пользователи вызывают консольную команду в следущем формате команды:
+ * <pre>
+ * yiic ИмяКоманды ИмяДействия --Параметр1=Значение1 --Параметр2=Значение2 ...
+ * </pre>
+ *
+ * Классам-потомкам главным образом надо реализовать различные методы действий, имена которых
+ * должны начинаться с "action". Параметры метода действия считаются опциями определенного действия.
+ * Действие, определенное как {@link defaultAction} будет вызываться в случае, если
+ * пользователь не определил имя действия в команде.
+ *
+ * Опции связаны с параметрами действия именами параметров. Например, следующий метод действия
+ * позволит нам запустить команду <code>yiic sitemap --type=News</code>:
+ * <pre>
+ * class SitemapCommand {
+ *     public function actionIndex($type) {
+ *         ....
+ *     }
+ * }
+ * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CConsoleCommand.php 1832 2010-02-20 03:22:45Z qiang.xue $
+ * @version $Id: CConsoleCommand.php 2684 2010-11-28 23:07:10Z qiang.xue $
  * @package system.console
  * @since 1.0
  */
 abstract class CConsoleCommand extends CComponent
 {
+	/**
+	 * @var string название действия по умолчанию. По умолчанию - 'index'
+	 * @since 1.1.5
+	 */
+	public $defaultAction='index';
+
 	private $_name;
 	private $_runner;
 
 	/**
-	 * Выполняет команду.
-	 * @param array параметры командной строки для данной команды
-	 */
-	public abstract function run($args);
-
-	/**
 	 * Конструктор.
-	 * @param string имя команды
-	 * @param CConsoleCommandRunner исполнитель (runner) команды
+	 * @param string $name имя команды
+	 * @param CConsoleCommandRunner $runner исполнитель (runner) команды
 	 */
 	public function __construct($name,$runner)
 	{
 		$this->_name=$name;
 		$this->_runner=$runner;
+	}
+
+	/**
+	 * Инициализирует объект команды.
+	 * Данный метод вызывается после создания и инициализации объекта команды.
+	 * Вы можете переопределить данный метод для дальнейшей настройки команды перед ее выполнением
+	 * @since 1.1.6
+	 */
+	public function init()
+	{
+	}
+
+	/**
+	 * Запускает команду.
+	 * Реализация по умолчанию определяет входные параметры и отправляет запрос
+	 * команды в подходящее действие с соответствующими значениями параметров
+	 * @param array $args параметры командной строки для данной команды
+	 */
+	public function run($args)
+	{
+		list($action, $options, $args)=$this->resolveRequest($args);
+		$methodName='action'.$action;
+		if(!preg_match('/^\w+$/',$action) || !method_exists($this,$methodName))
+			$this->usageError("Unknown action: ".$action);
+
+		$method=new ReflectionMethod($this,$methodName);
+		$params=array();
+		// named and unnamed options
+		foreach($method->getParameters() as $i=>$param)
+		{
+			$name=$param->getName();
+			if(isset($options[$name]))
+			{
+				if($param->isArray())
+					$params[]=is_array($options[$name]) ? $options[$name] : array($options[$name]);
+				else if(!is_array($options[$name]))
+					$params[]=$options[$name];
+				else
+					$this->usageError("Option --$name requires a scalar. Array is given.");
+			}
+			else if($name==='args')
+				$params[]=$args;
+			else if($param->isDefaultValueAvailable())
+				$params[]=$param->getDefaultValue();
+			else
+				$this->usageError("Missing required option --$name.");
+			unset($options[$name]);
+		}
+
+		// try global options
+		if(!empty($options))
+		{
+			$class=new ReflectionClass(get_class($this));
+			foreach($options as $name=>$value)
+			{
+				if($class->hasProperty($name))
+				{
+					$property=$class->getProperty($name);
+					if($property->isPublic() && !$property->isStatic())
+					{
+						$this->$name=$value;
+						unset($options[$name]);
+					}
+				}
+			}
+		}
+
+		if(!empty($options))
+			$this->usageError("Unknown options: ".implode(', ',array_keys($options)));
+
+		if($this->beforeAction($action,$params))
+		{
+			$method->invokeArgs($this,$params);
+			$this->afterAction($action,$params);
+		}
+	}
+
+	/**
+	 * Данный метод вызывается непосредственно перед выполняемым действием.
+	 * Вы можете переопределить данный метод для выполнения последней подготовки для действия
+	 * @param string $action имя действия
+	 * @param array $params параметры, передаваемые в метод действия
+	 * @return boolean должно ли действие выполниться
+	 */
+	protected function beforeAction($action,$params)
+	{
+		return true;
+	}
+
+	/**
+	 * Данный метод выполняется сразу после окончания выполнения действия.
+	 * Вы можете переопределить данный метод для выполнения некоторых постопераций для действия
+	 * @param string $action имя действия
+	 * @param array $params параметры, передаваемые в метод действия
+	 */
+	protected function afterAction($action,$params)
+	{
+	}
+
+	/**
+	 * Разбирает аргументы командной строки и определяет выполняемое действие
+	 * @param array $args аргументы командной строки
+	 * @return array имя действия, именованные опции (имя=>значение) и неименованные  опции
+	 * @since 1.1.5
+	 */
+	protected function resolveRequest($args)
+	{
+		$options=array();	// named parameters
+		$params=array();	// unnamed parameters
+		foreach($args as $arg)
+		{
+			if(preg_match('/^--(\w+)(=(.*))?$/',$arg,$matches))  // an option
+			{
+				$name=$matches[1];
+				$value=isset($matches[3]) ? $matches[3] : true;
+				if(isset($options[$name]))
+				{
+					if(!is_array($options[$name]))
+						$options[$name]=array($options[$name]);
+					$options[$name][]=$value;
+				}
+				else
+					$options[$name]=$value;
+			}
+			else if(isset($action))
+				$params[]=$arg;
+			else
+				$action=$arg;
+		}
+		if(!isset($action))
+			$action=$this->defaultAction;
+
+		return array($action,$options,$params);
 	}
 
 	/**
@@ -64,13 +217,59 @@ abstract class CConsoleCommand extends CComponent
 	 */
 	public function getHelp()
 	{
-		return 'Usage: '.$this->getCommandRunner()->getScriptName().' '.$this->getName();
+		$help='Usage: '.$this->getCommandRunner()->getScriptName().' '.$this->getName();
+		$options=$this->getOptionHelp();
+		if(empty($options))
+			return $help;
+		if(count($options)===1)
+			return $help.' '.$options[0];
+		$help.=" <action>\nActions:\n";
+		foreach($options as $option)
+			$help.='    '.$option."\n";
+		return $help;
+	}
+
+	/**
+	 * Предоставляет вспомогательную информацию по опциям команды.
+	 * Реализация по умолчанию будет возвращать все доступные действия вместе
+	 * с информацией об их соответствующих параметрах
+	 * @return array вспомогательная информация по опциям команды. Каждый эдемент массива описывает
+	 * вспомогательную информацию для отдельного действия
+	 * @since 1.1.5
+	 */
+	public function getOptionHelp()
+	{
+		$options=array();
+		$class=new ReflectionClass(get_class($this));
+        foreach($class->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
+        {
+        	$name=$method->getName();
+        	if(!strncasecmp($name,'action',6) && strlen($name)>6)
+        	{
+        		$name=substr($name,6);
+        		$name[0]=strtolower($name[0]);
+        		$help=$name;
+
+				foreach($method->getParameters() as $param)
+				{
+					$optional=$param->isDefaultValueAvailable();
+					$defaultValue=$optional ? $param->getDefaultValue() : null;
+					$name=$param->getName();
+					if($optional)
+						$help.=" [--$name=$defaultValue]";
+					else
+						$help.=" --$name=value";
+				}
+				$options[]=$help;
+        	}
+        }
+        return $options;
 	}
 
 	/**
 	 * Отображает ошибки использования.
 	 * Метода прерывает выполнение текущего приложения.
-	 * @param string сообщение ошибки
+	 * @param string $message сообщение ошибки
 	 */
 	public function usageError($message)
 	{
@@ -79,7 +278,7 @@ abstract class CConsoleCommand extends CComponent
 
 	/**
 	 * Копирует список файлов из одного места в другое.
-	 * @param array список копируемых файлов (имя => параметры).
+	 * @param array $fileList список копируемых файлов (имя => параметры).
 	 * Ключи массива - имена, отображаемые во время процесса копирования, а его значения - параметры
 	 * копируемых файлов. Каждое значение массива должно быть массивом следующей структуры:
 	 * <ul>
@@ -160,9 +359,9 @@ abstract class CConsoleCommand extends CComponent
 	 * Метод просматривает переданную в параметре директорию и строит список файлов
 	 * и поддиректорий, содержащихся в данной директории.
 	 * Результат данной функции может быть передан в метод {@link copyFiles}.
-	 * @param string исходная директория
-	 * @param string целевая директория
-	 * @param string базовая директория
+	 * @param string $sourceDir исходная директория
+	 * @param string $targetDir целевая директория
+	 * @param string $baseDir базовая директория
 	 * @return array список файлов (см. {@link copyFiles})
 	 */
 	public function buildFileList($sourceDir, $targetDir, $baseDir='')
@@ -186,7 +385,7 @@ abstract class CConsoleCommand extends CComponent
 
 	/**
 	 * Создает все родительские директории, если они не существуют.
-	 * @param string проверяемая директория
+	 * @param string $directory проверяемая директория
 	 */
 	public function ensureDirectory($directory)
 	{
@@ -200,9 +399,9 @@ abstract class CConsoleCommand extends CComponent
 
 	/**
 	 * Рендерит файл представления.
-	 * @param string путь до файла представления
-	 * @param array опциональные данные, распаковываемые в виде локальных переменных представления
-	 * @param boolean возвратить ли результат рендера вместо его отображения на экран
+	 * @param string $_viewFile_ путь до файла представления
+	 * @param array $_data_ опциональные данные, распаковываемые в виде локальных переменных представления
+	 * @param boolean $_return_ возвратить ли результат рендера вместо его отображения на экран
 	 * @return mixed результат рендера по требованию, иначе null
 	 */
 	public function renderFile($_viewFile_,$_data_=null,$_return_=false)
@@ -224,7 +423,7 @@ abstract class CConsoleCommand extends CComponent
 
 	/**
 	 * Конвертирует слово во множественную форму (плюрализация). Только английские слова.
-	 * @param string плюрализуемое слово
+	 * @param string $name плюрализуемое слово
 	 * @return string плюрализованное слово
 	 */
 	public function pluralize($name)
