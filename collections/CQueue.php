@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2010 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2011 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -21,7 +21,7 @@
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CQueue.php 2497 2010-09-23 13:28:52Z mdomba $
+ * @version $Id: CQueue.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package system.collections
  * @since 1.0
  */
@@ -40,9 +40,9 @@ class CQueue extends CComponent implements IteratorAggregate,Countable
 
 	/**
 	 * Конструктор.
-	 * Инициализирует очередь массивом или объектом-итератором.
-	 * @param array $data начальные данные. По умолчанию равно null, что означает без инициализации.
-	 * @throws CException вызывается, если данные не null и не являются ни массивом ни итератором.
+	 * Инициализирует очередь массивом или объектом-итератором
+	 * @param array $data начальные данные. По умолчанию равно null, что означает без инициализации
+	 * @throws CException вызывается, если данные не null и не являются ни массивом ни итератором
 	 */
 	public function __construct($data=null)
 	{
@@ -60,9 +60,9 @@ class CQueue extends CComponent implements IteratorAggregate,Countable
 
 	/**
 	 * Копирует итерируемые данные в очередь.
-	 * Помните, что существующие данные стираются перед копированием.
+	 * Помните, что существующие данные стираются перед копированием
 	 * @param mixed $data копируемые данные, должен быть массивом или объектом, класс которого реализует интерфейс Traversable
-	 * @throws CException вызывается, если данные не являются ни массивом ни Traversable-объектом.
+	 * @throws CException вызывается, если данные не являются ни массивом ни Traversable-объектом
 	 */
 	public function copyFrom($data)
 	{
@@ -80,7 +80,7 @@ class CQueue extends CComponent implements IteratorAggregate,Countable
 	}
 
 	/**
-	 * Очищает очередь.
+	 * Очищает очередь
 	 */
 	public function clear()
 	{
@@ -98,7 +98,7 @@ class CQueue extends CComponent implements IteratorAggregate,Countable
 	}
 
 	/**
-	 * Возвращает элемент в начале очереди.
+	 * Возвращает элемент в начале очереди
 	 * @return mixed элемент в начале очереди
 	 * @throws CException вызывается, если очередь пуста
 	 */
@@ -111,7 +111,7 @@ class CQueue extends CComponent implements IteratorAggregate,Countable
 	}
 
 	/**
-	 * Удаляет объект из начала очереди и возвращает его.
+	 * Удаляет объект из начала очереди и возвращает его
 	 * @return mixed элемент в начале очереди
 	 * @throws CException вызывается, если очередь пуста
 	 */
@@ -127,7 +127,7 @@ class CQueue extends CComponent implements IteratorAggregate,Countable
 	}
 
 	/**
-	 * Добавляет объект в конец очереди.
+	 * Добавляет объект в конец очереди
 	 * @param mixed $item добавляемый в очередь элемент
 	 */
 	public function enqueue($item)
@@ -138,8 +138,8 @@ class CQueue extends CComponent implements IteratorAggregate,Countable
 
 	/**
 	 * Возвращает итератор для обхода элементов очереди.
-	 * Требуется интерфейсом IteratorAggregate.
-	 * @return Iterator итератор для обхода элементов очереди.
+	 * Требуется интерфейсом IteratorAggregate
+	 * @return Iterator итератор для обхода элементов очереди
 	 */
 	public function getIterator()
 	{
@@ -147,6 +147,7 @@ class CQueue extends CComponent implements IteratorAggregate,Countable
 	}
 
 	/**
+	 * Возвращае число элементов в очереди
 	 * @return integer число элементов в очереди
 	 */
 	public function getCount()
@@ -156,8 +157,8 @@ class CQueue extends CComponent implements IteratorAggregate,Countable
 
 	/**
 	 * Возвращает число элементов в очереди.
-	 * Требуется интерфейсом Countable.
-	 * @return integer число элементов в очереди.
+	 * Требуется интерфейсом Countable
+	 * @return integer число элементов в очереди
 	 */
 	public function count()
 	{

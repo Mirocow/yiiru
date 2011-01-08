@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2010 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2011 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -15,7 +15,7 @@
  * загруженного компонента приложения.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
+ * @version $Id: interfaces.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -38,7 +38,7 @@ interface IApplicationComponent
  * Данный интерфейс должен реализовываться классами, поддерживающими функцию кэширования.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
+ * @version $Id: interfaces.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package system.caching
  * @since 1.0
  */
@@ -106,7 +106,7 @@ interface ICache
  * Объекты, реализующие данный интерфейс, должны быть сериализуемы и десереализумы.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
+ * @version $Id: interfaces.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package system.caching
  * @since 1.0
  */
@@ -129,7 +129,7 @@ interface ICacheDependency
  *
  * Данный интерфейс должен реализовываться всеми классами постоянного состояния (такими, как {@link CStatePersister})
  *
- * @version $Id: interfaces.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
+ * @version $Id: interfaces.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -151,7 +151,7 @@ interface IStatePersister
 /**
  * IFilter - это интерфейс, который должен быть реализован фильтрами действий.
  *
- * @version $Id: interfaces.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
+ * @version $Id: interfaces.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -171,7 +171,7 @@ interface IFilter
 /**
  * IAction - это интерфейс, который должен быть реализован действиями контроллера.
  *
- * @version $Id: interfaces.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
+ * @version $Id: interfaces.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -199,7 +199,7 @@ interface IAction
  * Если реализован данный интерфейс, экземпляр провайдера сможет перехватывать
  * вызов удаленного метода (например, для целей журналирования или аутентификации).
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
+ * @version $Id: interfaces.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -227,7 +227,7 @@ interface IWebServiceProvider
  * {@link CBaseController}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
+ * @version $Id: interfaces.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -253,7 +253,7 @@ interface IViewRenderer
  * с {@link CWebApplication::user пользовательским компонентом приложения}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
+ * @version $Id: interfaces.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -295,7 +295,7 @@ interface IUserIdentity
  * Пользовательский компонент приложения представляет информацию, идентифицирующую текущего пользователя.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
+ * @version $Id: interfaces.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -333,7 +333,7 @@ interface IWebUser
  * В основном менеджер аутентификации отвечает за обеспечение контроля доступа, основанного на ролях (RBAC).
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
+ * @version $Id: interfaces.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -506,7 +506,7 @@ interface IAuthManager
  * и не доступными в классе компонента.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
+ * @version $Id: interfaces.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package system.base
  * @since 1.0.2
  */
@@ -539,7 +539,7 @@ interface IBehavior
  * виджета вызовом метода {@link CBaseController::createWidget}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
+ * @version $Id: interfaces.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package system.web
  * @since 1.1
  */
@@ -562,7 +562,7 @@ interface IWidgetFactory
  * Кроме передаваемых данных, провайдеры поддерживают пагинацию и сортировку.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
+ * @version $Id: interfaces.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package system.web
  * @since 1.1
  */

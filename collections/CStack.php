@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2010 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2011 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -21,7 +21,7 @@
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CStack.php 2497 2010-09-23 13:28:52Z mdomba $
+ * @version $Id: CStack.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package system.collections
  * @since 1.0
  */
@@ -40,9 +40,9 @@ class CStack extends CComponent implements IteratorAggregate,Countable
 
 	/**
 	 * Конструктор.
-	 * Инициализирует стек массивом или объектом-итератором.
-	 * @param array $data начальные данные. По умолчанию равно null, что означает без инициализации.
-	 * @throws CException вызывается, если данные не null и не являются ни массивом ни итератором.
+	 * Инициализирует стек массивом или объектом-итератором
+	 * @param array $data начальные данные. По умолчанию равно null, что означает без инициализации
+	 * @throws CException вызывается, если данные не null и не являются ни массивом ни итератором
 	 */
 	public function __construct($data=null)
 	{
@@ -60,9 +60,9 @@ class CStack extends CComponent implements IteratorAggregate,Countable
 
 	/**
 	 * Копирует итерируемые данные в стек.
-	 * Помните, что существующие данные стираются перед копированием.
+	 * Помните, что существующие данные стираются перед копированием
 	 * @param mixed $data копируемые данные, должен быть массивом или объектом, класс которого реализует интерфейс Traversable
-	 * @throws CException вызывается, если данные не являются ни массивом ни Traversable-объектом.
+	 * @throws CException вызывается, если данные не являются ни массивом ни Traversable-объектом
 	 */
 	public function copyFrom($data)
 	{
@@ -80,7 +80,7 @@ class CStack extends CComponent implements IteratorAggregate,Countable
 	}
 
 	/**
-	 * Очищает стек.
+	 * Очищает стек
 	 */
 	public function clear()
 	{
@@ -99,7 +99,7 @@ class CStack extends CComponent implements IteratorAggregate,Countable
 
 	/**
 	 * Возвращает верхний элемент стека.
-	 * В отличие от метода {@link pop()}, не удаляет элемент из стека.
+	 * В отличие от метода {@link pop()}, не удаляет элемент из стека
 	 * @return mixed верхний элемент стека
 	 * @throws CException вызывается, если стек пустой
 	 */
@@ -128,7 +128,7 @@ class CStack extends CComponent implements IteratorAggregate,Countable
 	}
 
 	/**
-	 * Вставляет элемент в стек.
+	 * Вставляет элемент в стек
 	 * @param mixed $item добавляемый в стек элемент
 	 */
 	public function push($item)
@@ -139,8 +139,8 @@ class CStack extends CComponent implements IteratorAggregate,Countable
 
 	/**
 	 * Возвращает итератор для обхода элементов стека.
-	 * Требуется интерфейсом IteratorAggregate.
-	 * @return Iterator итератор для обхода элементов стека.
+	 * Требуется интерфейсом IteratorAggregate
+	 * @return Iterator итератор для обхода элементов стека
 	 */
 	public function getIterator()
 	{
@@ -148,6 +148,7 @@ class CStack extends CComponent implements IteratorAggregate,Countable
 	}
 
 	/**
+	 * Возвращает число элементов в стеке
 	 * @return integer число элементов в стеке
 	 */
 	public function getCount()
@@ -157,8 +158,8 @@ class CStack extends CComponent implements IteratorAggregate,Countable
 
 	/**
 	 * Возвращает число элементов в стеке.
-	 * Требуется интерфейсом Countable.
-	 * @return integer число элементов в стеке.
+	 * Требуется интерфейсом Countable
+	 * @return integer число элементов в стеке
 	 */
 	public function count()
 	{

@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2010 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2011 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -37,7 +37,7 @@
  * Вы можете использовать {@link CFileValidator} для проверки атрибутов файла.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFileValidator.php 2605 2010-11-02 18:10:56Z qiang.xue $
+ * @version $Id: CFileValidator.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */

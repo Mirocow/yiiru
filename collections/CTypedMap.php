@@ -1,21 +1,21 @@
 <?php
 /**
- * Файл содержит класс CTypedMap.
+ *    CTypedMap.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2010 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2011 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
 /**
- * Класс CTypedMap представляет карту с элементами определенного типа.
+ *  CTypedMap      .
  *
- * Класс CTypedMap расширяет класс {@link CMap} делая обязательным условие, при котором
- * добавляемые в список элементы имеют один и тот же определенный тип класса.
+ *  CTypedMap   {@link CMap}   ,  
+ *            .
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CTypedMap.php 2685 2010-11-29 11:03:47Z mdomba $
+ * @version $Id: CTypedMap.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package system.collections
  * @since 1.0
  */
@@ -24,8 +24,8 @@ class CTypedMap extends CMap
 	private $_type;
 
 	/**
-	 * Конструктор.
-	 * @param string $type тип класса
+	 * .
+	 * @param string $type  
 	 */
 	public function __construct($type)
 	{
@@ -33,13 +33,13 @@ class CTypedMap extends CMap
 	}
 
 	/**
-	 * Добавляет элемент в карту.
-	 * Метод переопределяет родительскую реализацию проверкой
-	 * соответствия определенному типу добавляемого элемента.
-	 * @param integer $index определенная позиция
-	 * @param mixed $item новый элемент
-	 * @throws CException вызывается, если переданный индекс превысил границы карты,
-	 * карта только для чтения или элемент не соответствует ожидаемому типу
+	 *    .
+	 *     
+	 *     .
+	 * @param integer $index  
+	 * @param mixed $item  
+	 * @throws CException ,      ,
+	 *          
 	 */
 	public function add($index,$item)
 	{

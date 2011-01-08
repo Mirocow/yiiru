@@ -4,9 +4,9 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2010 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2011 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: YiiBase.php 2767 2010-12-23 21:30:14Z qiang.xue $
+ * @version $Id: YiiBase.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package system
  * @since 1.0
  */
@@ -50,7 +50,7 @@ defined('YII_ZII_PATH') or define('YII_ZII_PATH',YII_PATH.DIRECTORY_SEPARATOR.'z
  * вы можете настраивать методы YiiBase.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: YiiBase.php 2767 2010-12-23 21:30:14Z qiang.xue $
+ * @version $Id: YiiBase.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package system
  * @since 1.0
  */

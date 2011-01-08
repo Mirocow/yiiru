@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2010 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2011 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -46,7 +46,7 @@ Yii::import('CHtml',true);
  * CErrorHandler - это компонент ядра приложения, доступный методом {@link CApplication::getErrorHandler()}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CErrorHandler.php 2768 2010-12-24 00:46:28Z alexander.makarow $
+ * @version $Id: CErrorHandler.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -238,7 +238,8 @@ class CErrorHandler extends CApplicationComponent
 	}
 
 	/**
-	 * @return boolean является ли текущий запрос ajax-запросом
+	 * Показывает, является ли текущий запрос ajax-запросом (XMLHttpRequest)
+	 * @return boolean является ли текущий запрос ajax-запросом (XMLHttpRequest)
 	 */
 	protected function isAjaxRequest()
 	{
@@ -246,6 +247,7 @@ class CErrorHandler extends CApplicationComponent
 	}
 
 	/**
+	 * Возвращает точный трассированный путь до точки возникновения проблемы
 	 * @param Exception $exception неперехваченное исключение
 	 * @return array точный трассированный путь до точки возникновения проблемы
 	 */
@@ -330,7 +332,9 @@ class CErrorHandler extends CApplicationComponent
 	}
 
 	/**
-	 * @return string информация о версии сервера. Если приложение в производственном режиме, ничего не возвращается.
+	 * Возвращает информацию о версии сервера.
+	 * Если приложение в производственном режиме, возвращается пустая строка
+	 * @return string информация о версии сервера. Если приложение в производственном режиме, возвращается пустая строка
 	 */
 	protected function getVersionInfo()
 	{
@@ -348,7 +352,7 @@ class CErrorHandler extends CApplicationComponent
 	/**
 	 * Конвертирует массив аргументов в его строковое представление
 	 *
-	 * @param array $args массив аргументов
+	 * @param array $args конвертируемый массив аргументов
 	 * @return string массив аргументов в его строковом представлении
 	 */
 	protected function argumentsToString($args)
@@ -431,35 +435,5 @@ class CErrorHandler extends CApplicationComponent
 				$output.='<span class="error">'.$code.'</span>';
 		}
 		return '<div class="code"><pre>'.$output.'</pre></div>';
-	}
-
-	/**
-	 * Возвращает строки исходного кода, окружающие строку с ошибкой.
-	 * Возвратится не более {@link maxSourceLines} строк кода.
-	 * @param string $file путь к файлу исходного кода
-	 * @param integer $line номер строки с ошибкой
-	 * @return array строки исходного кода, окружающие строку с ошибкой, индексированные по номерам строк
-	 */
-	protected function getSourceLines($file,$line)
-	{
-		// determine the max number of lines to display
-		$maxLines=$this->maxSourceLines;
-		if($maxLines<1)
-			$maxLines=1;
-		else if($maxLines>100)
-			$maxLines=100;
-
-		$line--;	// adjust line number to 0-based from 1-based
-		if($line<0 || ($lines=@file($file))===false || ($lineCount=count($lines))<=$line)
-			return array();
-
-		$halfLines=(int)($maxLines/2);
-		$beginLine=$line-$halfLines>0?$line-$halfLines:0;
-		$endLine=$line+$halfLines<$lineCount?$line+$halfLines:$lineCount-1;
-
-		$sourceLines=array();
-		for($i=$beginLine;$i<=$endLine;++$i)
-			$sourceLines[$i+1]=$lines[$i];
-		return $sourceLines;
 	}
 }

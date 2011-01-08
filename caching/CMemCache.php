@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2010 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2011 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -51,7 +51,7 @@
  * Для этого установите свойство {@link useMemcached} в значение true.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMemCache.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
+ * @version $Id: CMemCache.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package system.caching
  * @since 1.0
  */
@@ -217,7 +217,7 @@ class CMemCache extends CCache
  * детальными объяснениями по каждому свойству конфигурации.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMemCache.php 2537 2010-10-12 18:50:13Z keyboard.idol@gmail.com $
+ * @version $Id: CMemCache.php 2799 2011-01-01 19:31:13Z qiang.xue $
  * @package system.caching
  * @since 1.0
  */
