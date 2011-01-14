@@ -6,7 +6,7 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2011 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: YiiBase.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: YiiBase.php 2847 2011-01-13 11:11:51Z alexander.makarow $
  * @package system
  * @since 1.0
  */
@@ -50,7 +50,7 @@ defined('YII_ZII_PATH') or define('YII_ZII_PATH',YII_PATH.DIRECTORY_SEPARATOR.'z
  * вы можете настраивать методы YiiBase.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: YiiBase.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: YiiBase.php 2847 2011-01-13 11:11:51Z alexander.makarow $
  * @package system
  * @since 1.0
  */
@@ -513,17 +513,18 @@ class YiiBase
 	 * если в языке сообщение имеет различный вид для различных чисел.
 	 * @param string $category категория сообщения. Используйте только буквенные символы. Примечание: категория 'yii'
 	 * зарезервирована для использования в коде ядра фреймворка Yii. Обратитесь к {@link CPhpMessageSource}
-	 * за дополнительной информацией о категориях сообщений.
+	 * за дополнительной информацией о категориях сообщений
 	 * @param string $message оригинальное сообщение
 	 * @param array $params параметры, применяемые к сообщению с использованием <code>strtr</code>.
-	 * Начиная с версии первый параметр может быть числом без ключа.
+	 * Начиная с версии 1.0.2 первый параметр может быть числом без ключа.
 	 * В этом случае метод будет вызывать метод {@link CChoiceFormat::format} для выбора
-	 * соответствующего перевода.
+	 * соответствующего перевода. Начиная с версии 1.1.6 вы можете передать параметр для метода {@link CChoiceFormat::format}
+	 * или формат плюральных форм без включения их в массив
 	 * @param string $source какой компонент приложения использовать в качестве источника сообщений.
 	 * По умолчанию - null, т.е. использовать 'coreMessages' для сообщений, принадлежащих
 	 * к категории 'yii', и 'messages' - для остальных собщений
 	 * @param string $language целевой язык. Если null (по умолчанию), то будет использоваться {@link CApplication::getLanguage язык приложения}.
-	 * Параметр доступен с версии 1.0.3.
+	 * Параметр доступен с версии 1.0.3
 	 * @return string переведенное сообщение
 	 * @see CMessageSource
 	 */
@@ -538,9 +539,14 @@ class YiiBase
 		}
 		if($params===array())
 			return $message;
+
+		if (!is_array($params))
+			$params = array($params);
+
 		if(isset($params[0])) // number choice
 		{
-			$message=CChoiceFormat::format($message,$params[0]);
+			$expressions=self::$_app->getLocale($language)->getPluralRules();
+			$message=CChoiceFormat::format($message,$params[0],$expressions);
 			unset($params[0]);
 		}
 		return $params!==array() ? strtr($message,$params) : $message;

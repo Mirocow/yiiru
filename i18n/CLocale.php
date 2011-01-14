@@ -14,7 +14,7 @@
  * Данные включают информацию форматирования чисел и дат.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLocale.php 2798 2011-01-01 19:29:03Z qiang.xue $
+ * @version $Id: CLocale.php 2844 2011-01-13 01:29:55Z alexander.makarow $
  * @package system.i18n
  * @since 1.0
  */
@@ -295,5 +295,13 @@ class CLocale extends CComponent
 	public function getOrientation()
 	{
 		return isset($this->_data['orientation']) ? $this->_data['orientation'] : 'ltr';
+	}
+
+	/**
+	 * @return array выражения плюральных форм
+	 */
+	public function getPluralRules()
+	{
+		return isset($this->_data['pluralRules']) ? $this->_data['pluralRules'] : array();
 	}
 }
