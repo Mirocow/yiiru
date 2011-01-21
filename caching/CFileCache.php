@@ -18,7 +18,7 @@
  * Обратитесь к документации {@link CCache} за информацией об обычных операциях кэша, поддерживаемых компонентом CFileCache.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFileCache.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CFileCache.php 2853 2011-01-14 09:53:06Z keyboard.idol@gmail.com $
  * @package system.caching
  * @since 1.0.6
  */
@@ -91,7 +91,8 @@ class CFileCache extends CCache
 	 */
 	protected function flushValues()
 	{
-		return $this->gc(false);
+		$this->gc(false);
+		return true;
 	}
 
 	/**

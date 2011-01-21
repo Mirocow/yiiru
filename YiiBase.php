@@ -6,7 +6,7 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2011 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: YiiBase.php 2847 2011-01-13 11:11:51Z alexander.makarow $
+ * @version $Id: YiiBase.php 2895 2011-01-20 10:33:02Z mdomba $
  * @package system
  * @since 1.0
  */
@@ -50,7 +50,7 @@ defined('YII_ZII_PATH') or define('YII_ZII_PATH',YII_PATH.DIRECTORY_SEPARATOR.'z
  * вы можете настраивать методы YiiBase.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: YiiBase.php 2847 2011-01-13 11:11:51Z alexander.makarow $
+ * @version $Id: YiiBase.php 2895 2011-01-20 10:33:02Z mdomba $
  * @package system
  * @since 1.0
  */
@@ -75,7 +75,7 @@ class YiiBase
 	 */
 	public static function getVersion()
 	{
-		return '1.1.6-dev';
+		return '1.1.7-dev';
 	}
 
 	/**
@@ -120,7 +120,8 @@ class YiiBase
 	}
 
 	/**
-	 * @return CApplication синглтон приложения (единственный экземпляр); null, если синглтон еще не был создан.
+	 * Возвращает синглтон приложения; null, если синглтон еще не был создан
+	 * @return CApplication синглтон приложения; null, если синглтон еще не был создан
 	 */
 	public static function app()
 	{
@@ -498,7 +499,8 @@ class YiiBase
 	}
 
 	/**
-	 * @return string строка, которая может быть отображена на вашей веб-странице, показывающая информацию "Powered-by-Yii"
+	 * Возвращает строку, отображаемую на веб-странице и показывающую фразу о том, что сайт базируется на фреймворке Yii 
+	 * @return string строка, отображаемая на веб-странице и показывающая фразу о том, что сайт базируется на фреймворке Yii 
 	 */
 	public static function powered()
 	{
@@ -539,14 +541,28 @@ class YiiBase
 		}
 		if($params===array())
 			return $message;
-
-		if (!is_array($params))
-			$params = array($params);
-
+		if(!is_array($params))
+			$params=array($params);
 		if(isset($params[0])) // number choice
 		{
-			$expressions=self::$_app->getLocale($language)->getPluralRules();
-			$message=CChoiceFormat::format($message,$params[0],$expressions);
+			if(strpos($message,'|')!==false)
+			{
+				if(strpos($message,'#')===false)
+				{
+					$chunks=explode('|',$message);
+					$expressions=self::$_app->getLocale($language)->getPluralRules();
+					if($n=min(count($chunks),count($expressions)))
+					{
+						for($i=0;$i<$n;$i++)
+							$chunks[$i]=$expressions[$i].'#'.$chunks[$i];
+
+						$message=implode('|',$chunks);
+					}
+				}
+				$message=CChoiceFormat::format($message,$params[0]);
+			}
+			if(!isset($params['{n}']))
+				$params['{n}']=$params[0];
 			unset($params[0]);
 		}
 		return $params!==array() ? strtr($message,$params) : $message;

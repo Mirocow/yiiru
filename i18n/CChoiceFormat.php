@@ -30,7 +30,7 @@
  * возвращена последняя часть переданного сообщения.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CChoiceFormat.php 2844 2011-01-13 01:29:55Z alexander.makarow $
+ * @version $Id: CChoiceFormat.php 2856 2011-01-14 15:56:10Z alexander.makarow $
  * @package system.i18n
  * @since 1.0.2
  */
@@ -41,33 +41,17 @@ class CChoiceFormat
 	 * @param string $messages сообщение-кандидат в формате 'expr1#message1|expr2#message2|expr3#message3'.
 	 * За подробностями обратитесь к {@link CChoiceFormat}.
 	 * @param mixed $number проверочное число
-	 * @param array $expressions выражения для выбора сообщения по умолчанию
 	 * @return string выбранное сообщение
 	 */
-	public static function format($messages, $number, $expressions = array())
+	public static function format($messages, $number)
 	{
 		$n=preg_match_all('/\s*([^#]*)\s*#([^\|]*)\|/',$messages.'|',$matches);
-		if($n>0)
-		{
-			$expressions=$matches[1];
-			$matchedMessages=$matches[2];
-		}
-		else
-		{
-			//no expressions provided inside messages, try to use default expressions
-			$n=preg_match_all('/\s*([^\|]*)\|/', $messages.'|', $matches);
-			if ($n>0 && count($expressions)>0)
-			{
-				$matchedMessages=$matches[1];
-				$n=min($n, count($expressions));
-			}
-			else
-				return $messages;
-		}
+		if($n===0)
+			return $messages;
 		for($i=0;$i<$n;++$i)
 		{
-			$expression=$expressions[$i];
-			$message=$matchedMessages[$i];
+			$expression=$matches[1][$i];
+			$message=$matches[2][$i];
 			$intval=(int)$expression;
 			if($expression==="$intval")
 			{
