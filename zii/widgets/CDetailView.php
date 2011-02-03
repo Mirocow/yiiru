@@ -115,7 +115,7 @@ class CDetailView extends CWidget
 	public $htmlOptions=array('class'=>'detail-view');
 	/**
 	 * @var string базовый URL-адрес для всех ресурсов виджета (javascript, CSS-файлов, изображений).
-	 * По умолчанию - null, т.е., используются интегрированные ресурсы виджета (которые публикуются как assets-ресурсы).
+	 * По умолчанию - null, т.е., используются интегрированные ресурсы виджета (которые публикуются как assets-ресурсы)
 	 */
 	public $baseScriptUrl;
 	/**

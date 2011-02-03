@@ -27,15 +27,15 @@
  * Свойства {@link createAttribute} {@link updateAttribute} по умолчанию имеют значения 'create_time' 'update_time',
  * поэтому не обязательно их настраивать. Если вы не хотите, чтобы поведение CTimestampBehavior
  * устанавливало временную отметку при обновлении или создании записи, установите соответствующий атрибут в null.
- * 
+ *
  * По умолчанию атрибут обновления устанавливается только при обновлении записи. Если вы хотите, чтобы он устанавилвался и при
  * создании записи, установите свойство {@link setUpdateOnCreate} в значение true.
- * 
+ *
  * Хотя CTimestampBehavior пытается выяснить сам, какое значение присваивать атрибуту временной метки,
  * вы можете настроить это значение свойством {@link timestampExpression}
- * 
+ *
  * @author Jonah Turnquist <poppitypop@gmail.com>
- * @version $Id: CTimestampBehavior.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CTimestampBehavior.php 2934 2011-02-02 21:34:43Z qiang.xue $
  * @package zii.behaviors
  * @since 1.1
  */
@@ -57,14 +57,16 @@ class CTimestampBehavior extends CActiveRecordBehavior {
 	* По умолчанию - false
 	*/
 	public $setUpdateOnCreate = false;
-	
+
 	/**
-	* @var mixed выражение, используемое для генерации временной метки, например, 'time()'.
-	* По умолчанию - null, т.е., мы пытаемся выяснить сами подходящую временную метку автоматически.
+	* @var mixed выражение, используемое для генерации временной метки.
+	* Может быть либо строкой, представляющей PHP-выражение (например, 'time()'), либо
+	* обектом класса {@link CDbExpression}, представляющим выражение базы данных (например, new CDbExpression('NOW()')).
+	* По умолчанию - null, т.е., мы пытаемся выяснить подходящую временную метку автоматически.
 	* Если подходящая временная метка не определена, то будет использовано текущее UNIX-время
 	*/
-	public $timestampExpression=null;
-	
+	public $timestampExpression;
+
 	/**
 	* @var array карта соответствий типов столбцов таблицы методам базы данных
 	*/
@@ -73,11 +75,11 @@ class CTimestampBehavior extends CActiveRecordBehavior {
 			'timestamp'=>'NOW()',
 			'date'=>'NOW()',
 	);
-	
+
 	/**
 	* Реагирует на событие {@link CModel::onBeforeSave}.
 	* Устанавливает значения отрибутов создания или модификации согласно настройкам
-	* 
+	*
 	* @param CModelEvent $event параметр события
 	*/
 	public function beforeSave($event) {
@@ -88,7 +90,7 @@ class CTimestampBehavior extends CActiveRecordBehavior {
 			$this->getOwner()->{$this->updateAttribute} = $this->getTimestampByAttribute($this->updateAttribute);
 		}
 	}
-	
+
 	/**
 	* Получает подходящую временную отметку по переданному атрибуту
 	* 
@@ -96,13 +98,14 @@ class CTimestampBehavior extends CActiveRecordBehavior {
 	* @return mixed временная отметка (unix-время или функция mysql)
 	*/
 	protected function getTimestampByAttribute($attribute) {
-		if ($this->timestampExpression !== null)
+		if ($this->timestampExpression instanceof CDbExpression)
+			return $this->timestampExpression;
+		else if ($this->timestampExpression !== null)
 			return @eval('return '.$this->timestampExpression.';');
-			
+
 		$columnType = $this->getOwner()->getTableSchema()->getColumn($attribute)->dbType;
-		return $this->getTimestampByColumnType($columnType);
-	}
-	
+		
+
 	/**
 	* Возвращает подходящую временную отметку по переданному типу столбца атрибута
 	* 
