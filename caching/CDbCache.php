@@ -23,7 +23,7 @@
  * Обратитесь к документации {@link CCache} за информацией об обычных операциях кэша, поддерживаемых компонентом CDbCache.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbCache.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CDbCache.php 2949 2011-02-11 03:48:01Z qiang.xue $
  * @package system.caching
  * @since 1.0
  */
@@ -173,7 +173,7 @@ EOD;
 
 	/**
 	 * Получает значение из кэша по определенному ключу.
-	 * Метод переопределяет реализацию класса-родителя.
+	 * Метод переопределяет реализацию класса-родителя
 	 * @param string $key уникальный ключ, идентифицирующий кэшированное значение
 	 * @return string хранимое в кэше значение; false, если значения в кэше нет или его срок годности истек
 	 */
@@ -181,11 +181,21 @@ EOD;
 	{
 		$time=time();
 		$sql="SELECT value FROM {$this->cacheTableName} WHERE id='$key' AND (expire=0 OR expire>$time)";
-		return $this->getDbConnection()->createCommand($sql)->queryScalar();
+		$db=$this->getDbConnection();
+		if($db->queryCachingDuration>0)
+		{
+			$duration=$db->queryCachingDuration;
+			$db->queryCachingDuration=0;
+			$result=$db->createCommand($sql)->queryScalar();
+			$db->queryCachingDuration=$duration;
+			return $result;
+		}
+		else
+			return $db->createCommand($sql)->queryScalar();
 	}
 
 	/**
-	 * Получает из кэша несколько значений с определенными ключами.
+	 * Получает из кэша несколько значений с определенными ключами
 	 * @param array $keys список ключей, идентифицирующих кэшированные значения
 	 * @return array список кэшированных значений, индексированный по ключам
 	 * @since 1.0.8
@@ -198,7 +208,18 @@ EOD;
 		$ids=implode("','",$keys);
 		$time=time();
 		$sql="SELECT id, value FROM {$this->cacheTableName} WHERE id IN ('$ids') AND (expire=0 OR expire>$time)";
-		$rows=$this->getDbConnection()->createCommand($sql)->queryRows();
+
+		$db=$this->getDbConnection();
+		if($db->queryCachingDuration>0)
+		{
+			$duration=$db->queryCachingDuration;
+			$db->queryCachingDuration=0;
+			$rows=$db->createCommand($sql)->queryRows();
+			$db->queryCachingDuration=$duration;
+		}
+		else
+			$rows=$db->createCommand($sql)->queryRows();
+
 		$results=array();
 		foreach($keys as $key)
 			$results[$key]=false;
@@ -209,7 +230,7 @@ EOD;
 
 	/**
 	 * Сохраняет в кэше значение, идентифицируемое ключом.
-	 * Метод переопределяет реализацию класса-родителя.
+	 * Метод переопределяет реализацию класса-родителя
 	 * @param string $key ключ, идентифицирующий кэшируемое значение
 	 * @param string $value кэшируемое значение
 	 * @param integer $expire количество секунд срока годности кэшируемого значения. 0 - без срока годности
