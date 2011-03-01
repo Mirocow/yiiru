@@ -20,7 +20,7 @@ Yii::import('zii.widgets.grid.CGridColumn');
  * настраивать порядок отображения кнопок.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CButtonColumn.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CButtonColumn.php 2990 2011-02-22 11:44:50Z mdomba $
  * @package zii.widgets.grid
  * @since 1.1
  */
@@ -117,6 +117,27 @@ class CButtonColumn extends CGridColumn
 	 */
 	public $deleteConfirmation;
 	/**
+	 * @var string javascript-функция, выполняемая после ajax-вызова удаления.
+	 *
+	 * Функция имеет вид <code>function(link, success, data)</code>, где
+	 * <ul>
+	 * <li><code>link</code> - ссылка для удаления;</li>
+	 * <li><code>success</code> - статус ajax-вызова, true; если ajax-вызов прошел успешно, false - неуспешно;</li>
+	 * <li><code>data</code> - возвращаемые сервером данные (в случае успешного выполнения запроса).</li>
+	 * </ul>
+	 * Примечание: если флаг успешности имеет значение true, это не значит, что само удаление прошло успешно,
+	 * это все лишь значит, что ajax-запросов выполнен успешно.
+	 *
+	 * Пример:
+	 * <pre>
+	 *  array(
+	 *     class'=>'CButtonColumn',
+	 *     'afterDelete'=>'function(link,success,data){ if(success) alert("Удаление успешно проведено"); }',
+	 *  ),
+	 * </pre>
+	 */
+	public $afterDelete;
+	/**
 	 * @var array настройка дополнительных кнопкок. Каждый элемент массива определяет отдельную кнопку в
 	 * следующем формате:
 	 * <pre>
@@ -209,14 +230,23 @@ class CButtonColumn extends CGridColumn
 		else
 			$csrf = '';
 
+		if($this->afterDelete===null)
+			$this->afterDelete='function(){}';
+
 		$this->buttons['delete']['click']=<<<EOD
 function() {
 	$confirmation
+	var th=this;
+	var afterDelete=$this->afterDelete;
 	$.fn.yiiGridView.update('{$this->grid->id}', {
 		type:'POST',
 		url:$(this).attr('href'),$csrf
-		success:function() {
+		success:function(data) {
 			$.fn.yiiGridView.update('{$this->grid->id}');
+			afterDelete(th,true,data);
+		},
+		error:function() {
+			afterDelete(th,false);
 		}
 	});
 	return false;

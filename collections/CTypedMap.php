@@ -1,6 +1,6 @@
 <?php
 /**
- *    CTypedMap.
+ * Файл класса CTypedMap.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
@@ -9,13 +9,12 @@
  */
 
 /**
- *  CTypedMap      .
+ * Класс CTypedMap представляет карту, элементы которой имеют определенный тип.
  *
- *  CTypedMap   {@link CMap}   ,  
- *            .
+ * CTypedMap расширяет класс {@link CMap} проверяя при добавлении тип элемента.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CTypedMap.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CTypedMap.php 2999 2011-02-23 20:20:28Z alexander.makarow $
  * @package system.collections
  * @since 1.0
  */
@@ -24,8 +23,8 @@ class CTypedMap extends CMap
 	private $_type;
 
 	/**
-	 * .
-	 * @param string $type  
+	 * Конструктор.
+	 * @param string $type тип класса
 	 */
 	public function __construct($type)
 	{
@@ -33,13 +32,14 @@ class CTypedMap extends CMap
 	}
 
 	/**
-	 *    .
-	 *     
-	 *     .
-	 * @param integer $index  
-	 * @param mixed $item  
-	 * @throws CException ,      ,
-	 *          
+	 * Добавляет элемент в карту.
+	 * Метод переопределяет родительскую реализацию, проверяя
+	 * тип вставляемого элемента.
+	 * @param integer $index определенная позиция вставки
+	 * @param mixed $item новый элемент
+	 * @return CTypedMap
+	 * @throws CException вызывается, если переданное значение позиции вставки выходит за границы,
+	 * карта является картой только для чтения или элемент неправильного типа
 	 */
 	public function add($index,$item)
 	{
@@ -48,5 +48,6 @@ class CTypedMap extends CMap
 		else
 			throw new CException(Yii::t('yii','CTypedMap<{type}> can only hold objects of {type} class.',
 				array('{type}'=>$this->_type)));
+		return $this;
 	}
 }
