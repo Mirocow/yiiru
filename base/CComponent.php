@@ -81,7 +81,7 @@
  * определяемые геттерами и/или сеттерами) доступны из компонента, к которому присоединено поведение.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CComponent.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CComponent.php 3066 2011-03-13 14:22:55Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -632,7 +632,7 @@ class CComponent
  * еще не выполненные обработчики выполняться не будут.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CComponent.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CComponent.php 3066 2011-03-13 14:22:55Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -647,14 +647,21 @@ class CEvent extends CComponent
 	 * Когда обработчик устанавливает даное свойство в true, последующие невыполненные обработчики не будут выполняться.
 	 */
 	public $handled=false;
+	/**
+	 * @var mixed дополнительные параметры события
+	 * @since 1.1.7
+	 */
+	public $params;
 
 	/**
 	 * Конструктор.
 	 * @param mixed $sender отправитель события
+	 * @param mixed $params дополнительные параметры события
 	 */
-	public function __construct($sender=null)
+	public function __construct($sender=null,$params=null)
 	{
 		$this->sender=$sender;
+		$this->params=$params;
 	}
 }
 
@@ -676,7 +683,7 @@ class CEvent extends CComponent
  * Тогда можно использовать перечисляемые значения так - TextAlign::Left и TextAlign::Right.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CComponent.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CComponent.php 3066 2011-03-13 14:22:55Z qiang.xue $
  * @package system.base
  * @since 1.0
  */

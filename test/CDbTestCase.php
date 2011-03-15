@@ -32,7 +32,7 @@ Yii::import('system.test.CTestCase');
  * Примечание: здесь 'first post' - ключ к строке в исходных данных фикстуры.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbTestCase.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CDbTestCase.php 3035 2011-03-08 22:01:20Z alexander.makarow $
  * @package system.test
  * @since 1.1
  */
@@ -42,7 +42,7 @@ abstract class CDbTestCase extends CTestCase
 	 * @var array список фикстур, которые должны быть загружены перед выполнением каждого тестового метода.
 	 * Ключи массива - это имена фикстур, а значения - имя либо AR-класса либо
 	 * таблицы. Если это имя таблицы, то оно должно начинаться с двоеточия (например, 'Post'
-	 * означает, что это AR-класс, а ':Post' - имя таблицы).
+	 * означает, что это AR-класс, а ':post' - имя таблицы).
 	 * По умолчанию - false - фикстуры не будут использоваться.
 	 */
 	protected $fixtures=false;

@@ -43,12 +43,13 @@
  * <li>default: {@link CDefaultValueValidator}</li>
  * <li>exist: {@link CExistValidator}</li>
  * <li>boolean: {@link CBooleanValidator}</li>
+ * <li>date: {@link CDateValidator}</li>
  * <li>safe: {@link CSafeValidator}</li>
  * <li>unsafe: {@link CUnsafeValidator}</li>
  * </ul>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CValidator.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CValidator.php 3052 2011-03-12 14:27:07Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
@@ -76,6 +77,7 @@ abstract class CValidator extends CComponent
 		'boolean'=>'CBooleanValidator',
 		'safe'=>'CSafeValidator',
 		'unsafe'=>'CUnsafeValidator',
+		'date'=>'CDateValidator',
 	);
 
 	/**

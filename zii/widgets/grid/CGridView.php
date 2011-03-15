@@ -73,7 +73,7 @@ Yii::import('zii.widgets.grid.CCheckBoxColumn');
  * Обратитесь к описанию свойства {@link columns} за деталями о конфигурации данного свойства.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CGridView.php 2921 2011-01-28 11:44:43Z mdomba $
+ * @version $Id: CGridView.php 3083 2011-03-14 18:09:55Z qiang.xue $
  * @package zii.widgets.grid
  * @since 1.1
  */
@@ -128,6 +128,12 @@ class CGridView extends CBaseListView
 	 */
 	public $ajaxUpdate;
 	/**
+	 * @var string селектор jQuery для HTML-элементов, которые могут запускать AJAX-обновление при клике на них.
+	 * Если не установлено, AJAX-обновление будут вызывать только ссылки пагинации и сортировки
+	 * @since 1.1.7
+	 */
+	public $updateSelector;
+	/**
 	 * @var string javascript-функция, вызываемая в случае возникновения ошибки при AJAX-запросе обновления.
 	 *
 	 * Функция имеет вид <code>function(xhr, textStatus, errorThrown, errorMessage)</code>, где
@@ -140,7 +146,7 @@ class CGridView extends CBaseListView
 	 * Полезно, если хочется просто отобразить ошибку по-другому. Виджет CGridView по умолчанию ошибку при помощи javascript.alert().</li>
 	 * </ul>
 	 * Примечание: данный обработчик не вызывается для JSONP-запросов, т.к. они не используют XMLHttpRequest.
-	 * 
+	 *
 	 * Например (добавление вызова в виджет CGridView):
 	 * <pre>
 	 *  ...
@@ -156,8 +162,8 @@ class CGridView extends CBaseListView
 	public $ajaxVar='ajax';
 	/**
 	 * @var string javascript function-функция, вызываемая перед выполнением AJAX-запроса на обновление.
-	 * The function signature is <code>function(id,options)</code> where 'id' refers to the ID of the grid view,
-	 * 'options' the AJAX request options  (see jQuery.ajax api manual).
+	 * Вид функции - <code>function(id,options)</code>, где 'id' - идентификатор виджета, а
+	 * 'options' - опции AJAX-запроса (см. документацию по API для jQuery.ajax)
 	 */
 	public $beforeAjaxUpdate;
 	/**
@@ -198,6 +204,13 @@ class CGridView extends CBaseListView
 	 */
 	public $nullDisplay='&nbsp;';
 	/**
+	 * @var string текст, отображаемый в пустой ячейки таблицы. Свойство НЕ проходит HTML-кодирование при генерации.
+	 * По умолчанию - неразрывный пробел. Отличается от свойства {@link nullDisplay}, тем, что {@link nullDisplay}
+	 * используется для генерации нулевых значений классом {@link CDataColumn}
+	 * @since 1.1.7
+	 */
+	public $blankDisplay='&nbsp;';
+	/**
 	 * @var string имя CSS-класса, присваемого элементу контейнера виджета при
 	 * обновлении содержимого виджета AJAX-запросом. По умолчанию - 'grid-view-loading'
 	 * @since 1.1.1
@@ -223,7 +236,9 @@ class CGridView extends CBaseListView
 	/**
 	 * @var CModel экземпляр модели, содержащей введенные пользователем фильтрующие данные. Если данное свойство установлено,
 	 * таблица активирует фильтрацию для данного столбца. Каждый столбец данных по умолчанию отображает наверху таблицы текстовое поле,
-	 * которое пользователь может заполнить фильтрующими данными
+	 * которое пользователь может заполнить фильтрующими данными. Примечание: для того, чтобы показать поле ввода
+	 * для фильтрации, столбец должен иметь установленное свойство {@link CDataColumn::name} или
+	 * свойство {@link CDataColumn::filter} в виде HTML-кода поля ввода
 	 * @since 1.1.1
 	 */
 	public $filter;
@@ -312,7 +327,7 @@ class CGridView extends CBaseListView
 			throw new CException(Yii::t('zii','The column must be specified in the format of "Name:Type:Label", where "Type" and "Label" are optional.'));
 		$column=new CDataColumn($this);
 		$column->name=$matches[1];
-		if(isset($matches[3]))
+		if(isset($matches[3]) && $matches[3]!=='')
 			$column->type=$matches[3];
 		if(isset($matches[5]))
 			$column->header=$matches[5];
@@ -339,6 +354,8 @@ class CGridView extends CBaseListView
 			'tableClass'=>$this->itemsCssClass,
 			'selectableRows'=>$this->selectableRows,
 		);
+		if($this->updateSelector!==null)
+			$options['updateSelector']=$this->updateSelector;
 		if($this->enablePagination)
 			$options['pageVar']=$this->dataProvider->getPagination()->pageVar;
 		if($this->beforeAjaxUpdate!==null)

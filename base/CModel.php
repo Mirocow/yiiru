@@ -15,7 +15,7 @@
  * CModel определяет базовый каркас для моделей данных, которым необходима валидация.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CModel.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CModel.php 3087 2011-03-15 02:08:53Z qiang.xue $
  * @package system.base
  * @since 1.0
  */
@@ -135,14 +135,16 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	 * @param array $attributes список валидируемых атрибутов. По умолчанию - null,
 	 * т.е. проверяться должны все атрибуты, перечисленные в применяемых
 	 * правилах валидации. Если данный параметр передан в виде списка атрибутов,
-	 * валидироваться будут только перечисленные атрибуты.
+	 * валидироваться будут только перечисленные атрибуты
+	 * @param boolean $clearErrors вызывать ли метод {@link clearErrors} перед выполнением валидации
 	 * @return boolean успешна ли валидация
 	 * @see beforeValidate
 	 * @see afterValidate
 	 */
-	public function validate($attributes=null)
+	public function validate($attributes=null, $clearErrors=true)
 	{
-		$this->clearErrors();
+		if($clearErrors)
+			$this->clearErrors();
 		if($this->beforeValidate())
 		{
 			foreach($this->getValidators() as $validator)

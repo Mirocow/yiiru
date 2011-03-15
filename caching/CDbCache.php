@@ -23,7 +23,7 @@
  * Обратитесь к документации {@link CCache} за информацией об обычных операциях кэша, поддерживаемых компонентом CDbCache.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbCache.php 2949 2011-02-11 03:48:01Z qiang.xue $
+ * @version $Id: CDbCache.php 3069 2011-03-14 00:28:38Z qiang.xue $
  * @package system.caching
  * @since 1.0
  */

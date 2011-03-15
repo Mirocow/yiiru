@@ -36,7 +36,7 @@
  *
  * @author Jonah Turnquist <poppitypop@gmail.com>
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMenu.php 2838 2011-01-10 22:37:26Z qiang.xue $
+ * @version $Id: CMenu.php 3034 2011-03-08 18:22:29Z qiang.xue $
  * @package zii.widgets
  * @since 1.1
  */
@@ -46,8 +46,9 @@ class CMenu extends CWidget
 	 * @var array список элементов меню. Каждый элемент меню определяется массивом пар имя-значение.
 	 * Возможные имена опций:
 	 * <ul>
-	 * <li>label: обязательная строка, определяющая имя элемента меню. Если свойство {@link encodeLabel} установлено
-	 * в значение true, то имя подвергнется HTML-кодированию;</li>
+	 * <li>label: опциональная строка, определяющая имя элемента меню. Если свойство {@link encodeLabel} установлено
+	 * в значение true, то имя подвергнется HTML-кодированию. Если имя элемента не определено, то по умолчанию оно
+	 * устанавливается равным пустой строке;</li>
 	 * <li>url: опциональная строка или массив. Определяет URL-адрес элемента меню. Передается в метод {@link CHtml::normalizeUrl}
 	 * для генерации валидного URL-адреса. Если опция не установлена, элемент меню будет сгенерирован как текст;</li>
 	 * <li>visible: опциональное булево значение, показывающее, видим ли данный элемент меню. По умолчанию - true.
@@ -251,6 +252,8 @@ class CMenu extends CWidget
 				unset($items[$i]);
 				continue;
 			}
+			if(!isset($item['label']))
+				$item['label']='';
 			if($this->encodeLabel)
 				$items[$i]['label']=CHtml::encode($item['label']);
 			$hasActiveChild=false;

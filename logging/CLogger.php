@@ -15,7 +15,7 @@
  * условиями, включающими в себя фильтры уровней и категорий журнала.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLogger.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CLogger.php 3066 2011-03-13 14:22:55Z qiang.xue $
  * @package system.logging
  * @since 1.0
  */
@@ -255,9 +255,9 @@ class CLogger extends CComponent
 	 * Присоединенные обработчики событий могут обработать сообщения журнала перед их удалением.
 	 * @since 1.1.0
 	 */
-	public function flush()
+	public function flush($dumpLogs=false)
 	{
-		$this->onFlush(new CEvent($this));
+		$this->onFlush(new CEvent($this, array('dumpLogs'=>$dumpLogs)));
 		$this->_logs=array();
 		$this->_logCount=0;
 	}

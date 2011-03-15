@@ -26,8 +26,11 @@
  * того, как разбирать строку даты. Если переданное значение даты не соответствует данному формату,
  * атрибут будет считаться неправильным.
  *
+ * Начиная с версии 1.1.7 существует отдельный валидатор дат {@link CDateValidator}.
+ * Используйте его для валидации значений дат.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CTypeValidator.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CTypeValidator.php 3052 2011-03-12 14:27:07Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */

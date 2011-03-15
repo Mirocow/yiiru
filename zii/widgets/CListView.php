@@ -19,7 +19,7 @@ Yii::import('zii.widgets.CBaseListView');
  *
  * Виджет CListView поддерживает как сортировку так и пагинацию элементов данных. Сортировка и
  * пагинация может использоваться как в AJAX-режиме, так и в обычном запросе. Преимущество использования виджета CListView
- * в том, что если в браузере пользоватлея отключен JavaScript, сортировка и пагинация автоматически переключится в режим
+ * в том, что если в браузере пользователя отключен JavaScript, сортировка и пагинация автоматически переключится в режим
  * обычных запросов страниц и данный функционал будет также работать как ожидается.
  *
  * Виджет CListView должен использоваться вместе с {@link IDataProvider поставщиком данных (data provider)},
@@ -50,7 +50,7 @@ Yii::import('zii.widgets.CBaseListView');
  * После этого будет отображен список ссылок, с помощью которых можно отсортировать данные.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CListView.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CListView.php 3083 2011-03-14 18:09:55Z qiang.xue $
  * @package zii.widgets
  * @since 1.1
  */
@@ -70,6 +70,11 @@ class CListView extends CBaseListView
 	 * </ul>
 	 */
 	public $itemView;
+	/**
+	 * @var string HTML-код, отображаемый между двумя последовательными элементами
+	 * @since 1.1.7
+	 */
+	public $separator;
 	/**
 	 * @var array дополнительные данные, передаваемые в представление {@link itemView} при генерации каждого элемента данных.
 	 * Данный массив будет распакован в виде локальных переменных, к которым имеет доступ представление {@link itemView}
@@ -113,6 +118,12 @@ class CListView extends CBaseListView
 	 * контейнеров при AJAX-запросе, то идентификаторы данных контейнеров могут быть заданы здесь (разделенные запятыми)
 	 */
 	public $ajaxUpdate;
+	/**
+	 * @var string селектор jQuery для HTML-элементов, которые могут запускать AJAX-обновление при клике на них.
+	 * Если не установлено, AJAX-обновление будут вызывать только ссылки пагинации и сортировки
+	 * @since 1.1.7
+	 */
+	public $updateSelector;
 	/**
 	 * @var string имя GET-переменной, показывающей, что данный запрос является AJAX-запросом, вызванным
 	 * виджетом. По умолчанию - 'ajax'. Имеет значение только при значении свойства {@link ajaxUpdate} не равном false
@@ -187,6 +198,8 @@ class CListView extends CBaseListView
 			'loadingClass'=>$this->loadingCssClass,
 			'sorterClass'=>$this->sorterCssClass,
 		);
+		if($this->updateSelector!==null)
+			$options['updateSelector']=$this->updateSelector;
 		if($this->beforeAjaxUpdate!==null)
 			$options['beforeAjaxUpdate']=(strpos($this->beforeAjaxUpdate,'js:')!==0 ? 'js:' : '').$this->beforeAjaxUpdate;
 		if($this->afterAjaxUpdate!==null)
@@ -207,10 +220,11 @@ class CListView extends CBaseListView
 	{
 		echo CHtml::openTag($this->itemsTagName,array('class'=>$this->itemsCssClass))."\n";
 		$data=$this->dataProvider->getData();
-		if(count($data)>0)
+		if(($n=count($data))>0)
 		{
 			$owner=$this->getOwner();
 			$render=$owner instanceof CController ? 'renderPartial' : 'render';
+			$j=0;
 			foreach($data as $i=>$item)
 			{
 				$data=$this->viewData;
@@ -218,6 +232,8 @@ class CListView extends CBaseListView
 				$data['data']=$item;
 				$data['widget']=$this;
 				$owner->$render($this->itemView,$data);
+				if($j++ < $n-1)
+					echo $this->separator;
 			}
 		}
 		else
