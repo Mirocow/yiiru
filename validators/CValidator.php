@@ -49,7 +49,7 @@
  * </ul>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CValidator.php 3052 2011-03-12 14:27:07Z qiang.xue $
+ * @version $Id: CValidator.php 3113 2011-03-24 21:49:40Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
@@ -107,6 +107,12 @@ abstract class CValidator extends CComponent
 	 * @since 1.1.4
 	 */
 	public $safe=true;
+	/**
+	 * @var boolean выполнять ли валидацию на стороне клиента. По умолчанию - true.
+	 * За деталями о валидации на стороне клиента обратитесь к свойству {@link CActiveForm::enableClientValidation}
+	 * @since 1.1.7
+	 */
+	public $enableClientValidation=true;
 
 	/**
 	 * Валидирует отдельный атрибут.
@@ -184,6 +190,25 @@ abstract class CValidator extends CComponent
 			if(!$this->skipOnError || !$object->hasErrors($attribute))
 				$this->validateAttribute($object,$attribute);
 		}
+	}
+
+	/**
+	 * Возвращает JavaScript-код, необходимый для выполнения валидации на стороне клиента.
+	 * Не переопределяйте данный метод, если валидатор не поддерживает валидацию на стороне
+	 * клиента. Могут использоваться две предопредеенные JavaScript-переменные:
+	 * <ul>
+	 * <li>value: валидируемое значение;</li>
+	 * <li>messages: массив, используемый для хранения сообщений об ошибках валидации значения</li>
+	 * </ul>
+	 * @param CModel $object валидируемый объект данных
+	 * @param string $attribute имя валидируемого атрибута
+	 * @return string скрипт валидации на стороне клиента. Если валидатор не поддерживает валидацию
+	 * на стороне клиента, то возвращается значение null
+	 * @see CActiveForm::enableClientValidation
+	 * @since 1.1.7
+	 */
+	public function clientValidateAttribute($object,$attribute)
+	{
 	}
 
 	/**

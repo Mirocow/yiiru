@@ -12,7 +12,7 @@
  * Валидатор CRequiredValidator проверяет, что значение определенного атрибута не нулевое и не пустое.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CRequiredValidator.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CRequiredValidator.php 3120 2011-03-25 01:50:48Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
@@ -56,6 +56,48 @@ class CRequiredValidator extends CValidator
 		{
 			$message=$this->message!==null?$this->message:Yii::t('yii','{attribute} cannot be blank.');
 			$this->addError($object,$attribute,$message);
+		}
+	}
+
+	/**
+	 * Возвращает JavaScript-код, необходимый для выполнения валидации на стороне клиента
+	 * @param CModel $object валидируемый объект данных
+	 * @param string $attribute имя валидируемого атрибута
+	 * @return string скрипт валидации на стороне клиента
+	 * @see CActiveForm::enableClientValidation
+	 * @since 1.1.7
+	 */
+	public function clientValidateAttribute($object,$attribute)
+	{
+		$message=$this->message;
+		if($this->requiredValue!==null)
+		{
+			if($message===null)
+				$message=Yii::t('yii','{attribute} must be {value}.');
+			$message=strtr($message, array(
+				'{value}'=>$this->requiredValue,
+				'{attribute}'=>$object->getAttributeLabel($attribute),
+			));
+			return "
+if(value!=" . CJSON::encode($this->requiredValue) . ") {
+	messages.push(".CJSON::encode($message).");
+}
+";
+		}
+		else
+		{
+			if($message===null)
+			{
+				$message=Yii::t('yii','{attribute} cannot be blank.');
+				$message=strtr($message, array(
+					'{attribute}'=>$object->getAttributeLabel($attribute),
+				));
+			}
+			return "
+if($.trim(value)=='') {
+	messages.push(".CJSON::encode($message).");
+}
+";
 		}
 	}
 }

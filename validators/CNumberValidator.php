@@ -12,7 +12,7 @@
  * Валидатор CNumberValidator проверяет, что значение атрибута является числом.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CNumberValidator.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CNumberValidator.php 3120 2011-03-25 01:50:48Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
@@ -43,6 +43,16 @@ class CNumberValidator extends CValidator
 	 * @var string пользовательское сообщение об ошибке, если значение слишком маленькое.
 	 */
 	public $tooSmall;
+	/**
+	 * @var string регулярное выражение для поиска целого числа
+	 * @since 1.1.7
+	 */
+	public $integerPattern='/^\s*[+-]?\d+\s*$/';
+	/**
+	 * @var string регулярное выражение для поиска числа
+	 * @since 1.1.7
+	 */
+	public $numberPattern='/^\s*[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\s*$/';
 
 
 	/**
@@ -58,7 +68,7 @@ class CNumberValidator extends CValidator
 			return;
 		if($this->integerOnly)
 		{
-			if(!preg_match('/^\s*[+-]?\d+\s*$/',"$value"))
+			if(!preg_match($this->integerPattern,"$value"))
 			{
 				$message=$this->message!==null?$this->message:Yii::t('yii','{attribute} must be an integer.');
 				$this->addError($object,$attribute,$message);
@@ -66,7 +76,7 @@ class CNumberValidator extends CValidator
 		}
 		else
 		{
-			if(!preg_match('/^\s*[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\s*$/',"$value"))
+			if(!preg_match($this->numberPattern,"$value"))
 			{
 				$message=$this->message!==null?$this->message:Yii::t('yii','{attribute} must be a number.');
 				$this->addError($object,$attribute,$message);
@@ -82,5 +92,72 @@ class CNumberValidator extends CValidator
 			$message=$this->tooBig!==null?$this->tooBig:Yii::t('yii','{attribute} is too big (maximum is {max}).');
 			$this->addError($object,$attribute,$message,array('{max}'=>$this->max));
 		}
+	}
+
+	/**
+	 * Возвращает JavaScript-код, необходимый для выполнения валидации на стороне клиента
+	 * @param CModel $object валидируемый объект данных
+	 * @param string $attribute имя валидируемого атрибута
+	 * @return string скрипт валидации на стороне клиента
+	 * @see CActiveForm::enableClientValidation
+	 * @since 1.1.7
+	 */
+	public function clientValidateAttribute($object,$attribute)
+	{
+		$label=$object->getAttributeLabel($attribute);
+
+		if(($message=$this->message)===null)
+			$message=$this->integerOnly ? Yii::t('yii','{attribute} must be an integer.') : Yii::t('yii','{attribute} must be a number.');
+		$message=strtr($message, array(
+			'{attribute}'=>$label,
+		));
+
+		if(($tooBig=$this->tooBig)===null)
+			$tooBig=Yii::t('yii','{attribute} is too big (maximum is {max}).');
+		$tooBig=strtr($tooBig, array(
+			'{attribute}'=>$label,
+			'{max}'=>$this->max,
+		));
+
+		if(($tooSmall=$this->tooSmall)===null)
+			$tooSmall=Yii::t('yii','{attribute} is too small (minimum is {min}).');
+		$tooSmall=strtr($tooSmall, array(
+			'{attribute}'=>$label,
+			'{min}'=>$this->min,
+		));
+
+		$pattern=$this->integerOnly ? $this->integerPattern : $this->numberPattern;
+		$js="
+if(!value.match($pattern)) {
+	messages.push(".CJSON::encode($message).");
+}
+";
+		if($this->min!==null)
+		{
+			$js.="
+if(value.length<{$this->min}) {
+	messages.push(".CJSON::encode($tooSmall).");
+}
+";
+		}
+		if($this->max!==null)
+		{
+			$js.="
+if(value>{$this->max}) {
+	messages.push(".CJSON::encode($tooBig).");
+}
+";
+		}
+
+		if($this->allowEmpty)
+		{
+			$js="
+if($.trim(value)!='') {
+	$js
+}
+";
+		}
+
+		return $js;
 	}
 }

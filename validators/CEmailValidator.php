@@ -12,7 +12,7 @@
  * Валидатор CEmailValidator проверяет, что значение атрибута - правильный адрес email.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CEmailValidator.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CEmailValidator.php 3120 2011-03-25 01:50:48Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
@@ -90,5 +90,31 @@ class CEmailValidator extends CValidator
 		if($valid && $this->checkPort && function_exists('fsockopen'))
 			$valid=fsockopen($domain,25)!==false;
 		return $valid;
+	}
+
+	/**
+	 * Возвращает JavaScript-код, необходимый для выполнения валидации на стороне клиента
+	 * @param CModel $object валидируемый объект данных
+	 * @param string $attribute имя валидируемого атрибута
+	 * @return string скрипт валидации на стороне клиента
+	 * @see CActiveForm::enableClientValidation
+	 * @since 1.1.7
+	 */
+	public function clientValidateAttribute($object,$attribute)
+	{
+		$message=$this->message!==null ? $this->message : Yii::t('yii','{attribute} is not a valid email address.');
+		$message=strtr($message, array(
+			'{attribute}'=>$object->getAttributeLabel($attribute),
+		));
+
+		$condition="!value.match({$this->pattern})";
+		if($this->allowName)
+			$condition.=" && !value.match({$this->fullPattern})";
+
+		return "
+if(".($this->allowEmpty ? "$.trim(value)!='' && " : '').$condition.") {
+	messages.push(".CJSON::encode($message).");
+}
+";
 	}
 }

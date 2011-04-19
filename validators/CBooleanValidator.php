@@ -53,9 +53,34 @@ class CBooleanValidator extends CValidator
 		if(!$this->strict && $value!=$this->trueValue && $value!=$this->falseValue
 			|| $this->strict && $value!==$this->trueValue && $value!==$this->falseValue)
 		{
-			$message=$this->message!==null?$this->message:Yii::t('yii','{attribute} must be either {true} or {false}.',
-				array('{true}'=>$this->trueValue, '{false}'=>$this->falseValue));
-			$this->addError($object,$attribute,$message);
+			$message=$this->message!==null?$this->message:Yii::t('yii','{attribute} must be either {true} or {false}.');
+			$this->addError($object,$attribute,$message,array(
+				'{true}'=>$this->trueValue,
+				'{false}'=>$this->falseValue,
+			));
 		}
+	}
+
+	/**
+	 * Возвращает JavaScript-код, необходимый для выполнения валидации на стороне клиента
+	 * @param CModel $object валидируемый объект данных
+	 * @param string $attribute имя валидируемого атрибута
+	 * @return string скрипт валидации на стороне клиента
+	 * @see CActiveForm::enableClientValidation
+	 * @since 1.1.7
+	 */
+	public function clientValidateAttribute($object,$attribute)
+	{
+		$message=$this->message!==null ? $this->message : Yii::t('yii','{attribute} must be either {true} or {false}.');
+		$message=strtr($message, array(
+			'{attribute}'=>$object->getAttributeLabel($attribute),
+			'{true}'=>$this->trueValue,
+			'{false}'=>$this->falseValue,
+		));
+		return "
+if(".($this->allowEmpty ? "$.trim(value)!='' && " : '')."value!=".CJSON::encode($this->trueValue)." && value!=".CJSON::encode($this->falseValue).") {
+	messages.push(".CJSON::encode($message).");
+}
+";
 	}
 }

@@ -12,7 +12,7 @@
  * Валидатор CUrlValidator проверяет, чтобы атрибут был допустимым URL-адресом протоколов http и https.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CUrlValidator.php 2914 2011-01-25 12:13:38Z keyboard.idol@gmail.com $
+ * @version $Id: CUrlValidator.php 3120 2011-03-25 01:50:48Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
@@ -77,16 +77,62 @@ class CUrlValidator extends CValidator
 		{
 			if($this->defaultScheme!==null && strpos($value,'://')===false)
 				$value=$this->defaultScheme.'://'.$value;
-	
+
 			if(strpos($this->pattern,'{schemes}')!==false)
 				$pattern=str_replace('{schemes}','('.implode('|',$this->validSchemes).')',$this->pattern);
 			else
 				$pattern=$this->pattern;
-	
+
 			if(preg_match($pattern,$value))
 				return $value;
 		}
 		return false;
 	}
-}
 
+	/**
+	 * Возвращает JavaScript-код, необходимый для выполнения валидации на стороне клиента
+	 * @param CModel $object валидируемый объект данных
+	 * @param string $attribute имя валидируемого атрибута
+	 * @return string скрипт валидации на стороне клиента
+	 * @see CActiveForm::enableClientValidation
+	 * @since 1.1.7
+	 */
+	public function clientValidateAttribute($object,$attribute)
+	{
+		$message=$this->message!==null ? $this->message : Yii::t('yii','{attribute} is not a valid URL.');
+		$message=strtr($message, array(
+			'{attribute}'=>$object->getAttributeLabel($attribute),
+		));
+
+		if(strpos($this->pattern,'{schemes}')!==false)
+			$pattern=str_replace('{schemes}','('.implode('|',$this->validSchemes).')',$this->pattern);
+		else
+			$pattern=$this->pattern;
+
+		$js="
+if(!value.match($pattern)) {
+	messages.push(".CJSON::encode($message).");
+}
+";
+		if($this->defaultScheme!==null)
+		{
+			$js="
+if(!value.match(/:\\/\\//)) {
+	value=".CJSON::encode($this->defaultScheme)."+'://'+value;
+}
+$js
+";
+		}
+
+		if($this->allowEmpty)
+		{
+			$js="
+if($.trim(value)!='') {
+	$js
+}
+";
+		}
+
+		return $js;
+	}
+}

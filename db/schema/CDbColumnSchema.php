@@ -12,7 +12,7 @@
  * Класс CDbColumnSchema описывает метаданные столбца таблицы базы данных.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbColumnSchema.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CDbColumnSchema.php 3099 2011-03-19 01:26:47Z qiang.xue $
  * @package system.db.schema
  * @since 1.0
  */
@@ -62,6 +62,11 @@ class CDbColumnSchema extends CComponent
 	 * @var boolean является ли данный столбец внешним ключом
 	 */
 	public $isForeignKey;
+	/**
+	 * @var boolean является ли столбец автоинкрементным
+	 * @since 1.1.7
+	 */
+	public $autoIncrement=false;
 
 
 	/**

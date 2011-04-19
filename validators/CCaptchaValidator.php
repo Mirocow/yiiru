@@ -14,7 +14,7 @@
  * CCaptchaValidator должен использоваться с компонентом {@link CCaptchaAction}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCaptchaValidator.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CCaptchaValidator.php 3124 2011-03-25 15:48:05Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
@@ -47,7 +47,21 @@ class CCaptchaValidator extends CValidator
 		$value=$object->$attribute;
 		if($this->allowEmpty && $this->isEmpty($value))
 			return;
+		$captcha=$this->getCaptchaAction();
+		if(!$captcha->validate($value,$this->caseSensitive))
+		{
+			$message=$this->message!==null?$this->message:Yii::t('yii','The verification code is incorrect.');
+			$this->addError($object,$attribute,$message);
+		}
+	}
 
+	/**
+	 * Возвращает объект действия CAPTCHA
+	 * @return CCaptchaAction объект действия
+	 * @since 1.1.7
+	 */
+	protected function getCaptchaAction()
+	{
 		if(($captcha=Yii::app()->getController()->createAction($this->captchaAction))===null)
 		{
 			if(strpos($this->captchaAction,'/')!==false) // contains controller or module
@@ -62,11 +76,48 @@ class CCaptchaValidator extends CValidator
 				throw new CException(Yii::t('yii','CCaptchaValidator.action "{id}" is invalid. Unable to find such an action in the current controller.',
 						array('{id}'=>$this->captchaAction)));
 		}
-		if(!$captcha->validate($value,$this->caseSensitive))
+		return $captcha;
+	}
+
+	/**
+	 * Возвращает JavaScript-код, необходимый для выполнения валидации на стороне клиента
+	 * @param CModel $object валидируемый объект данных
+	 * @param string $attribute имя валидируемого атрибута
+	 * @return string скрипт валидации на стороне клиента
+	 * @see CActiveForm::enableClientValidation
+	 * @since 1.1.7
+	 */
+	public function clientValidateAttribute($object,$attribute)
+	{
+		$captcha=$this->getCaptchaAction();
+		$message=$this->message!==null ? $this->message : Yii::t('yii','The verification code is incorrect.');
+		$message=strtr($message, array(
+			'{attribute}'=>$object->getAttributeLabel($attribute),
+		));
+		$code=$captcha->getVerifyCode(false);
+		$hash=$captcha->generateValidationHash($this->caseSensitive ? $code : strtolower($code));
+		$js="
+var hash = $('body').data('{$this->captchaAction}.hash');
+if (hash == null)
+	hash = $hash;
+else
+	hash = hash[".($this->caseSensitive ? 0 : 1)."];
+for(var i=value.length-1, h=0; i >= 0; --i) h+=value.".($this->caseSensitive ? '' : 'toLowerCase().')."charCodeAt(i);
+if(h != hash) {
+	messages.push(".CJSON::encode($message).");
+}
+";
+
+		if($this->allowEmpty)
 		{
-			$message=$this->message!==null?$this->message:Yii::t('yii','The verification code is incorrect.');
-			$this->addError($object,$attribute,$message);
+			$js="
+if($.trim(value)!='') {
+	$js
+}
+";
 		}
+
+		return $js;
 	}
 }
 

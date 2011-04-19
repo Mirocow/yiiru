@@ -14,7 +14,7 @@
  * CBaseListView реализует общие функции, требуемые отображаемым виджетом для генерации отображаемого контента нескольких моделей.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CBaseListView.php 2932 2011-02-02 14:54:40Z mdomba $
+ * @version $Id: CBaseListView.php 3101 2011-03-22 17:35:19Z qiang.xue $
  * @package zii.widgets
  * @since 1.1
  */
@@ -222,7 +222,13 @@ abstract class CBaseListView extends CWidget
 		{
 			if(($summaryText=$this->summaryText)===null)
 				$summaryText=Yii::t('zii','Total {count} result(s).');
-			echo strtr($summaryText,array('{count}'=>$count));
+			echo strtr($summaryText,array(
+				'{count}'=>$count,
+				'{start}'=>1,
+				'{end}'=>$count,
+				'{page}'=>1,
+				'{pages}'=>1,
+			));
 		}
 		echo '</div>';
 	}
