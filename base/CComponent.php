@@ -81,7 +81,7 @@
  * определяемые геттерами и/или сеттерами) доступны из компонента, к которому присоединено поведение.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CComponent.php 3066 2011-03-13 14:22:55Z qiang.xue $
+ * @version $Id: CComponent.php 3192 2011-04-17 10:38:14Z alexander.makarow $
  * @package system.base
  * @since 1.0
  */
@@ -261,7 +261,7 @@ class CComponent
 		}
 		if(class_exists('Closure', false) && $this->canGetProperty($name) && $this->$name instanceof Closure)
 			return call_user_func_array($this->$name, $parameters);
-		throw new CException(Yii::t('yii','{class} does not have a method named "{name}".',
+		throw new CException(Yii::t('yii','{class} and its behaviors do not have a method or closure named "{name}".',
 			array('{class}'=>get_class($this), '{name}'=>$name)));
 	}
 
@@ -632,7 +632,7 @@ class CComponent
  * еще не выполненные обработчики выполняться не будут.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CComponent.php 3066 2011-03-13 14:22:55Z qiang.xue $
+ * @version $Id: CComponent.php 3192 2011-04-17 10:38:14Z alexander.makarow $
  * @package system.base
  * @since 1.0
  */
@@ -683,7 +683,7 @@ class CEvent extends CComponent
  * Тогда можно использовать перечисляемые значения так - TextAlign::Left и TextAlign::Right.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CComponent.php 3066 2011-03-13 14:22:55Z qiang.xue $
+ * @version $Id: CComponent.php 3192 2011-04-17 10:38:14Z alexander.makarow $
  * @package system.base
  * @since 1.0
  */

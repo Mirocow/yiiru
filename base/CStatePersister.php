@@ -32,10 +32,10 @@
  * БД в качестве постоянного хранилища для улучшения пропускной способности.
  *
  * CStatePersister - компонент ядра приложения, используемый для хранения глобального состояния приложения.
- * Получить доступ к нему можно методом {@link CApplication::getStatePersister}.
+ * Получить доступ к нему можно методом {@link CApplication::getStatePersister()}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CStatePersister.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CStatePersister.php 3165 2011-04-06 08:27:40Z mdomba $
  * @package system.base
  * @since 1.0
  */

@@ -13,7 +13,7 @@
  * количество выбираемых строк и начальный номер строки и т.д.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbCriteria.php 3063 2011-03-13 13:04:10Z qiang.xue $
+ * @version $Id: CDbCriteria.php 3164 2011-04-05 06:35:06Z haertl.mike $
  * @package system.db.schema
  * @since 1.0
  */
@@ -546,9 +546,22 @@ class CDbCriteria extends CComponent
 					$this->with[]=$v;
 				else if(isset($this->with[$k]))
 				{
+					$excludes=array();
+					foreach(array('joinType','on') as $opt)
+					{
+						if(isset($this->with[$k][$opt]))
+							$excludes[$opt]=$this->with[$k][$opt];
+						if(isset($v[$opt]))
+							$excludes[$opt]= ($opt==='on' && isset($excludes[$opt]) && $v[$opt]!==$excludes[$opt]) ?
+								"($excludes[$opt]) AND $v[$opt]" : $v[$opt];
+						unset($this->with[$k][$opt]);
+						unset($v[$opt]);
+					}
 					$this->with[$k]=new self($this->with[$k]);
 					$this->with[$k]->mergeWith($v,$useAnd);
 					$this->with[$k]=$this->with[$k]->toArray();
+					if (count($excludes)!==0)
+						$this->with[$k]=CMap::mergeArray($this->with[$k],$excludes);
 				}
 				else
 					$this->with[$k]=$v;

@@ -12,7 +12,7 @@
  * Валидатор CNumberValidator проверяет, что значение атрибута является числом.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CNumberValidator.php 3120 2011-03-25 01:50:48Z qiang.xue $
+ * @version $Id: CNumberValidator.php 3190 2011-04-16 23:40:21Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
@@ -44,12 +44,12 @@ class CNumberValidator extends CValidator
 	 */
 	public $tooSmall;
 	/**
-	 * @var string регулярное выражение для поиска целого числа
+	 * @var string the regular expression for matching integers.
 	 * @since 1.1.7
 	 */
 	public $integerPattern='/^\s*[+-]?\d+\s*$/';
 	/**
-	 * @var string регулярное выражение для поиска числа
+	 * @var string the regular expression for matching numbers.
 	 * @since 1.1.7
 	 */
 	public $numberPattern='/^\s*[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\s*$/';
@@ -95,10 +95,10 @@ class CNumberValidator extends CValidator
 	}
 
 	/**
-	 * Возвращает JavaScript-код, необходимый для выполнения валидации на стороне клиента
-	 * @param CModel $object валидируемый объект данных
-	 * @param string $attribute имя валидируемого атрибута
-	 * @return string скрипт валидации на стороне клиента
+	 * Returns the JavaScript needed for performing client-side validation.
+	 * @param CModel $object the data object being validated
+	 * @param string $attribute the name of the attribute to be validated.
+	 * @return string the client-side validation script.
 	 * @see CActiveForm::enableClientValidation
 	 * @since 1.1.7
 	 */
@@ -135,7 +135,7 @@ if(!value.match($pattern)) {
 		if($this->min!==null)
 		{
 			$js.="
-if(value.length<{$this->min}) {
+if(value<{$this->min}) {
 	messages.push(".CJSON::encode($tooSmall).");
 }
 ";

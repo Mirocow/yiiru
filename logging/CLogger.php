@@ -253,7 +253,7 @@ class CLogger extends CComponent
 	 * Удаляет все записанные сообщения из памяти.
 	 * Метод вызывает событие {@link onFlush}.
 	 * Присоединенные обработчики событий могут обработать сообщения журнала перед их удалением
-	 * @param boolean $dumpLogs продолжать ли выполнение журналирования
+	 * @param boolean $dumpLogs whether to process the logs
 	 * @since 1.1.0
 	 */
 	public function flush($dumpLogs=false)

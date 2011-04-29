@@ -49,7 +49,7 @@
  * </ul>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CValidator.php 3113 2011-03-24 21:49:40Z qiang.xue $
+ * @version $Id: CValidator.php 3160 2011-04-03 01:08:23Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
@@ -108,8 +108,8 @@ abstract class CValidator extends CComponent
 	 */
 	public $safe=true;
 	/**
-	 * @var boolean выполнять ли валидацию на стороне клиента. По умолчанию - true.
-	 * За деталями о валидации на стороне клиента обратитесь к свойству {@link CActiveForm::enableClientValidation}
+	 * @var boolean whether to perform client-side validation. Defaults to true.
+	 * Please refer to {@link CActiveForm::enableClientValidation} for more details about client-side validation.
 	 * @since 1.1.7
 	 */
 	public $enableClientValidation=true;
@@ -193,17 +193,16 @@ abstract class CValidator extends CComponent
 	}
 
 	/**
-	 * Возвращает JavaScript-код, необходимый для выполнения валидации на стороне клиента.
-	 * Не переопределяйте данный метод, если валидатор не поддерживает валидацию на стороне
-	 * клиента. Могут использоваться две предопредеенные JavaScript-переменные:
+	 * Returns the JavaScript needed for performing client-side validation.
+	 * Do not override this method if the validator does not support client-side validation.
+	 * Two predefined JavaScript variables can be used:
 	 * <ul>
-	 * <li>value: валидируемое значение;</li>
-	 * <li>messages: массив, используемый для хранения сообщений об ошибках валидации значения</li>
+	 * <li>value: the value to be validated</li>
+	 * <li>messages: an array used to hold the validation error messages for the value</li>
 	 * </ul>
-	 * @param CModel $object валидируемый объект данных
-	 * @param string $attribute имя валидируемого атрибута
-	 * @return string скрипт валидации на стороне клиента. Если валидатор не поддерживает валидацию
-	 * на стороне клиента, то возвращается значение null
+	 * @param CModel $object the data object being validated
+	 * @param string $attribute the name of the attribute to be validated.
+	 * @return string the client-side validation script. Null if the validator does not support client-side validation.
 	 * @see CActiveForm::enableClientValidation
 	 * @since 1.1.7
 	 */

@@ -50,7 +50,7 @@ Yii::import('zii.widgets.CBaseListView');
  * После этого будет отображен список ссылок, с помощью которых можно отсортировать данные.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CListView.php 3083 2011-03-14 18:09:55Z qiang.xue $
+ * @version $Id: CListView.php 3188 2011-04-16 01:31:47Z qiang.xue $
  * @package zii.widgets
  * @since 1.1
  */

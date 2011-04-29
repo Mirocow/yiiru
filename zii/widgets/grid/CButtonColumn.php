@@ -20,7 +20,7 @@ Yii::import('zii.widgets.grid.CGridColumn');
  * настраивать порядок отображения кнопок.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CButtonColumn.php 2990 2011-02-22 11:44:50Z mdomba $
+ * @version $Id: CButtonColumn.php 3191 2011-04-17 09:36:55Z alexander.makarow $
  * @package zii.widgets.grid
  * @since 1.1
  */
@@ -123,7 +123,7 @@ class CButtonColumn extends CGridColumn
 	 * <ul>
 	 * <li><code>link</code> - ссылка для удаления;</li>
 	 * <li><code>success</code> - статус ajax-вызова, true; если ajax-вызов прошел успешно, false - неуспешно;</li>
-	 * <li><code>data</code> - возвращаемые сервером данные (в случае успешного выполнения запроса).</li>
+	 * <li><code>data</code> - возвращаемые сервером данные в случае успешного выполнения запроса или объект XHR в случае ошибки.</li>
 	 * </ul>
 	 * Примечание: если флаг успешности имеет значение true, это не значит, что само удаление прошло успешно,
 	 * это все лишь значит, что ajax-запросов выполнен успешно.
@@ -245,8 +245,8 @@ function() {
 			$.fn.yiiGridView.update('{$this->grid->id}');
 			afterDelete(th,true,data);
 		},
-		error:function() {
-			afterDelete(th,false);
+		error:function(XHR) {
+			return afterDelete(th,false,XHR);
 		}
 	});
 	return false;

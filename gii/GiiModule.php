@@ -63,7 +63,7 @@ Yii::import('system.gii.CCodeForm');
  * http://localhost/path/to/index.php/gii
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: GiiModule.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: GiiModule.php 3172 2011-04-08 20:59:02Z qiang.xue $
  * @package system.gii
  * @since 1.1.2
  */

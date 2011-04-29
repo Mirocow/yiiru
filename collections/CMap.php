@@ -24,7 +24,7 @@
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMap.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CMap.php 3153 2011-04-01 12:50:06Z qiang.xue $
  * @package system.collections
  * @since 1.0
  */
@@ -260,6 +260,11 @@ class CMap extends CComponent implements IteratorAggregate,ArrayAccess,Countable
 
 	/**
 	 * Сливает рекурсивно два массива в один
+	 * Если оба массива имеют элемент с одинаковым строковым ключом, то элемент второго
+	 * массива перезапишет элемент первого (в отличие от array_merge_recursive).
+	 * Рекурсивное слияние будет выполняться, если оба массива имеют элементы с одинаковым ключом
+	 * и значением в виде массива. Для элементов с целочисленными ключами элементы второго
+	 * массива будут добавлены к первому массиву
 	 * @param array $a массив, в который происходит слияние
 	 * @param array $b массив, который сливается с предыдущим
 	 * @return array слитый массив (исходные массивы остаются без изменений)
@@ -270,7 +275,7 @@ class CMap extends CComponent implements IteratorAggregate,ArrayAccess,Countable
 		foreach($b as $k=>$v)
 		{
 			if(is_integer($k))
-				$a[]=$v;
+				isset($a[$k]) ? $a[]=$v : $a[$k]=$v;
 			else if(is_array($v) && isset($a[$k]) && is_array($a[$k]))
 				$a[$k]=self::mergeArray($a[$k],$v);
 			else

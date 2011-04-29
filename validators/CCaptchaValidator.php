@@ -56,8 +56,8 @@ class CCaptchaValidator extends CValidator
 	}
 
 	/**
-	 * Возвращает объект действия CAPTCHA
-	 * @return CCaptchaAction объект действия
+	 * Returns the CAPTCHA action object.
+	 * @return CCaptchaAction the action object
 	 * @since 1.1.7
 	 */
 	protected function getCaptchaAction()
@@ -80,10 +80,10 @@ class CCaptchaValidator extends CValidator
 	}
 
 	/**
-	 * Возвращает JavaScript-код, необходимый для выполнения валидации на стороне клиента
-	 * @param CModel $object валидируемый объект данных
-	 * @param string $attribute имя валидируемого атрибута
-	 * @return string скрипт валидации на стороне клиента
+	 * Returns the JavaScript needed for performing client-side validation.
+	 * @param CModel $object the data object being validated
+	 * @param string $attribute the name of the attribute to be validated.
+	 * @return string the client-side validation script.
 	 * @see CActiveForm::enableClientValidation
 	 * @since 1.1.7
 	 */

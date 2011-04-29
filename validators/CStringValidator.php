@@ -14,7 +14,7 @@
  * Примечание: валидатор должен использоваться только для строковых атрибутов.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CStringValidator.php 3132 2011-03-26 19:27:04Z qiang.xue $
+ * @version $Id: CStringValidator.php 3148 2011-03-31 21:44:00Z alexander.makarow $
  * @package system.validators
  * @since 1.0
  */
@@ -48,11 +48,16 @@ class CStringValidator extends CValidator
 	/**
 	 * @var string кодировка строки валидируемого значения (например, 'UTF-8').
 	 
-	 * Данное свойство используется только при включенном PHP расширении mbstring.
+	 * Установка данного свойства требует включенного PHP расширения mbstring.
 	 * Значение данного свойства будет использовано в качестве второго параметра функции mb_strlen().
-	 * Если данное свойство не установлено, будет использована кодировка приложения.
-	 * Если свойство установлено в значение false, будет использоваться функция strlen()
-	 * даже в случае включенного расширения mbstring
+	 * По умолчанию равно кодировке приложения, т.е., для вычисления длины строки
+	 * будет использоваться кодировка приложения если доступна функция mb_strlen(), иначе
+	 * используется функция strlen()
+	 * This property is used only when mbstring PHP extension is enabled.
+	 * The value of this property will be used as the 2nd parameter of the
+	 * mb_strlen() function. If this property is not set, the application charset
+	 * will be used.
+	 * If this property is set false, then strlen() will be used even if mbstring is enabled.
 	 * @since 1.1.1
 	 */
 	public $encoding;
@@ -70,9 +75,10 @@ class CStringValidator extends CValidator
 			return;
 
 		if(function_exists('mb_strlen') && $this->encoding!==false)
-			$length=mb_strlen($value,$this->encoding ? $this->encoding : Yii::app()->charset);
+			$length=mb_strlen($value, $this->encoding ? $this->encoding : Yii::app()->charset);
 		else
 			$length=strlen($value);
+
 		if($this->min!==null && $length<$this->min)
 		{
 			$message=$this->tooShort!==null?$this->tooShort:Yii::t('yii','{attribute} is too short (minimum is {min} characters).');
@@ -91,10 +97,10 @@ class CStringValidator extends CValidator
 	}
 
 	/**
-	 * Возвращает JavaScript-код, необходимый для выполнения валидации на стороне клиента
-	 * @param CModel $object валидируемый объект данных
-	 * @param string $attribute имя валидируемого атрибута
-	 * @return string скрипт валидации на стороне клиента
+	 * Returns the JavaScript needed for performing client-side validation.
+	 * @param CModel $object the data object being validated
+	 * @param string $attribute the name of the attribute to be validated.
+	 * @return string the client-side validation script.
 	 * @see CActiveForm::enableClientValidation
 	 * @since 1.1.7
 	 */
