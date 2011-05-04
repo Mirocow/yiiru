@@ -507,11 +507,11 @@ class CDbCommandBuilder extends CComponent
 	}
 
 	/**
-	 * Generates the expression for selecting rows of specified primary key values.
-	 * @param mixed $table the table schema ({@link CDbTableSchema}) or the table name (string).
-	 * @param array $values list of primary key values to be selected within
-	 * @param string $prefix column prefix (ended with dot). If null, it will be the table name
-	 * @return string the expression for selection
+	 * Генерирует SQL-выражение для выбора строк по определенным значениям первичного ключа
+	 * @param mixed $table схема таблицы (объект класса {@link CDbTableSchema}) или имя таблицы (строка)
+	 * @param array $values список значений первичного ключа для выбора строк
+	 * @param string $prefix префикс столбца (с точкой на конце). Если значение равно null, то префикс будет именем таблицы
+	 * @return string SQL-выражение для выбора строк
 	 */
 	public function createPkCondition($table,$values,$prefix=null)
 	{
@@ -520,18 +520,18 @@ class CDbCommandBuilder extends CComponent
 	}
 
 	/**
-	 * Creates a query criteria with the specified column values.
-	 * @param mixed $table the table schema ({@link CDbTableSchema}) or the table name (string).
-	 * @param array $columns column values that should be matched in the query (name=>value)
-	 * @param mixed $condition query condition or criteria.
-	 * If a string, it is treated as query condition;
-	 * If an array, it is treated as the initial values for constructing a {@link CDbCriteria};
-	 * Otherwise, it should be an instance of {@link CDbCriteria}.
-	 * @param array $params parameters to be bound to an SQL statement.
-	 * This is only used when the third parameter is a string (query condition).
-	 * In other cases, please use {@link CDbCriteria::params} to set parameters.
-	 * @param string $prefix column prefix (ended with dot). If null, it will be the table name
-	 * @return CDbCriteria the created query criteria
+	 * Создает критерий запроса с определенными значениями столбцов
+	 * @param mixed $table схема таблицы (объект класса {@link CDbTableSchema}) или имя таблицы (строка)
+	 * @param array $columns значения столбцов, по которым должен проходить поиск (имя => значение)
+	 * @param mixed $condition условие запроса или критерий.
+	 * Строка считается условием запроса, массив - начальными значениями для создания
+	 * объекта {@link CDbCriteria критерия}, другое значение должно быть экземпляром
+	 * класса {@link CDbCriteria}
+	 * @param array $params параметры, связываемые с SQL-выражением. Используется только
+	 * если второй параметр является строкой (условие запроса). Иначе надо использовать
+	 * свойство {@link CDbCriteria::params} для установки необходимых параметров
+	 * @param string $prefix префикс столбца (с точкой на конце). Если значение равно null, то префикс будет именем таблицы
+	 * @return CDbCriteria созданный критерий запроса
 	 */
 	public function createColumnCriteria($table,$columns,$condition='',$params=array(),$prefix=null)
 	{
@@ -584,17 +584,17 @@ class CDbCommandBuilder extends CComponent
 	}
 
 	/**
-	 * Generates the expression for searching the specified keywords within a list of columns.
-	 * The search expression is generated using the 'LIKE' SQL syntax.
-	 * Every word in the keywords must be present and appear in at least one of the columns.
-	 * @param mixed $table the table schema ({@link CDbTableSchema}) or the table name (string).
-	 * @param array $columns list of column names for potential search condition.
-	 * @param mixed $keywords search keywords. This can be either a string with space-separated keywords or an array of keywords.
-	 * @param string $prefix optional column prefix (with dot at the end). If null, the table name will be used as the prefix.
-	 * @param boolean $caseSensitive whether the search is case-sensitive. Defaults to true. This parameter
-	 * has been available since version 1.0.4.
-	 * @return string SQL search condition matching on a set of columns. An empty string is returned
-	 * if either the column array or the keywords are empty.
+	 * Генерирует SQL-выражение для поиска определенных слов в определенных столбцах.
+	 * Выражение поиска генерируется с использованием SQL-оператора 'LIKE'.
+	 * Каждое слово в списке переданных слов должно реальным словом (не пустым) и появляться хотя бы в одном столбце
+	 * @param mixed $table схема таблицы (объект класса {@link CDbTableSchema}) или имя таблицы (строка)
+	 * @param array $columns список имен столбцов для условия поиска
+	 * @param mixed $keywords слова для поиска. Может быть строкой со словами, разделенными пробелами, или массивом слов
+	 * @param string $prefix префикс столбца (с точкой на конце). Если значение равно null, то префикс будет именем таблицы
+	 * @param boolean $caseSensitive регистрозависим ли поиск. ПО умолчанию - true. Данный параметр
+	 * появился в версии 1.0.4
+	 * @return string SQL-выражение поиска соответствий набору столбцов. Если массив имен столбцов или
+	 * слова для поиска пусты, то возвращается пустая строка
 	 */
 	public function createSearchCondition($table,$columns,$keywords,$prefix=null,$caseSensitive=true)
 	{
@@ -626,13 +626,13 @@ class CDbCommandBuilder extends CComponent
 	}
 
 	/**
-	 * Generates the expression for selecting rows of specified primary key values.
-	 * @param mixed $table the table schema ({@link CDbTableSchema}) or the table name (string).
-	 * @param mixed $columnName the column name(s). It can be either a string indicating a single column
-	 * or an array of column names. If the latter, it stands for a composite key.
-	 * @param array $values list of key values to be selected within
-	 * @param string $prefix column prefix (ended with dot). If null, it will be the table name
-	 * @return string the expression for selection
+	 * Генерирует SQL-выражение для выбора строк по набору значений определенного столбца.
+	 * @param mixed $table схема таблицы (объект класса {@link CDbTableSchema}) или имя таблицы (строка)
+	 * @param mixed $columnName имя(имена) столбца(ов). Может быть строкой, определеяющий один столбец, или
+	 * массивом имен столбцов. Второй случай означает использование композитного ключа
+	 * @param array $values список значений, по которым производить выборку
+	 * @param string $prefix префикс столбца (с точкой на конце). Если значение равно null, то префикс будет именем таблицы
+	 * @return string SQL-выражение выборки
 	 * @since 1.0.4
 	 */
 	public function createInCondition($table,$columnName,$values,$prefix=null)
@@ -706,11 +706,11 @@ class CDbCommandBuilder extends CComponent
 	}
 
 	/**
-	 * Generates the expression for selecting rows with specified composite key values.
-	 * @param CDbTableSchema $table the table schema
-	 * @param array $values list of primary key values to be selected within
-	 * @param string $prefix column prefix (ended with dot)
-	 * @return string the expression for selection
+	 * Генерирует SQL-выражение для выбора строк по определенным сзначениям композитного ключа
+	 * @param CDbTableSchema $table схема таблицы
+	 * @param array $values список значений первичного ключа для выборки
+	 * @param string $prefix префикс столбца (с точкой на конце)
+	 * @return string SQL-выражение выборки
 	 * @since 1.0.4
 	 */
 	protected function createCompositeInCondition($table,$values,$prefix)
@@ -725,11 +725,11 @@ class CDbCommandBuilder extends CComponent
 	}
 
 	/**
-	 * Checks if the parameter is a valid table schema.
-	 * If it is a string, the corresponding table schema will be retrieved.
-	 * @param mixed $table table schema ({@link CDbTableSchema}) or table name (string).
-	 * If this refers to a valid table name, this parameter will be returned with the corresponding table schema.
-	 * @throws CDbException if the table name is not valid
+	 * Проверяет, что переданный параметр является правильной схемой таблицы.
+	 * Если передана строка, будет получена соответствующая схема таблицы
+	 * @param mixed $table схема таблицы (объект класса {@link CDbTableSchema}) или имя таблицы (строка).
+	 * Если является валидным именем таблицы, то данный параметр получит значение соответствующей схемы таблицы
+	 * @throws CDbException вызывается, если имя таблицы невалидно
 	 * @since 1.0.4
 	 */
 	protected function ensureTable(&$table)
