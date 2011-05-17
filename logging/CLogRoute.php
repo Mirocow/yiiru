@@ -25,7 +25,7 @@
  * сообщения, удовлетворяющие условиям обоих фильтров.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLogRoute.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CLogRoute.php 3205 2011-05-07 23:16:46Z qiang.xue $
  * @package system.logging
  * @since 1.0
  */
@@ -95,7 +95,8 @@ abstract class CLogRoute extends CComponent
 		{
 			if($this->filter!==null)
 				Yii::createComponent($this->filter)->filter($this->logs);
-				$this->processLogs($this->logs);
+			$this->processLogs($this->logs);
+			$this->logs=array();
 		}
 	}
 

@@ -15,7 +15,7 @@
  * условиями, включающими в себя фильтры уровней и категорий журнала.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLogger.php 3137 2011-03-28 11:08:06Z mdomba $
+ * @version $Id: CLogger.php 3206 2011-05-09 09:26:24Z qiang.xue $
  * @package system.logging
  * @since 1.0
  */
@@ -34,6 +34,15 @@ class CLogger extends CComponent
 	 * @since 1.1.0
 	 */
 	public $autoFlush=10000;
+	/**
+	 * @var boolean данное свойство будет передано в качестве параметра в метод {@link flush()} при
+	 * его вызове в методе {@link log()} из-за достижения предела, установленного свойством {@link autoFlush}.
+	 * По умолчанию - false, т.е., отфильтрованные сообщения остаются в памяти после вызова метода
+	 * {@link flush()}. Если значение свойства - true, то отфильтрованные сообщения будут писаться
+	 * при каждом вызове метода {@link flush()} в методе {@link log()}
+	 * @since 1.1.8
+	 */
+	public $autoDump=false;
 	/**
 	 * @var array сообщения журнала
 	 */
@@ -69,7 +78,7 @@ class CLogger extends CComponent
 		$this->_logs[]=array($message,$level,$category,microtime(true));
 		$this->_logCount++;
 		if($this->autoFlush>0 && $this->_logCount>=$this->autoFlush)
-			$this->flush();
+			$this->flush($this->autoDump);
 	}
 
 	/**
@@ -253,7 +262,7 @@ class CLogger extends CComponent
 	 * Удаляет все записанные сообщения из памяти.
 	 * Метод вызывает событие {@link onFlush}.
 	 * Присоединенные обработчики событий могут обработать сообщения журнала перед их удалением
-	 * @param boolean $dumpLogs whether to process the logs
+	 * @param boolean $dumpLogs проводить ли процесс журналирования (сбрасывать сообщения в журнал)
 	 * @since 1.1.0
 	 */
 	public function flush($dumpLogs=false)

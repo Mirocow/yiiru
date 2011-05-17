@@ -81,7 +81,7 @@
  * определяемые геттерами и/или сеттерами) доступны из компонента, к которому присоединено поведение.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CComponent.php 3192 2011-04-17 10:38:14Z alexander.makarow $
+ * @version $Id: CComponent.php 3204 2011-05-05 21:36:32Z alexander.makarow $
  * @package system.base
  * @since 1.0
  */
@@ -140,6 +140,7 @@ class CComponent
 	 * </pre>
 	 * @param string $name имя свойства или события
 	 * @param mixed $value значение свойства или обратный вызов
+	 * @return mixed
 	 * @throws CException вызывается, если свойство/событие не определены или свойство является свойством только для чтения.
 	 * @see __get
 	 */
@@ -177,6 +178,7 @@ class CComponent
 	 * Не вызывайте данный метод. Это "магический" метод PHP, который переопределяется,
 	 * чтобы можно было использовать фукцию isset() для определения, установлено свойство компонента или нет.
 	 * @param string $name имя свойства или события
+	 * @return boolean
 	 * @since 1.0.1
 	 */
 	public function __isset($name)
@@ -208,6 +210,7 @@ class CComponent
 	 * чтобы можно было использовать фукцию unset() для установки свойства компонента в null.
 	 * @param string $name имя свойства или события
 	 * @throws CException вызывается, если свойство является свойством только для чтения
+	 * @return mixed
 	 * @since 1.0.1
 	 */
 	public function __unset($name)
@@ -632,7 +635,7 @@ class CComponent
  * еще не выполненные обработчики выполняться не будут.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CComponent.php 3192 2011-04-17 10:38:14Z alexander.makarow $
+ * @version $Id: CComponent.php 3204 2011-05-05 21:36:32Z alexander.makarow $
  * @package system.base
  * @since 1.0
  */
@@ -683,7 +686,7 @@ class CEvent extends CComponent
  * Тогда можно использовать перечисляемые значения так - TextAlign::Left и TextAlign::Right.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CComponent.php 3192 2011-04-17 10:38:14Z alexander.makarow $
+ * @version $Id: CComponent.php 3204 2011-05-05 21:36:32Z alexander.makarow $
  * @package system.base
  * @since 1.0
  */

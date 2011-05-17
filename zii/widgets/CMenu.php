@@ -36,7 +36,7 @@
  *
  * @author Jonah Turnquist <poppitypop@gmail.com>
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMenu.php 3034 2011-03-08 18:22:29Z qiang.xue $
+ * @version $Id: CMenu.php 3204 2011-05-05 21:36:32Z alexander.makarow $
  * @package zii.widgets
  * @since 1.1
  */
@@ -223,6 +223,7 @@ class CMenu extends CWidget
 	 * Примечание: контейнер меню и подменю не генерируются в данном методе
 	 * @param array $item генерируемый элемент меню. Смотрите описание свойства {@link items}, чтобы узнать,
 	 * какие данные могут находиться в элементе
+	 * @return string
 	 * @since 1.1.6
 	 */
 	protected function renderMenuItem($item)

@@ -11,7 +11,7 @@
 Yii::import('zii.widgets.jui.CJuiWidget');
 
 /**
- * Виджет CJuiSortable отображает сортируемый список
+ * Виджет CJuiSortable отображает сортируемый (перетаскиванием элементов мышкой) список
  *
  * Виджет CJuiSortable инкапсулирует {@link http://jqueryui.com/demos/sortable/ плагин сортировки JUI}.
  *
@@ -38,7 +38,7 @@ Yii::import('zii.widgets.jui.CJuiWidget');
  * начало определения js-кода и Yii будет использовать эту строку как код JS.
  * 
  * @author Sebastian Thierer <sebathi@gmail.com>
- * @version $Id: CJuiSortable.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CJuiSortable.php 3217 2011-05-12 23:59:50Z alexander.makarow $
  * @package zii.widgets.jui
  * @since 1.1
  */

@@ -21,7 +21,7 @@
  * </ul>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CProfileLogRoute.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CProfileLogRoute.php 3204 2011-05-05 21:36:32Z alexander.makarow $
  * @package system.logging
  * @since 1.0
  */
@@ -185,6 +185,7 @@ class CProfileLogRoute extends CWebLogRoute
 	 * Собирает результаты отчета.
 	 * @param array $result результат журнала для данного блока кода
 	 * @param float $delta время, затраченное на данный блок кода
+	 * @return array
 	 */
 	protected function aggregateResult($result,$delta)
 	{

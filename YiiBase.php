@@ -6,7 +6,7 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2011 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: YiiBase.php 3136 2011-03-27 01:45:03Z qiang.xue $
+ * @version $Id: YiiBase.php 3204 2011-05-05 21:36:32Z alexander.makarow $
  * @package system
  * @since 1.0
  */
@@ -50,7 +50,7 @@ defined('YII_ZII_PATH') or define('YII_ZII_PATH',YII_PATH.DIRECTORY_SEPARATOR.'z
  * вы можете настраивать методы YiiBase.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: YiiBase.php 3136 2011-03-27 01:45:03Z qiang.xue $
+ * @version $Id: YiiBase.php 3204 2011-05-05 21:36:32Z alexander.makarow $
  * @package system
  * @since 1.0
  */
@@ -86,6 +86,7 @@ class YiiBase
 	 * Убедитесь в правильности установки свойства {@link CApplication::basePath basePath} в конфигурации,
 	 * которое должно указывать на директорию, содержащую всю логику приложения, шаблоны и данные.
 	 * Если свойство не установлено, директорией по умолчанию будет 'protected'.
+	 * @return CWebApplication
 	 */
 	public static function createWebApplication($config=null)
 	{
@@ -100,6 +101,7 @@ class YiiBase
 	 * Убедитесь в правильности установки свойства {@link CApplication::basePath basePath} в конфигурации,
 	 * которое должно указывать на директорию, содержащую всю логику приложения, шаблоны и данные.
 	 * Если свойство не установлено, директорией по умолчанию будет 'protected'.
+	 * @return CConsoleApplication
 	 */
 	public static function createConsoleApplication($config=null)
 	{

@@ -35,7 +35,7 @@
  * {@link CApplication::getSecurityManager()}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CSecurityManager.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CSecurityManager.php 3204 2011-05-05 21:36:32Z alexander.makarow $
  * @package system.base
  * @since 1.0
  */
@@ -147,7 +147,8 @@ class CSecurityManager extends CApplicationComponent
 
 	/**
 	 * Метод считается устаревшим с версии 1.1.3.
-	 * Исользуйте вместо него {@link hashAlgorithm}.
+	 * Исользуйте вместо него {@link hashAlgorithm}
+	 * @return string
 	 */
 	public function getValidation()
 	{
@@ -156,7 +157,7 @@ class CSecurityManager extends CApplicationComponent
 
 	/**
 	 * Метод считается устаревшим с версии 1.1.3.
-	 * Исользуйте вместо него {@link hashAlgorithm}.
+	 * Исользуйте вместо него {@link hashAlgorithm}
 	 */
 	public function setValidation($value)
 	{
@@ -164,7 +165,7 @@ class CSecurityManager extends CApplicationComponent
 	}
 
 	/**
-	 * Шифрует данные.
+	 * Шифрует данные
 	 * @param string $data шифруемые данные
 	 * @param string $key ключ шифрования. По умолчанию - null, т.е., используется {@link getEncryptionKey EncryptionKey}
 	 * @return string шифрованные данные
@@ -184,7 +185,7 @@ class CSecurityManager extends CApplicationComponent
 	}
 
 	/**
-	 * Дешифрует данные.
+	 * Дешифрует данные
 	 * @param string $data дешифруемые данные
 	 * @param string $key ключ шифрования. По умолчанию - null, т.е., используется {@link getEncryptionKey EncryptionKey}
 	 * @return string дешифрованные данные

@@ -19,7 +19,7 @@
  * их в сообщении журнала, что может помочь в выявлении/отладке встречающихся проблем.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLogFilter.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CLogFilter.php 3204 2011-05-05 21:36:32Z alexander.makarow $
  * @package system.logging
  * @since 1.0.6
  */
@@ -51,6 +51,7 @@ class CLogFilter extends CComponent
 	 * Проводит фильтрацию переданных сообщений журнала.
 	 * Главный метод класса CLogFilter. Обрабатывает сообщения журнала, добавляя контекстную информацию и т.п.
 	 * @param array $logs сообщения журнала
+	 * @return array
 	 */
 	public function filter(&$logs)
 	{

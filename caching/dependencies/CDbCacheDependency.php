@@ -17,7 +17,7 @@
  * Это соединение БД, используемое для выполнения запроса.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbCacheDependency.php 2949 2011-02-11 03:48:01Z qiang.xue $
+ * @version $Id: CDbCacheDependency.php 3204 2011-05-05 21:36:32Z alexander.makarow $
  * @package system.caching.dependencies
  * @since 1.0
  */
@@ -53,6 +53,7 @@ class CDbCacheDependency extends CCacheDependency
 	/**
 	 * Магический метод PHP.
 	 * Метод гарантирует, что экземпляр базы данных установлен в null, потому что он содержит обработчик ресурса
+	 * @return array
 	 */
 	public function __sleep()
 	{

@@ -27,7 +27,7 @@
  * PHP за дополнительной информацией.
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: CTimestamp.php 3046 2011-03-12 01:48:15Z qiang.xue $
+ * @version $Id: CTimestamp.php 3204 2011-05-05 21:36:32Z alexander.makarow $
  * @package system.utils
  * @since 1.0
  */
@@ -157,7 +157,7 @@ class CTimestamp
 
 	/**
 	 * Возвращает массив getdate().
-	 * @param integer $d временная метка даты. False для использования текущих времени/даты.
+	 * @param integer|boolean $d временная метка даты. False для использования текущих времени/даты.
 	 * @param boolean $fast false для вычисления дня недели; по умолчанию - true (прим.перев. - в данный момент не используется)
 	 * @param boolean $gmt true для вычисления GMT-дат
 	 * @return array массив с данными даты.
@@ -210,7 +210,7 @@ class CTimestamp
 	/**
 	 * Форматирует временную отметку в строку даты.
 	 * @param string $fmt шаблон для форматирования
-	 * @param integer $d временная отметка
+	 * @param integer|boolean $d временная отметка
 	 * @param boolean $is_gmt является ли временная отметка отметкой пояса GMT
 	 * @return string форматированная дата, основанная на временной отметке $d
 	 */
@@ -362,9 +362,9 @@ class CTimestamp
 	 * @param integer $hr часы
 	 * @param integer $min минуты
 	 * @param integer $sec секунды
-	 * @param integer $mon месяц
-	 * @param integer $day день
-	 * @param integer $year год
+	 * @param integer|boolean $mon месяц
+	 * @param integer|boolean $day день
+	 * @param integer|boolean $year год
 	 * @param boolean $is_gmt является ли время временем GMT. If true, gmmktime() will be used.
 	 * @return integer|float временная метка по местному времени.
      */

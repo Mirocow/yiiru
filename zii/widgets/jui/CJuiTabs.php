@@ -36,7 +36,7 @@ Yii::import('zii.widgets.jui.CJuiWidget');
  * за списком возможных опций (пар имя-значение).
  *
  * @author Sebastian Thierer <sebathi@gmail.com>
- * @version $Id: CJuiTabs.php 3062 2011-03-13 12:53:19Z qiang.xue $
+ * @version $Id: CJuiTabs.php 3222 2011-05-13 15:04:13Z sebathi $
  * @package zii.widgets.jui
  * @since 1.1
  */
@@ -66,7 +66,7 @@ class CJuiTabs extends CJuiWidget
 	 * Метка "{title}" в шаблоне будет заменена заголовком панели, а метка
 	 * "{url}" - строкой "#TabID" или URL-адресом ajax-запроса
 	 */
-	public $headerTemplate='<li><a href="{url}">{title}</a></li>';
+	public $headerTemplate='<li><a href="{url}" title="{id}">{title}</a></li>';
 	/**
 	 * @var string шаблон, используемый для генерации содержимого каждого таба.
 	 * Метка "{content}" в шаблоне будет заменена содержимым панели, а метка 
@@ -98,12 +98,12 @@ class CJuiTabs extends CJuiWidget
 
 			if (!is_array($content))
 			{
-				$tabsOut .= strtr($this->headerTemplate, array('{title}'=>$title, '{url}'=>'#'.$tabId))."\n";
+				$tabsOut .= strtr($this->headerTemplate, array('{title}'=>$title, '{url}'=>'#'.$tabId, '{id}'=>'#' . $tabId))."\n";
 				$contentOut .= strtr($this->contentTemplate, array('{content}'=>$content,'{id}'=>$tabId))."\n";
 			}
 			elseif (isset($content['ajax']))
 			{
-				$tabsOut .= strtr($this->headerTemplate,array('{title}'=>$title, '{url}'=>CHtml::normalizeUrl($content['ajax'])))."\n";
+				$tabsOut .= strtr($this->headerTemplate, array('{title}'=>$title, '{url}'=>CHtml::normalizeUrl($content['ajax']), '{id}'=>'#' . $tabId))."\n";
 			}
 			else
 			{
