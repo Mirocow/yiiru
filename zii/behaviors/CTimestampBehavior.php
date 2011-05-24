@@ -35,7 +35,7 @@
  * вы можете настроить это значение свойством {@link timestampExpression}
  *
  * @author Jonah Turnquist <poppitypop@gmail.com>
- * @version $Id: CTimestampBehavior.php 2934 2011-02-02 21:34:43Z qiang.xue $
+ * @version $Id: CTimestampBehavior.php 3229 2011-05-21 00:20:29Z alexander.makarow $
  * @package zii.behaviors
  * @since 1.1
  */
