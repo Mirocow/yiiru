@@ -12,7 +12,7 @@
  * Класс COciCommandBuilder предоставляет базовые методы для создания команд запросов для таблиц базы данных Oracle.
  *
  * @author Ricardo Grana <rickgrana@yahoo.com.br>
- * @version $Id: COciCommandBuilder.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: COciCommandBuilder.php 3239 2011-05-25 19:05:47Z qiang.xue $
  * @package system.db.schema.oci
  * @since 1.0.5
  */
@@ -94,7 +94,11 @@ EOD;
 			{
 				$fields[]=$column->rawName;
 				if($value instanceof CDbExpression)
+				{
 					$placeholders[]=$value->expression;
+					foreach($value->params as $n=>$v)
+						$values[$n]=$v;
+				}
 				else
 				{
 					$placeholders[]=self::PARAM_PREFIX.$i;

@@ -13,7 +13,7 @@
  * количество выбираемых строк и начальный номер строки и т.д.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbCriteria.php 3164 2011-04-05 06:35:06Z haertl.mike $
+ * @version $Id: CDbCriteria.php 3238 2011-05-25 19:02:15Z qiang.xue $
  * @package system.db.schema
  * @since 1.0
  */
