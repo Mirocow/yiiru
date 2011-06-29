@@ -12,7 +12,7 @@
  * Класс CDbSchema - это базовый класс для получения метаинформации БД.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbSchema.php 3069 2011-03-14 00:28:38Z qiang.xue $
+ * @version $Id: CDbSchema.php 3297 2011-06-22 21:46:11Z qiang.xue $
  * @package system.db.schema
  * @since 1.0
  */
@@ -523,11 +523,16 @@ abstract class CDbSchema extends CComponent
 
 	/**
 	 * Создает SQL-выражение для создания нового индекса
-	 * @param string $name имя создаваемого индекса. Имя будет заключено в кавычки
-	 * @param string $table таблица, для которой будет создан новый индекс. Имя будет заключено в кавычки
-	 * @param string $column столбец (или столбцы), который должен быть включен в индекс. Если это несколько
-	 * столбцов, то они должны быть разделены запятыми. Имена столбцов будут заключены в кавычки
-	 * @param boolean $unique добавлять ли условие UNIQUE для создаваемого индекса
+	 * @param string $name имя создаваемого индекса. Имя будет заключено в
+	 * кавычки
+	 * @param string $table таблица, для которой будет создан новый индекс. Имя
+	 * будет заключено в кавычки
+	 * @param string $column столбец (или столбцы), который должен быть включен
+	 * в индекс. Если это несколько
+	 * столбцов, то они должны быть разделены запятыми. Имена столбцов будут
+	 * заключены в кавычки, если в имени столбца присутствует скобка
+	 * @param boolean $unique добавлять ли условие UNIQUE для создаваемого
+	 * индекса
 	 * @return string SQL-выражение для создания нового индекса
 	 * @since 1.1.6
 	 */
@@ -536,7 +541,12 @@ abstract class CDbSchema extends CComponent
 		$cols=array();
 		$columns=preg_split('/\s*,\s*/',$column,-1,PREG_SPLIT_NO_EMPTY);
 		foreach($columns as $col)
-			$cols[]=$this->quoteColumnName($col);
+		{
+			if(strpos($col,'(')!==false)
+				$cols[]=$col;
+			else
+				$cols[]=$this->quoteColumnName($col);
+		}
 		return ($unique ? 'CREATE UNIQUE INDEX ' : 'CREATE INDEX ')
 			. $this->quoteTableName($name).' ON '
 			. $this->quoteTableName($table).' ('.implode(', ',$cols).')';
@@ -544,8 +554,10 @@ abstract class CDbSchema extends CComponent
 
 	/**
 	 * Создает SQL-выражение для удаления индекса
-	 * @param string $name имя удаляемого индекса. Имя будет заключено в кавычки
-	 * @param string $table таблица, индекс которой будет удален. Имя будет заключено в кавычки
+	 * @param string $name имя удаляемого индекса. Имя будет заключено в
+	 * кавычки
+	 * @param string $table таблица, индекс которой будет удален. Имя будет
+	 * заключено в кавычки
 	 * @return string SQL-выражение для удаления индекса
 	 * @since 1.1.6
 	 */

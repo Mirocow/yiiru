@@ -15,7 +15,7 @@
  * CModel определяет базовый каркас для моделей данных, которым необходима валидация.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CModel.php 3216 2011-05-12 23:57:08Z alexander.makarow $
+ * @version $Id: CModel.php 3276 2011-06-15 14:21:12Z alexander.makarow $
  * @package system.base
  * @since 1.0
  */

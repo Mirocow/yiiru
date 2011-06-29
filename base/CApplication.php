@@ -44,7 +44,7 @@
  * приложение переключается на его обработчик ошибок и после переходит к шагу 6.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CApplication.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CApplication.php 3305 2011-06-23 15:08:27Z qiang.xue $
  * @package system.base
  * @since 1.0
  *
@@ -68,6 +68,8 @@
  * @property string $timeZone Возвращает временную зону, используемую приложением
  * @property CUrlManager $urlManager Возвращает менеджер URL маршрутов
  * @property mixed $globalState Возвращает глобальное значение
+ * @property string $baseUrl Возвращает относительный URL-адрес приложения
+ * @property string $homeUrl URL-адрес домашней страницы
  */
 abstract class CApplication extends CModule
 {
@@ -93,6 +95,7 @@ abstract class CApplication extends CModule
 	private $_stateChanged;
 	private $_ended=false;
 	private $_language;
+	private $_homeUrl;
 
 	/**
 	 * Выполняет запрос.
@@ -493,6 +496,91 @@ abstract class CApplication extends CModule
 	public function getUrlManager()
 	{
 		return $this->getComponent('urlManager');
+	}
+
+	/**
+	 * @return CController текущий активный контроллер. В данном базовом классе
+	 * возвращается значение null
+	 * @since 1.1.8
+	 */
+	public function getController()
+	{
+		return null;
+	}
+
+	/**
+	 * Создает относительный URL-адрес приложения на основе информации о
+	 * переданных контроллере и действии
+	 * @param string $route URL-маршрут. Должен быть в формате
+	 * 'ControllerID/ActionID'
+	 * @param array $params дополнительные GET-параметры (имя => значение). И
+	 * имя и значение пройдут URL-кодирование
+	 * @param string $ampersand символ, разделяющий пары имя-значение в
+	 * URL-адресе
+	 * @return string созданный URL-адрес
+	 */
+	public function createUrl($route,$params=array(),$ampersand='&')
+	{
+		return $this->getUrlManager()->createUrl($route,$params,$ampersand);
+	}
+
+	/**
+	 * Создает абсолютный URL-адрес приложения на основе информации о
+	 * переданных контроллере и действии
+	 * @param string $route URL-маршрут. Должен быть в формате
+	 * 'ControllerID/ActionID'
+	 * @param array $params дополнительные GET-параметры (имя => значение). И
+	 * имя и значение пройдут URL-кодирование
+	 * @param string $schema используемый протокол (например, http, https).
+	 * Если пусто, то используется протокол текущего запроса
+	 * @param string $ampersand символ, разделяющий пары имя-значение в
+	 * URL-адресе
+	 * @return string созданный URL-адрес
+	 */
+	public function createAbsoluteUrl($route,$params=array(),$schema='',$ampersand='&')
+	{
+		$url=$this->createUrl($route,$params,$ampersand);
+		if(strpos($url,'http')===0)
+			return $url;
+		else
+			return $this->getRequest()->getHostInfo($schema).$url;
+	}
+
+	/**
+	 * Возвращает относительный URL-адрес приложения. Является оберткой для
+	 * метода {@link CHttpRequest::getBaseUrl()}
+	 * @param boolean $absolute возвращать ли абсолютный URL-адрес. По
+	 * умолчанию - false, т.е., возвращается относительный URL-адрес
+	 * @return string относительный URL-адрес приложения
+	 * @see CHttpRequest::getBaseUrl()
+	 */
+	public function getBaseUrl($absolute=false)
+	{
+		return $this->getRequest()->getBaseUrl($absolute);
+	}
+
+	/**
+	 * @return string URL-адрес домашней страницы
+	 */
+	public function getHomeUrl()
+	{
+		if($this->_homeUrl===null)
+		{
+			if($this->getUrlManager()->showScriptName)
+				return $this->getRequest()->getScriptUrl();
+			else
+				return $this->getRequest()->getBaseUrl().'/';
+		}
+		else
+			return $this->_homeUrl;
+	}
+
+	/**
+	 * @param string $value URL-адрес домашней страницы
+	 */
+	public function setHomeUrl($value)
+	{
+		$this->_homeUrl=$value;
 	}
 
 	/**

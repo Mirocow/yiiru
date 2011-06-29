@@ -27,7 +27,7 @@
  * PHP за дополнительной информацией.
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: CTimestamp.php 3204 2011-05-05 21:36:32Z alexander.makarow $
+ * @version $Id: CTimestamp.php 3254 2011-06-11 00:10:54Z keyboard.idol@gmail.com $
  * @package system.utils
  * @since 1.0
  */
@@ -164,6 +164,8 @@ class CTimestamp
 	 */
 	public static function getDate($d=false,$fast=false,$gmt=false)
 	{
+		if($d===false)
+			$d=time();
 		if($gmt)
 		{
 			$tz = date_default_timezone_get();

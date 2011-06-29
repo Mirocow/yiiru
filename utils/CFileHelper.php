@@ -12,7 +12,7 @@
  * Класс CFileHelper предоставляет набор вспомогательных методов для обычных операций файловой системы.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFileHelper.php 3037 2011-03-09 10:34:38Z mdomba $
+ * @version $Id: CFileHelper.php 3289 2011-06-18 21:20:13Z qiang.xue $
  * @package system.utils
  * @since 1.0
  */
@@ -56,7 +56,7 @@ class CFileHelper
 		$exclude=array();
 		$level=-1;
 		extract($options);
-		self::copyDirectoryRecursive($src,$dst,'',$fileTypes,$exclude,$level);
+		self::copyDirectoryRecursive($src,$dst,'',$fileTypes,$exclude,$level,$options);
 	}
 
 	/**
@@ -107,11 +107,18 @@ class CFileHelper
 	 * Уровень -1 означает, что будут скопированы все файлы и директории;
 	 * Уровень 0 означает, что будут скопированы только файлы, находящиеся НЕПОСРЕДСТВЕННО в данной директории;
 	 * Уровень N означает, что будут скопированы директории вплоть до уровня N.
+	 * @param array $options дополнительные параметры. Поддерживаются следующие параметры:
+	 * newDirMode - права доступа, устанавливаемые для скопированных директорий (по умолчанию - 0777);
+	 * newFileMode - права доступа, устанавливаемые для скопированных файлов (по умолчанию - текущая установка окружения)
 	 */
-	protected static function copyDirectoryRecursive($src,$dst,$base,$fileTypes,$exclude,$level)
+	protected static function copyDirectoryRecursive($src,$dst,$base,$fileTypes,$exclude,$level,$options)
 	{
-		@mkdir($dst);
-		@chmod($dst,0777);
+		if(!is_dir($dst))
+			mkdir($dst);
+		if(isset($options['newDirMode']))
+			@chmod($dst,$options['newDirMode']);
+		else
+			@chmod($dst,0777);
 		$folder=opendir($src);
 		while(($file=readdir($folder))!==false)
 		{
@@ -122,9 +129,13 @@ class CFileHelper
 			if(self::validatePath($base,$file,$isFile,$fileTypes,$exclude))
 			{
 				if($isFile)
+				{
 					copy($path,$dst.DIRECTORY_SEPARATOR.$file);
+					if(isset($options['newFileMode']))
+						@chmod($dst.DIRECTORY_SEPARATOR.$file, $options['newFileMode']);
+				}
 				else if($level)
-					self::copyDirectoryRecursive($path,$dst.DIRECTORY_SEPARATOR.$file,$base.'/'.$file,$fileTypes,$exclude,$level-1);
+					self::copyDirectoryRecursive($path,$dst.DIRECTORY_SEPARATOR.$file,$base.'/'.$file,$fileTypes,$exclude,$level-1,$options);
 			}
 		}
 		closedir($folder);

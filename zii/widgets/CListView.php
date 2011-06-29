@@ -50,7 +50,7 @@ Yii::import('zii.widgets.CBaseListView');
  * После этого будет отображен список ссылок, с помощью которых можно отсортировать данные.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CListView.php 3188 2011-04-16 01:31:47Z qiang.xue $
+ * @version $Id: CListView.php 3286 2011-06-16 17:34:34Z qiang.xue $
  * @package zii.widgets
  * @since 1.1
  */
@@ -130,6 +130,14 @@ class CListView extends CBaseListView
 	 */
 	public $ajaxVar='ajax';
 	/**
+	 * @var mixed URL-адрес, на который должны посылаться AJAX-запросы. Для
+	 * данного свойства будет вызван метод {@link CHtml::normalizeUrl()}. Если
+	 * не установлено, то для AJAX-запросов будет использоваться URL-адрес
+	 * текущей страницы
+	 * @since 1.1.8
+	 */
+	public $ajaxUrl;
+	/**
 	 * @var string javascript-функция, которая будет вызываться перед выполнением AJAX-запроса.
 	 * Описание функции: <code>function(id)</code>, где 'id' - идентификатор виджета
 	 */
@@ -198,6 +206,8 @@ class CListView extends CBaseListView
 			'loadingClass'=>$this->loadingCssClass,
 			'sorterClass'=>$this->sorterCssClass,
 		);
+		if($this->ajaxUrl!==null)
+			$options['url']=CHtml::normalizeUrl($this->ajaxUrl);
 		if($this->updateSelector!==null)
 			$options['updateSelector']=$this->updateSelector;
 		if($this->beforeAjaxUpdate!==null)

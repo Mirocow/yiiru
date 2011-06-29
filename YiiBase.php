@@ -6,7 +6,7 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2011 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: YiiBase.php 3204 2011-05-05 21:36:32Z alexander.makarow $
+ * @version $Id: YiiBase.php 3325 2011-06-26 18:01:42Z qiang.xue $
  * @package system
  * @since 1.0
  */
@@ -16,22 +16,26 @@
  */
 defined('YII_BEGIN_TIME') or define('YII_BEGIN_TIME',microtime(true));
 /**
- * Данная константа определяет, находится ли приложения в режиме отладки. По умолчанию - false.
+ * Данная константа определяет, находится ли приложения в режиме отладки. По
+ * умолчанию - false.
  */
 defined('YII_DEBUG') or define('YII_DEBUG',false);
 /**
- * Данная константа определяет количество информации (имя файла и номер строки) стека вызовов должно журналироваться методом Yii::trace().
- * По умолчанию - 0, т.е. без информации стека. Если значение больше 0,
- * стек вызовов будет журналироваться не глубже данного числа. Помните, рассматриваются только стеки вызовов
- * пользовательского приложения.
+ * Данная константа определяет количество информации (имя файла и номер строки)
+ * стека вызовов должно журналироваться методом Yii::trace(). По умолчанию - 0,
+ * т.е. без информации стека. Если значение больше 0, стек вызовов будет
+ * журналироваться не глубже данного числа. Помните, рассматриваются только
+ * стеки вызовов пользовательского приложения.
  */
 defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL',0);
 /**
- * Данная константа определяет, должна ли быть включена обработка исключений. По умолчанию - true.
+ * Данная константа определяет, должна ли быть включена обработка исключений.
+ * По умолчанию - true.
  */
 defined('YII_ENABLE_EXCEPTION_HANDLER') or define('YII_ENABLE_EXCEPTION_HANDLER',true);
 /**
- * Данная константа определяет, должна ли быть включена обработка ошибок. По умолчанию - true.
+ * Данная константа определяет, должна ли быть включена обработка ошибок.
+ * По умолчанию - true.
  */
 defined('YII_ENABLE_ERROR_HANDLER') or define('YII_ENABLE_ERROR_HANDLER',true);
 /**
@@ -44,13 +48,14 @@ defined('YII_PATH') or define('YII_PATH',dirname(__FILE__));
 defined('YII_ZII_PATH') or define('YII_ZII_PATH',YII_PATH.DIRECTORY_SEPARATOR.'zii');
 
 /**
- * YiiBase - это вспомогательный класс, предоставляющий общий функционал фреймворка.
+ * YiiBase - это вспомогательный класс, предоставляющий общий функционал
+ * фреймворка.
  *
- * Не используйте класс YiiBase напрямую. Вместо этого используйте класс-потомок {@link Yii}, где
- * вы можете настраивать методы YiiBase.
+ * Не используйте класс YiiBase напрямую. Вместо этого используйте класс-потомок
+ * {@link Yii}, где вы можете настраивать методы YiiBase
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: YiiBase.php 3204 2011-05-05 21:36:32Z alexander.makarow $
+ * @version $Id: YiiBase.php 3325 2011-06-26 18:01:42Z qiang.xue $
  * @package system
  * @since 1.0
  */
@@ -62,6 +67,15 @@ class YiiBase
 	 * @since 1.1.5
 	 */
 	public static $classMap=array();
+	/**
+	 * @var boolean обращаться ли к путям влючения PHP для автоподгрузки файлов
+	 * классов. По умолчанию - true. Вы можете установить свойство в значение
+	 * false, если ваше хостинг не поддерживает изменение путей включения PHP
+	 * или если вы хотите добавить дополнительные автоподгрузчики классов к
+	 * встроенному в Yii автоподгрузчику
+	 * @since 1.1.8
+	 */
+	public static $enableIncludePath=true;
 
 	private static $_aliases=array('system'=>YII_PATH,'zii'=>YII_ZII_PATH); // alias => path
 	private static $_imports=array();					// alias => class name or directory
@@ -70,22 +84,25 @@ class YiiBase
 	private static $_logger;
 
 
+
 	/**
 	 * @return string версия фреймворка Yii
 	 */
 	public static function getVersion()
 	{
-		return '1.1.8-dev';
+		return '1.1.9-dev';
 	}
 
 	/**
 	 * Создает экземпляр веб-приложения.
 	 * @param mixed $config конфигурация приложения.
-	 * Если передается строка, она считается путем к файлу, содержащему массив конфигурации;
-	 * если передается массив, он считается информацией конфигурации.
-	 * Убедитесь в правильности установки свойства {@link CApplication::basePath basePath} в конфигурации,
-	 * которое должно указывать на директорию, содержащую всю логику приложения, шаблоны и данные.
-	 * Если свойство не установлено, директорией по умолчанию будет 'protected'.
+	 * Если передается строка, она считается путем к файлу, содержащему массив
+	 * конфигурации; если передается массив, он считается информацией
+	 * конфигурации. Убедитесь в правильности установки свойства
+	 * {@link CApplication::basePath basePath} в конфигурации, которое должно
+	 * указывать на директорию, содержащую всю логику приложения, шаблоны и
+	 * данные. Если свойство не установлено, директорией по умолчанию будет
+	 * 'protected'
 	 * @return CWebApplication
 	 */
 	public static function createWebApplication($config=null)
@@ -329,8 +346,8 @@ class YiiBase
 
 				array_unshift(self::$_includePaths,$path);
 
-				if(set_include_path('.'.PATH_SEPARATOR.implode(PATH_SEPARATOR,self::$_includePaths))===false)
-					throw new CException(Yii::t('yii','Unable to import "{alias}". Please check your server configuration to make sure you are allowed to change PHP include_path.',array('{alias}'=>$alias)));
+				if(self::$enableIncludePath && set_include_path('.'.PATH_SEPARATOR.implode(PATH_SEPARATOR,self::$_includePaths))===false)
+					self::$enableIncludePath=false;
 
 				return self::$_imports[$alias]=$path;
 			}
@@ -394,8 +411,24 @@ class YiiBase
 			include(self::$classMap[$className]);
 		else
 		{
-			if(strpos($className,'\\')===false)
-			include($className.'.php');
+			// include class file relying on include_path
+			if(strpos($className,'\\')===false)  // class without namespace
+			{
+				if(self::$enableIncludePath===false)
+				{
+					foreach(self::$_includePaths as $path)
+					{
+						$classFile=$path.DIRECTORY_SEPARATOR.$className.'.php';
+						if(is_file($classFile))
+						{
+							include($classFile);
+							break;
+						}
+					}
+				}
+				else
+					include($className.'.php');
+			}
 			else  // class name with namespace in PHP 5.3
 			{
 				$namespace=str_replace('\\','.',ltrim($className,'\\'));
@@ -501,6 +534,16 @@ class YiiBase
 	}
 
 	/**
+	 * Устанавливает объект регистратора сообщений
+	 * @param CLogger $logger регистратор сообщений
+	 * @since 1.1.8
+	 */
+	public static function setLogger($logger)
+	{
+		self::$_logger=$logger;
+	}
+
+	/**
 	 * Возвращает строку, отображаемую на веб-странице и показывающую фразу о том, что сайт базируется на фреймворке Yii 
 	 * @return string строка, отображаемая на веб-странице и показывающая фразу о том, что сайт базируется на фреймворке Yii 
 	 */
@@ -575,13 +618,22 @@ class YiiBase
 	 * Новый автозагрузчик будет помещен перед автозагрузчиком {@link autoload} и после
 	 * других существующих автозагрузчиков.
 	 * @param callback $callback правильный обратный вызов PHP (имя функции или массив вида array($className,$methodName)).
+	 * @param boolean $append добавлять ли новый автоподгрузчик классов после встроенного в Yii автоподгрузчика
 	 * @since 1.0.10
 	 */
-	public static function registerAutoloader($callback)
+	public static function registerAutoloader($callback, $append=false)
 	{
-		spl_autoload_unregister(array('YiiBase','autoload'));
-		spl_autoload_register($callback);
-		spl_autoload_register(array('YiiBase','autoload'));
+		if($append)
+		{
+			self::$enableIncludePath=false;
+			spl_autoload_register($callback);
+		}
+		else
+		{
+			spl_autoload_unregister(array('YiiBase','autoload'));
+			spl_autoload_register($callback);
+			spl_autoload_register(array('YiiBase','autoload'));
+		}
 	}
 
 	/**

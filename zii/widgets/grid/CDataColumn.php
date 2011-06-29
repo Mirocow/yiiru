@@ -22,7 +22,7 @@ Yii::import('zii.widgets.grid.CGridColumn');
  * ссылки в ячейке-заголовке таблицы для включения и переключения направления сортировки.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDataColumn.php 3057 2011-03-13 01:30:36Z qiang.xue $
+ * @version $Id: CDataColumn.php 3252 2011-06-10 07:38:47Z mdomba $
  * @package zii.widgets.grid
  * @since 1.1
  */
@@ -62,7 +62,8 @@ class CDataColumn extends CGridColumn
 	 * {@link CGridView::enableFiltering} установлено в значение true.
 	 * Если данное свойство не установлено, будет сгенерировано текстовое поле.
 	 * Если данное свойство является массивом, будет сгенерирован выпадающий список, использующий данное свойство в
-	 * качестве списка опций
+	 * качестве списка опций. Если вы не хотите фильтровать содержимое данного столбца, установите свойства в
+	 * значение false
 	 * @since 1.1.1
 	 */
 	public $filter;

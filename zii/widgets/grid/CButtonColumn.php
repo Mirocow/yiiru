@@ -20,7 +20,7 @@ Yii::import('zii.widgets.grid.CGridColumn');
  * настраивать порядок отображения кнопок.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CButtonColumn.php 3191 2011-04-17 09:36:55Z alexander.makarow $
+ * @version $Id: CButtonColumn.php 3272 2011-06-14 19:41:37Z mdomba $
  * @package zii.widgets.grid
  * @since 1.1
  */
@@ -113,11 +113,13 @@ class CButtonColumn extends CGridColumn
 	public $deleteButtonOptions=array('class'=>'delete');
 	/**
 	 * @var string сообщение подтверждения, отображаемое при щелчке на кнопке удаления.
-	 * Установка данного свойства в значение false позволяет не отображать сообщение подтверждения
+	 * Установка данного свойства в значение false позволяет не отображать сообщение подтверждения.
+	 * Свойство используется только если <code>$this->buttons['delete']['click']</code> не установлено
 	 */
 	public $deleteConfirmation;
 	/**
 	 * @var string javascript-функция, выполняемая после ajax-вызова удаления.
+	 * Свойство используется только если <code>$this->buttons['delete']['click']</code> не установлено.
 	 *
 	 * Функция имеет вид <code>function(link, success, data)</code>, где
 	 * <ul>
@@ -216,24 +218,26 @@ class CButtonColumn extends CGridColumn
 				$this->buttons[$id]=$button;
 		}
 
-		if(is_string($this->deleteConfirmation))
-			$confirmation="if(!confirm(".CJavaScript::encode($this->deleteConfirmation).")) return false;";
-		else
-			$confirmation='';
-
-		if(Yii::app()->request->enableCsrfValidation)
+		if(!isset($this->buttons['delete']['click']))
 		{
-	        $csrfTokenName = Yii::app()->request->csrfTokenName;
-	        $csrfToken = Yii::app()->request->csrfToken;
-	        $csrf = "\n\t\tdata:{ '$csrfTokenName':'$csrfToken' },";
-		}
-		else
-			$csrf = '';
+			if(is_string($this->deleteConfirmation))
+				$confirmation="if(!confirm(".CJavaScript::encode($this->deleteConfirmation).")) return false;";
+			else
+				$confirmation='';
 
-		if($this->afterDelete===null)
-			$this->afterDelete='function(){}';
+			if(Yii::app()->request->enableCsrfValidation)
+			{
+				$csrfTokenName = Yii::app()->request->csrfTokenName;
+				$csrfToken = Yii::app()->request->csrfToken;
+				$csrf = "\n\t\tdata:{ '$csrfTokenName':'$csrfToken' },";
+			}
+			else
+				$csrf = '';
 
-		$this->buttons['delete']['click']=<<<EOD
+			if($this->afterDelete===null)
+				$this->afterDelete='function(){}';
+
+			$this->buttons['delete']['click']=<<<EOD
 function() {
 	$confirmation
 	var th=this;
@@ -252,6 +256,7 @@ function() {
 	return false;
 }
 EOD;
+		}
 	}
 
 	/**

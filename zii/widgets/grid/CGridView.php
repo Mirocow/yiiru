@@ -73,7 +73,7 @@ Yii::import('zii.widgets.grid.CCheckBoxColumn');
  * Обратитесь к описанию свойства {@link columns} за деталями о конфигурации данного свойства.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CGridView.php 3083 2011-03-14 18:09:55Z qiang.xue $
+ * @version $Id: CGridView.php 3286 2011-06-16 17:34:34Z qiang.xue $
  * @package zii.widgets.grid
  * @since 1.1
  */
@@ -160,6 +160,14 @@ class CGridView extends CBaseListView
 	 * виджетом. По умолчанию - 'ajax'. Имеет значение только если свойство {@link ajaxUpdate} не равно false
 	 */
 	public $ajaxVar='ajax';
+	/**
+	 * @var mixed URL-адрес, на который должны посылаться AJAX-запросы. Для
+	 * данного свойства будет вызван метод {@link CHtml::normalizeUrl()}. Если
+	 * не установлено, то для AJAX-запросов будет использоваться URL-адрес
+	 * текущей страницы
+	 * @since 1.1.8
+	 */
+	public $ajaxUrl;
 	/**
 	 * @var string javascript function-функция, вызываемая перед выполнением AJAX-запроса на обновление.
 	 * Вид функции - <code>function(id,options)</code>, где 'id' - идентификатор виджета, а
@@ -354,6 +362,8 @@ class CGridView extends CBaseListView
 			'tableClass'=>$this->itemsCssClass,
 			'selectableRows'=>$this->selectableRows,
 		);
+		if($this->ajaxUrl!==null)
+			$options['url']=CHtml::normalizeUrl($this->ajaxUrl);
 		if($this->updateSelector!==null)
 			$options['updateSelector']=$this->updateSelector;
 		if($this->enablePagination)
@@ -384,8 +394,11 @@ class CGridView extends CBaseListView
 		{
 			echo "<table class=\"{$this->itemsCssClass}\">\n";
 			$this->renderTableHeader();
+			ob_start();
 			$this->renderTableBody();
+			$body=ob_get_clean();
 			$this->renderTableFooter();
+			echo $body; // TFOOT must appear before TBODY according to the standard.
 			echo "</table>";
 		}
 		else
