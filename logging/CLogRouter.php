@@ -32,7 +32,7 @@
  *                 array(
  *                     'class'=>'CEmailLogRoute',
  *                     'levels'=>'error, warning',
- *                     'email'=>'admin@example.com',
+ *                     'emails'=>array('admin@example.com'),
  *                 ),
  *             ),
  *         ),
@@ -44,7 +44,7 @@
  * местами назначения, даже если маршруты имеют одинаковый тип.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLogRouter.php 3066 2011-03-13 14:22:55Z qiang.xue $
+ * @version $Id: CLogRouter.php 3364 2011-07-28 07:32:47Z mdomba $
  * @package system.logging
  * @since 1.0
  */

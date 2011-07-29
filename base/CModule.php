@@ -14,9 +14,17 @@
  * В основном CModule управляет компонентами приложения и подмодулями.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CModule.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CModule.php 3363 2011-07-27 14:02:57Z alexander.makarow $
  * @package system.base
  * @since 1.0.4
+ *
+ * @property string $basePath корневая директория модуля
+ * @property array $components список компонентов приложения
+ * @property string $id идентификатор модуля
+ * @property string $modulePath директория, содержащая модули приложения
+ * @property array $modules конфигурация текущих установленных модулей
+ * @property CAttributeCollection $params пользовательские параметры
+ * @property CModule $parentModule модуль-родитель
  */
 abstract class CModule extends CComponent
 {

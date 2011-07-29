@@ -63,7 +63,7 @@ Yii::import('system.gii.CCodeForm');
  * http://localhost/path/to/index.php/gii
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: GiiModule.php 3276 2011-06-15 14:21:12Z alexander.makarow $
+ * @version $Id: GiiModule.php 3354 2011-07-12 21:20:01Z alexander.makarow $
  * @package system.gii
  * @since 1.1.2
  */
@@ -116,12 +116,12 @@ class GiiModule extends CWebModule
 		Yii::app()->setComponents(array(
 			'errorHandler'=>array(
 				'class'=>'CErrorHandler',
-				'errorAction'=>'gii/default/error',
+				'errorAction'=>$this->getId().'/default/error',
 			),
 			'user'=>array(
 				'class'=>'CWebUser',
 				'stateKeyPrefix'=>'gii',
-				'loginUrl'=>Yii::app()->createUrl('gii/default/login'),
+				'loginUrl'=>Yii::app()->createUrl($this->getId().'/default/login'),
 			),
 		), false);
 		$this->generatorPaths[]='gii.generators';
@@ -193,6 +193,7 @@ class GiiModule extends CWebModule
 
 	/**
 	 * Находит все доступные генераторы кода и их шаблоны кода
+	 * @return array
 	 */
 	protected function findGenerators()
 	{

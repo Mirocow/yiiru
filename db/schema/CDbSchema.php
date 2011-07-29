@@ -12,7 +12,7 @@
  * Класс CDbSchema - это базовый класс для получения метаинформации БД.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbSchema.php 3297 2011-06-22 21:46:11Z qiang.xue $
+ * @version $Id: CDbSchema.php 3359 2011-07-18 11:25:17Z qiang.xue $
  * @package system.db.schema
  * @since 1.0
  */
@@ -418,11 +418,9 @@ abstract class CDbSchema extends CComponent
 	 */
 	public function addColumn($table, $column, $type)
 	{
-		$type=$this->getColumnType($type);
-		$sql='ALTER TABLE ' . $this->quoteTableName($table)
+		return 'ALTER TABLE ' . $this->quoteTableName($table)
 			. ' ADD ' . $this->quoteColumnName($column) . ' '
 			. $this->getColumnType($type);
-		return $sql;
 	}
 
 	/**
@@ -466,7 +464,6 @@ abstract class CDbSchema extends CComponent
 	 */
 	public function alterColumn($table, $column, $type)
 	{
-		$type=$this->getColumnType($type);
 		return 'ALTER TABLE ' . $this->quoteTableName($table) . ' CHANGE '
 			. $this->quoteColumnName($column) . ' '
 			. $this->quoteColumnName($column) . ' '

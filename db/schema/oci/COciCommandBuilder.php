@@ -12,7 +12,7 @@
  * Класс COciCommandBuilder предоставляет базовые методы для создания команд запросов для таблиц базы данных Oracle.
  *
  * @author Ricardo Grana <rickgrana@yahoo.com.br>
- * @version $Id: COciCommandBuilder.php 3303 2011-06-23 14:45:02Z qiang.xue $
+ * @version $Id: COciCommandBuilder.php 3331 2011-06-28 19:47:31Z alexander.makarow $
  * @package system.db.schema.oci
  * @since 1.0.5
  */
@@ -112,7 +112,7 @@ EOD;
 
 		if(is_string($table->primaryKey) && ($column=$table->getColumn($table->primaryKey))!==null && $column->type!=='string')
 		{
-			$sql.=' RETURNING "'.$column->rawName.'" INTO :RETURN_ID';
+			$sql.=' RETURNING '.$column->rawName.' INTO :RETURN_ID';
 			$command=$this->getDbConnection()->createCommand($sql);
 			$command->bindParam(':RETURN_ID', $this->returnID, PDO::PARAM_INT, 12);
 			$table->sequenceName='RETURN_ID';
