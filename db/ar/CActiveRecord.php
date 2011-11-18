@@ -16,12 +16,28 @@
  * За деталями работы класса обратитесь к соответствующему разделу
  * {@link http://www.yiiframework.com/doc/guide/database.ar руководства}.
  *
+ * @property CDbCriteria $dbCriteria The query criteria that is associated with this model.
+ * This criteria is mainly used by {@link scopes named scope} feature to accumulate
+ * different criteria specifications.
+ * @property CActiveRecordMetaData $metaData The meta for this AR class.
+ * @property CDbConnection $dbConnection The database connection used by active record.
+ * @property CDbTableSchema $tableSchema The metadata of the table that this AR belongs to.
+ * @property CDbCommandBuilder $commandBuilder The command builder used by this AR.
+ * @property array $attributes Attribute values indexed by attribute names.
+ * @property boolean $isNewRecord Whether the record is new and should be inserted when calling {@link save}.
+ * This property is automatically set in constructor and {@link populateRecord}.
+ * Defaults to false, but it will be set to true if the instance is created using
+ * the new operator.
+ * @property mixed $primaryKey The primary key value. An array (column name=>column value) is returned if the primary key is composite.
+ * If primary key is not defined, null will be returned.
+ * @property mixed $oldPrimaryKey The old primary key value. An array (column name=>column value) is returned if the primary key is composite.
+ * If primary key is not defined, null will be returned.
+ * @property string $tableAlias The default table alias.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3344 2011-07-06 22:04:50Z alexander.makarow $
+ * @version $Id: CActiveRecord.php 3427 2011-10-25 00:03:52Z alexander.makarow $
  * @package system.db.ar
  * @since 1.0
- *
- * @property array $attributes
  */
 abstract class CActiveRecord extends CModel
 {
@@ -470,11 +486,15 @@ abstract class CActiveRecord extends CModel
 	 * следующих констант: self::BELONGS_TO, self::HAS_ONE, self::HAS_MANY и
 	 * self::MANY_MANY; 'className' - имя active record-класса связанного
 	 * объекта (объектов); 'foreign_key' - внешний ключ, по которому происходит
-	 * связь между AR-объектами. Примечание: для составного ключа, имена
-	 * столбцов ключа должны быть перечислены через запятую, а для внешних
-	 * ключей, используемых для связи MANY_MANY, также должна быть определена
-	 * соединяющая таблица (например, 'join_table(fk1, fk2)').
-	 *
+	 * связь между AR-объектами. Примечание: для составного ключа имена
+	 * столбцов могут быть либо перечислены в одной строке и разделены
+	 * запятыми, либо записаны в массив вида array('key1','key2'). В случае,
+	 * если необходимо определить свое соответствие PK->FK, то можно определить
+	 * его в виде array('fk'=>'pk'). Для составного ключа это будет массив вида
+	 * array('fk_c1'=>'pk_с1','fk_c2'=>'pk_c2'). Для внешних ключей,
+	 * используемых в отношениях MANY_MANY, также должна быть определена
+	 * таблица соединения (например, 'join_table(fk1, fk2)').
+	 * 
 	 * Дополнительные опции могут быть определены в виде пар имя-значение в остальных элементах массива:
 	 * <ul>
 	 * <li>'select': string|array, список выбираемых столбцов. По умолчанию -
@@ -1986,7 +2006,7 @@ abstract class CActiveRecord extends CModel
 /**
  * Класс CBaseActiveRelation - это базовый класс для всех активных связей.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3344 2011-07-06 22:04:50Z alexander.makarow $
+ * @version $Id: CActiveRecord.php 3415 2011-10-13 17:41:55Z alexander.makarow $
  * @package system.db.ar
  * @since 1.0.4
  */
@@ -2001,7 +2021,7 @@ class CBaseActiveRelation extends CComponent
 	 */
 	public $className;
 	/**
-	 * @var string внешний ключ данной связи
+	 * @var mixed внешний ключ данной связи
 	 */
 	public $foreignKey;
 	/**
@@ -2136,7 +2156,7 @@ class CBaseActiveRelation extends CComponent
 /**
  * Класс CStatRelation представляет статистический реляционный запрос.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3344 2011-07-06 22:04:50Z alexander.makarow $
+ * @version $Id: CActiveRecord.php 3415 2011-10-13 17:41:55Z alexander.makarow $
  * @package system.db.ar
  * @since 1.0.4
  */
@@ -2176,7 +2196,7 @@ class CStatRelation extends CBaseActiveRelation
  * Класс CActiveRelation - это базовый класс, представляющий активные связи,
  * возвращающие связанные объекты
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3344 2011-07-06 22:04:50Z alexander.makarow $
+ * @version $Id: CActiveRecord.php 3415 2011-10-13 17:41:55Z alexander.makarow $
  * @package system.db.ar
  * @since 1.0
  */
@@ -2278,7 +2298,7 @@ class CActiveRelation extends CBaseActiveRelation
 /**
  * Класс CBelongsToRelation представляет параметры, определяющие связь BELONGS_TO.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3344 2011-07-06 22:04:50Z alexander.makarow $
+ * @version $Id: CActiveRecord.php 3415 2011-10-13 17:41:55Z alexander.makarow $
  * @package system.db.ar
  * @since 1.0
  */
@@ -2290,7 +2310,7 @@ class CBelongsToRelation extends CActiveRelation
 /**
  * Класс CHasOneRelation представляет параметры, определяющие связь HAS_ONE.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3344 2011-07-06 22:04:50Z alexander.makarow $
+ * @version $Id: CActiveRecord.php 3415 2011-10-13 17:41:55Z alexander.makarow $
  * @package system.db.ar
  * @since 1.0
  */
@@ -2308,7 +2328,7 @@ class CHasOneRelation extends CActiveRelation
 /**
  * Класс CHasManyRelation представляет параметры, определяющие связь HAS_MANY.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3344 2011-07-06 22:04:50Z alexander.makarow $
+ * @version $Id: CActiveRecord.php 3415 2011-10-13 17:41:55Z alexander.makarow $
  * @package system.db.ar
  * @since 1.0
  */
@@ -2367,7 +2387,7 @@ class CHasManyRelation extends CActiveRelation
 /**
  * Класс CManyManyRelation представляет параметры, определяющие связь MANY_MANY.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3344 2011-07-06 22:04:50Z alexander.makarow $
+ * @version $Id: CActiveRecord.php 3415 2011-10-13 17:41:55Z alexander.makarow $
  * @package system.db.ar
  * @since 1.0
  */
@@ -2380,7 +2400,7 @@ class CManyManyRelation extends CHasManyRelation
  * Класс CActiveRecordMetaData представляет метаданные для Active Record-класса.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3344 2011-07-06 22:04:50Z alexander.makarow $
+ * @version $Id: CActiveRecord.php 3415 2011-10-13 17:41:55Z alexander.makarow $
  * @package system.db.ar
  * @since 1.0
  */

@@ -34,8 +34,16 @@
  * CSecurityManager - это компонент ядра приложения, доступный методом
  * {@link CApplication::getSecurityManager()}.
  *
+ * @property string $validationKey секретный ключ, используемый для генерации
+ * HMAC. Если ключ явно не установлен, будет сгенерирован и возвращен новый
+ * случайный ключ
+ * @property string $encryptionKey секретный ключ, используемый для
+ * шифрования/дешифровки данных. Если ключ явно не установлен, будет
+ * сгенерирован и возвращен новый случайный ключ
+ * @property string $validation
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CSecurityManager.php 3204 2011-05-05 21:36:32Z alexander.makarow $
+ * @version $Id: CSecurityManager.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.base
  * @since 1.0
  */

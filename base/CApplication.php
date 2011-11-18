@@ -43,8 +43,34 @@
  * Начиная с пункта 3, при возникновении ошибки PHP или неперехваченного исключения,
  * приложение переключается на его обработчик ошибок и после переходит к шагу 6.
  *
+ * @property string $id The unique identifier for the application.
+ * @property string $basePath The root directory of the application. Defaults to 'protected'.
+ * @property string $runtimePath The directory that stores runtime files. Defaults to 'protected/runtime'.
+ * @property string $extensionPath The directory that contains all extensions. Defaults to the 'extensions' directory under 'protected'.
+ * @property string $language The language that the user is using and the application should be targeted to.
+ * Defaults to the {@link sourceLanguage source language}.
+ * @property string $timeZone The time zone used by this application.
+ * @property CLocale $locale The locale instance.
+ * @property string $localeDataPath The directory that contains the locale data. It defaults to 'framework/i18n/data'.
+ * @property CNumberFormatter $numberFormatter The locale-dependent number formatter.
+ * The current {@link getLocale application locale} will be used.
+ * @property CDateFormatter $dateFormatter The locale-dependent date formatter.
+ * The current {@link getLocale application locale} will be used.
+ * @property CDbConnection $db The database connection.
+ * @property CErrorHandler $errorHandler The error handler application component.
+ * @property CSecurityManager $securityManager The security manager application component.
+ * @property CStatePersister $statePersister The state persister application component.
+ * @property CCache $cache The cache application component. Null if the component is not enabled.
+ * @property CPhpMessageSource $coreMessages The core message translations.
+ * @property CMessageSource $messages The application message translations.
+ * @property CHttpRequest $request The request component.
+ * @property CUrlManager $urlManager The URL manager component.
+ * @property CController $controller The currently active controller. Null is returned in this base class.
+ * @property string $baseUrl The relative URL for the application.
+ * @property string $homeUrl The homepage URL.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CApplication.php 3305 2011-06-23 15:08:27Z qiang.xue $
+ * @version $Id: CApplication.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.base
  * @since 1.0
  *

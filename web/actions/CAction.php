@@ -20,8 +20,11 @@
  * Экземпляр действия может получить доступ к своему контроллеру обращением к
  * свойству {@link getController controller}.
  *
+ * @property CController $controller контроллер-владелец данного действия
+ * @property string $id идентификатор действия
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CAction.php 3058 2011-03-13 04:20:12Z qiang.xue $
+ * @version $Id: CAction.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.web.actions
  * @since 1.0
  */

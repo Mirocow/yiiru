@@ -15,8 +15,13 @@
  * Класс-потомки должны переопределять метод {@link generateDependentData} для
  * фактической проверки зависимости.
  *
+ * @property boolean $hasChanged изменилась ли зависимость
+ * @property mixed $dependentData данные, используемые для определения
+ * изменения зависимости. Данные доступны после вызова метода
+ * {@link evaluateDependency}
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCacheDependency.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CCacheDependency.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.caching.dependencies
  * @since 1.0
  */
@@ -42,8 +47,9 @@ class CCacheDependency extends CComponent implements ICacheDependency
 	}
 
 	/**
-	 * @return mixed данные, используемые для определения изменения зависимостиe.
-	 * Данные доступны после вызова метода {@link evaluateDependency}.
+	 * @return mixed данные, используемые для определения изменения
+	 * зависимости. Данные доступны после вызова метода
+	 * {@link evaluateDependency}
 	 */
 	public function getDependentData()
 	{
@@ -52,7 +58,8 @@ class CCacheDependency extends CComponent implements ICacheDependency
 
 	/**
 	 * Генерирует данные, необходимые для определения изменения зависимости.
-	 * Класс-потомки должны переопределять данный метод для генерации фактических данных зависимости.
+	 * Класс-потомки должны переопределять данный метод для генерации
+	 * фактических данных зависимости
 	 * @return mixed данные, необходимые для определения изменения зависимости
 	 */
 	protected function generateDependentData()

@@ -25,8 +25,11 @@
  * Примечание: имя пользовательского представления может содержать только
  * буквы, точки и дефисы, а первый символ должен быть буквой.
  *
+ * @property string $requestedView имя представления (в формате
+ * 'path.to.view'), запрошенного пользователем
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CViewAction.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CViewAction.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.web.actions
  * @since 1.0
  */

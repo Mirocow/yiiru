@@ -27,8 +27,13 @@
  * Для расширения CList до выполнения дополнительных операций добавления и удаления
  * (например, проверка типа), переопределяйте методы {@link insertAt()} и {@link removeAt()}.
  *
+ * @property boolean $readOnly только для чтения ли данный список или нет. По
+ * умолчанию false
+ * @property Iterator $iterator итератор для обхода элементов списка
+ * @property integer $count количество элементов списка
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CList.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CList.php 3430 2011-11-02 23:10:03Z alexander.makarow@gmail.com $
  * @package system.collections
  * @since 1.0
  */
@@ -62,7 +67,7 @@ class CList extends CComponent implements IteratorAggregate,ArrayAccess,Countabl
 	}
 
 	/**
-	 * @return boolean только для чтения ли данный список или нет. По умолчанию false.
+	 * @return boolean только для чтения ли данный список или нет. По умолчанию false
 	 */
 	public function getReadOnly()
 	{
@@ -79,8 +84,8 @@ class CList extends CComponent implements IteratorAggregate,ArrayAccess,Countabl
 
 	/**
 	 * Возвращает итератор для обхода элементов списка.
-	 * Метод требуется интерфейсом IteratorAggregate.
-	 * @return CIterator итератор для обхода элементов списка.
+	 * Метод требуется интерфейсом IteratorAggregate
+	 * @return CIterator итератор для обхода элементов списка
 	 */
 	public function getIterator()
 	{
@@ -89,8 +94,8 @@ class CList extends CComponent implements IteratorAggregate,ArrayAccess,Countabl
 
 	/**
 	 * Возвращает количество элементов списка.
-	 * Метод требуется интерфейсом Countable.
-	 * @return integer количество элементов списка.
+	 * Метод требуется интерфейсом Countable
+	 * @return integer количество элементов списка
 	 */
 	public function count()
 	{

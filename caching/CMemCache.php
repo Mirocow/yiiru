@@ -50,8 +50,14 @@
  * С версии 1.0.6 CMemCache может использоваться с {@link http://pecl.php.net/package/memcached memcached}.
  * Для этого установите свойство {@link useMemcached} в значение true.
  *
+ * @property mixed $memCache экземпляр memcache (или memcached, если свойство
+ * {@link useMemcached} установлено в значение true), используемый данным
+ * компонентом
+ * @property array $servers список конфигураций сервера memcache. Каждый
+ * элемент - это экземпляр класса {@link CMemCacheServerConfiguration}
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMemCache.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CMemCache.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.caching
  * @since 1.0
  */
@@ -99,8 +105,9 @@ class CMemCache extends CCache
 	}
 
 	/**
-	 * @return mixed экземпляр memcache (или memcached, если свойство {@link useMemcached} установлено в значение true),
-	 * используемый данным компонентом
+	 * @return mixed экземпляр memcache (или memcached, если свойство
+	 * {@link useMemcached} установлено в значение true), используемый данным
+	 * компонентом
 	 */
 	public function getMemCache()
 	{
@@ -111,7 +118,8 @@ class CMemCache extends CCache
 	}
 
 	/**
-	 * @return array список конфигураций сервера memcache. Каждый элемент - это экземпляр {@link CMemCacheServerConfiguration}.
+	 * @return array список конфигураций сервера memcache. Каждый элемент - это
+	 * экземпляр класса {@link CMemCacheServerConfiguration}
 	 */
 	public function getServers()
 	{
@@ -119,8 +127,9 @@ class CMemCache extends CCache
 	}
 
 	/**
-	 * @param array $config список конфигураций сервера memcache. Каждый элемент должен быть массивом
-	 * со следующими ключами: host, port, persistent, weight, timeout, retryInterval, status.
+	 * @param array $config список конфигураций сервера memcache. Каждый
+	 * элемент должен быть массивом со следующими ключами: host, port,
+	 * persistent, weight, timeout, retryInterval, status
 	 * @see http://www.php.net/manual/en/function.Memcache-addServer.php
 	 */
 	public function setServers($config)

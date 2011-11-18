@@ -15,10 +15,10 @@ Yii::import('zii.widgets.grid.CGridColumn');
  *
  * Свойства {@link label} и {@link url} определяют, как будет генерироваться каждая ссылка.
  * Свойства {@link labelExpression} и {@link urlExpression}, если они заданы, могут использоваться вместо предудыщих.
- * В дополнение, если уставнолено свойство {@link imageUrl}, то будет сгенерирована ссылка-изображение.
+ * В дополнение, если установлено свойство {@link imageUrl}, то будет сгенерирована ссылка-изображение.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLinkColumn.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CLinkColumn.php 3424 2011-10-24 20:13:19Z mdomba $
  * @package zii.widgets.grid
  * @since 1.1
  */

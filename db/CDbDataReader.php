@@ -25,8 +25,13 @@
  * {@link setFetchMode FetchMode}. Обратитесь к {@link http://www.php.net/manual/en/function.PDOStatement-setFetchMode.php}
  * за деталями.
  *
+ * @property boolean $isClosed закрыт ли ридер
+ * @property integer $rowCount количество строк в результате запроса
+ * @property integer $columnCount количество столбцов в результате запроса
+ * @property mixed $fetchMode режим чтения данных
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbDataReader.php 3204 2011-05-05 21:36:32Z alexander.makarow $
+ * @version $Id: CDbDataReader.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.db
  * @since 1.0
  */
@@ -67,7 +72,7 @@ class CDbDataReader extends CComponent implements Iterator, Countable
 	}
 
 	/**
-	 * Устанавливает режим чтения по умолчанию для даннойго состояния
+	 * Устанавливает режим чтения по умолчанию для данного состояния
 	 * @param mixed $mode fetch mode
 	 * @see http://www.php.net/manual/en/function.PDOStatement-setFetchMode.php
 	 */

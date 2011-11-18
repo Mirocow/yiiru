@@ -9,29 +9,36 @@
  */
 
 /**
- * Компонент CProfileLogRoute отображает результаты профилирования на веб-странице.
+ * Компонент CProfileLogRoute отображает результаты профилирования на
+ * веб-странице.
  *
- * Профилирование выполняется вызовом методов {@link YiiBase::beginProfile()} и {@link YiiBase::endProfile()},
- * которые отмечают начало и конец блока кода.
+ * Профилирование выполняется вызовом методов {@link YiiBase::beginProfile()} и
+ * {@link YiiBase::endProfile()}, которые отмечают начало и конец блока кода.
  *
- * Компонент CProfileLogRoute поддерживает два типа отчетов установкой свойства {@link setReport report}:
+ * Компонент CProfileLogRoute поддерживает два типа отчетов установкой свойства
+ * {@link setReport report}:
  * <ul>
- * <li>summary: список времени выполнения каждого блока кода</li>
- * <li>callstack: список помеченных блоков кода в иерархии представления, отображающей их последовательность вызовов.</li>
+ * <li>summary: список времени выполнения каждого блока кода;</li>
+ * <li>callstack: список помеченных блоков кода в иерархии представления,
+ * отображающей их последовательность вызовов.</li>
  * </ul>
  *
+ * @property string $report установленный тип отображения отчета
+ * профилирования. По умолчанию - 'summary'
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CProfileLogRoute.php 3204 2011-05-05 21:36:32Z alexander.makarow $
+ * @version $Id: CProfileLogRoute.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.logging
  * @since 1.0
  */
 class CProfileLogRoute extends CWebLogRoute
 {
 	/**
-	 * @var boolean собирать ли результаты в соответствии с их токенами профилирования.
-	 * Если значение равно false, результаты будут собраны по категориям.
-	 * По умолчанию - true. Примечание: свойство имеет эффект только в случае, если свойство
-	 * {@link report} установлено в значение 'summary'.
+	 * @var boolean собирать ли результаты в соответствии с их токенами
+	 * профилирования. Если значение равно false, результаты будут собраны по
+	 * категориям. По умолчанию - true. Примечание: свойство имеет эффект
+	 * только в случае, если свойство {@link report} установлено в значение
+	 * 'summary'
 	 * @since 1.0.6
 	 */
 	public $groupByToken=true;
@@ -42,7 +49,7 @@ class CProfileLogRoute extends CWebLogRoute
 
 	/**
 	 * Инициализирует маршрут.
-	 * Метод вызывается после создания маршрута менеджером маршрутов.
+	 * Метод вызывается после создания маршрута менеджером маршрутов
 	 */
 	public function init()
 	{
@@ -50,7 +57,8 @@ class CProfileLogRoute extends CWebLogRoute
 	}
 
 	/**
-	 * @return string установленный тип отображения отчета профилирования. По умолчанию - 'summary'.
+	 * @return string установленный тип отображения отчета профилирования. По
+	 * умолчанию - 'summary'
 	 */
 	public function getReport()
 	{
@@ -58,7 +66,8 @@ class CProfileLogRoute extends CWebLogRoute
 	}
 
 	/**
-	 * @param string $value установить тип отображения отчета профилирования. Допустимые значения - 'summary' и 'callstack'.
+	 * @param string $value установить тип отображения отчета профилирования.
+	 * Допустимые значения - 'summary' и 'callstack'
 	 */
 	public function setReport($value)
 	{
@@ -70,7 +79,7 @@ class CProfileLogRoute extends CWebLogRoute
 	}
 
 	/**
-	 * Отображает сообщения журнала.
+	 * Отображает сообщения журнала
 	 * @param array $logs список собщений журнала
 	 */
 	public function processLogs($logs)
@@ -86,7 +95,7 @@ class CProfileLogRoute extends CWebLogRoute
 	}
 
 	/**
-	 * Отображает стек вызовов процедур профилирования.
+	 * Отображает стек вызовов процедур профилирования
 	 * @param array $logs список собщений журнала
 	 */
 	protected function displayCallstack($logs)
@@ -128,7 +137,7 @@ class CProfileLogRoute extends CWebLogRoute
 	}
 
 	/**
-	 * Отображает суммарный отчет результатов профилирования.
+	 * Отображает суммарный отчет результатов профилирования
 	 * @param array $logs список собщений журнала
 	 */
 	protected function displaySummary($logs)
@@ -182,7 +191,7 @@ class CProfileLogRoute extends CWebLogRoute
 	}
 
 	/**
-	 * Собирает результаты отчета.
+	 * Собирает результаты отчета
 	 * @param array $result результат журнала для данного блока кода
 	 * @param float $delta время, затраченное на данный блок кода
 	 * @return array

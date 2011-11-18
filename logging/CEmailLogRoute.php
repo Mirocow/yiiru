@@ -15,8 +15,13 @@
  * Опционально, вы можете установить свойство {@link setSubject subject} (тема письма), 
  * свойство {@link setSentFrom sentFrom} (адрес отправителя) и другие дополнительные заголовки ({@link setHeaders headers}).
  *
+ * @property array $emails список установленных адресов назначения
+ * @property string $subject установленная тема письма. По умолчанию равно значению CEmailLogRoute::DEFAULT_SUBJECT
+ * @property string $sentFrom установленный адрес отправителя
+ * @property array $headers дополнительные заголовки, используемые при отправке письма
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CEmailLogRoute.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CEmailLogRoute.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.logging
  * @since 1.0
  */

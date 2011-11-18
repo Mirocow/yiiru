@@ -34,8 +34,17 @@
  * }
  * </pre>
  *
+ * @property string $name имя команды
+ * @property CConsoleCommandRunner $commandRunner экземпляр исполнителя
+ * (runner) команды
+ * @property string $help описание команды. По умолчанию выводится строка
+ * 'Usage: php файл-скрипта.php имя-команды'
+ * @property array $optionHelp вспомогательная информация по опциям команды.
+ * Каждый эдемент массива описывает вспомогательную информацию для отдельного
+ * действия
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CConsoleCommand.php 3276 2011-06-15 14:21:12Z alexander.makarow $
+ * @version $Id: CConsoleCommand.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.console
  * @since 1.0
  */
@@ -213,7 +222,7 @@ abstract class CConsoleCommand extends CComponent
 	/**
 	 * Предоставляет описание команды.
 	 * Метод может быть переопределен для вывода расширенного описания команды.
-	 * @return string описание команды. По умолчанию выводится строка 'Usage: php файл-скрипта.php имя-команды'.
+	 * @return string описание команды. По умолчанию выводится строка 'Usage: php файл-скрипта.php имя-команды'
 	 */
 	public function getHelp()
 	{

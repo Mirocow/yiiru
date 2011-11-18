@@ -11,8 +11,11 @@
 /**
  * Класс CCodeFile представляет генерируемый файл с кодом.
  *
+ * @property string $relativePath путь к файлу с кодом относительно базового пути приложения
+ * @property string $type расширение файла с кодом (например, php, txt)
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCodeFile.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CCodeFile.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.gii
  * @since 1.1.2
  */

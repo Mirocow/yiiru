@@ -27,8 +27,10 @@
  * дополнительную информацию, показывающую параметры методов и время выполнения, что может быть полезно
  * при использовании миграции.
  *
+ * @property CDbConnection $dbConnection текущее активное соединение БД
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbMigration.php 3218 2011-05-13 00:06:44Z alexander.makarow $
+ * @version $Id: CDbMigration.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.db
  * @since 1.1.6
  */

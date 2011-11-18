@@ -45,8 +45,10 @@ Yii::import('CHtml',true);
  *
  * CErrorHandler - это компонент ядра приложения, доступный методом {@link CApplication::getErrorHandler()}.
  *
+ * @property array $error детали ошибки. Null, если ошибки нет
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CErrorHandler.php 3386 2011-08-25 11:20:33Z mdomba $
+ * @version $Id: CErrorHandler.php 3440 2011-11-08 14:50:20Z mdomba $
  * @package system.base
  * @since 1.0
  */
@@ -214,9 +216,32 @@ class CErrorHandler extends CApplicationComponent
 		$app=Yii::app();
 		if($app instanceof CWebApplication)
 		{
+			switch($event->code)
+			{
+				case E_WARNING:
+					$type = 'PHP warning';
+					break;
+				case E_NOTICE:
+					$type = 'PHP notice';
+					break;
+				case E_USER_ERROR:
+					$type = 'User error';
+					break;
+				case E_USER_WARNING:
+					$type = 'User warning';
+					break;
+				case E_USER_NOTICE:
+					$type = 'User notice';
+					break;
+				case E_RECOVERABLE_ERROR:
+					$type = 'Recoverable error';
+					break;
+				default:
+					$type = 'PHP error';
+			}
 			$this->_error=$data=array(
 				'code'=>500,
-				'type'=>'PHP Error',
+				'type'=>$type,
 				'message'=>$event->message,
 				'file'=>$event->file,
 				'line'=>$event->line,

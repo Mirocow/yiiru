@@ -35,8 +35,10 @@
  *
  * При установленном в любое положительное числовое значение свойстве {@link cachingDuration} сообщения будут кэшироваться.
  *
+ * @property CDbConnection $dbConnection соединение БД, используемое для подключения к источнику сообщений
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbMessageSource.php 3069 2011-03-14 00:28:38Z qiang.xue $
+ * @version $Id: CDbMessageSource.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.i18n
  * @since 1.0
  */

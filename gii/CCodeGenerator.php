@@ -17,8 +17,11 @@
  * кода (наследующую класс {@link CCodeModel}) должен использовать генератор, а
  * метод должен возвращать сообщение об успехе, отображаемое при успешной генерации файлов кода.
  *
+ * @property string $pageTitle заголовок страницы
+ * @property string $viewPath путь представления генератора
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCodeGenerator.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CCodeGenerator.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.gii
  * @since 1.1.2
  */

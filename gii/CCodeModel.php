@@ -25,8 +25,12 @@
  * запоминать свое последнее валидное значение, даже если пользователь закрыл окно браузера и снова его открыл.
  * Для объявления атрибута "липким" просто впишите в правилах валидации строку с именем валидатора "sticky".
  *
+ * @property array $templates список доступных шаблонов кода (имя => директория)
+ * @property string $templatePath директория, содержащая файлы шаблона
+ * @property string $stickyFile путь к файлу, хранящему значения "липких" атрибутов
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCodeModel.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CCodeModel.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.gii
  * @since 1.1.2
  */

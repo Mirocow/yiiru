@@ -39,8 +39,11 @@
  * По умолчанию {@link CApplication} регистрирует {@link CFormatter} как компонент приложения с идентификатором 'format'.
  * Таким образом, к компоненту форматирования можно обращаться так: <code>Yii::app()->format->boolean(1)</code>.
  *
+ * @property CHtmlPurifier $htmlPurifier экземпляр HTML-фильтра
+ * {@link CHtmlPurifier}
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFormatter.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CFormatter.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.utils
  * @since 1.1.0
  */

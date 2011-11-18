@@ -18,8 +18,11 @@
  * Классы-потомки могут переопределять методы {@link renderHeaderCellContent}, {@link renderDataCellContent}
  * и {@link renderFooterCellContent} для настройки генерации данных ячеек.
  *
+ * @property boolean $hasFooter имеет ли данный столбец ячейку-футер.
+ * Определяется по установленному свойству {@link footer}
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CGridColumn.php 3041 2011-03-11 20:29:55Z qiang.xue $
+ * @version $Id: CGridColumn.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package zii.widgets.grid
  * @since 1.1
  */

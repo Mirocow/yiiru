@@ -29,7 +29,7 @@ if(!class_exists('HTMLPurifier_Bootstrap',false))
  * ABAP, CPP, CSS, DIFF, DTD, HTML, JAVA, JAVASCRIPT,
  * MYSQL, PERL, PHP, PYTHON, RUBY, SQL, XML
  *
- * Вы также можете определить настройки, передаваемые в инструмент подсветки. Например:
+ * Также можно определить настройки, передаваемые в инструмент подсветки. Например:
  * <pre>
  * [php showLineNumbers=1]
  * </pre>
@@ -41,8 +41,11 @@ if(!class_exists('HTMLPurifier_Bootstrap',false))
  * <li>{@link http://michelf.com/projects/php-markdown/extra/ расширенный синтаксис markdown}</li>
  * </ul>
  *
+ * @property string $defaultCssFile файл CSS по умолчанию, используемый для
+ * подсветки блоков кода
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMarkdownParser.php 2886 2011-01-17 13:34:11Z qiang.xue $
+ * @version $Id: CMarkdownParser.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.utils
  * @since 1.0
  */
@@ -82,7 +85,8 @@ class CMarkdownParser extends MarkdownExtra_Parser
 	}
 
 	/**
-	 * @return string файл CSS по умолчанию, используемый для подсветки блоков кода.
+	 * @return string файл CSS по умолчанию, используемый для подсветки блоков
+	 * кода
 	 */
 	public function getDefaultCssFile()
 	{

@@ -23,8 +23,14 @@
  * $n=count($map);  // получение числа элементов карты
  * </pre>
  *
+ * @property boolean $readOnly только для чтения ли данная карта или нет. По
+ * умолчанию false
+ * @property CMapIterator $iterator итератор для обхода элементов карты
+ * @property integer $count количество элементов карты
+ * @property array $keys список ключей
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMap.php 3153 2011-04-01 12:50:06Z qiang.xue $
+ * @version $Id: CMap.php 3427 2011-10-25 00:03:52Z alexander.makarow $
  * @package system.collections
  * @since 1.0
  */
@@ -70,9 +76,9 @@ class CMap extends CComponent implements IteratorAggregate,ArrayAccess,Countable
 	}
 
 	/**
-	 * Возвращает итератор для обхода элементов списка.
-	 * Метод требуется интерфейсом IteratorAggregate
-	 * @return CMapIterator итератор для обхода элементов списка
+	 * Возвращает итератор для обхода элементов карты. Метод требуется
+	 * интерфейсом IteratorAggregate
+	 * @return CMapIterator итератор для обхода элементов карты
 	 */
 	public function getIterator()
 	{

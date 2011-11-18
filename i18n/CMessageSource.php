@@ -16,8 +16,11 @@
  *
  * Конкретный класс должен реализовать метод {@link loadMessages} или переопределить метод {@link translateMessage}.
  *
+ * @property string $language язык исходных сообщений. По умолчанию -
+ * {@link CApplication::language язык приложения}
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMessageSource.php 2798 2011-01-01 19:29:03Z qiang.xue $
+ * @version $Id: CMessageSource.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.i18n
  * @since 1.0
  */

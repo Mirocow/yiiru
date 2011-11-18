@@ -58,12 +58,13 @@ Yii::import('system.gii.CCodeForm');
  * )
  * </pre>
  *
- * Теперь вы можете получить доступ к модулю по адресу:
- *
+ * Теперь можно получить доступ к модулю по адресу:
  * http://localhost/path/to/index.php/gii
  *
+ * @property string $assetsUrl базовый URL, содержащий все публикуемые файлы ресурсов модуля gii
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: GiiModule.php 3354 2011-07-12 21:20:01Z alexander.makarow $
+ * @version $Id: GiiModule.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.gii
  * @since 1.1.2
  */

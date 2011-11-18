@@ -19,8 +19,17 @@
  * '.3', '.1' в '.2'. Свойство {@link setMaxLogFiles maxLogFiles}
  * определяет количество файлов журнала.
  *
+ * @property string $logPath установленная директория для хранения файлов
+ * журнала. По умолчанию - директория времени выполнения приложения
+ * @property string $logFile установленное имя файла журнала. По умолчанию -
+ * 'application.log'
+ * @property integer $maxFileSize максимальный размер файла журнала в
+ * килобайтах (KB). По умолчанию - 1024 (1MB)
+ * @property integer $maxLogFiles количество файлов, используемых для ротации.
+ * По умолчанию - 5
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFileLogRoute.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CFileLogRoute.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.logging
  * @since 1.0
  */
@@ -57,7 +66,7 @@ class CFileLogRoute extends CLogRoute
 
 	/**
 	 * @return string установленная директория для хранения файлов журнала.
-	 * По умолчанию - директория времени выполнения приложения.
+	 * По умолчанию - директория времени выполнения приложения
 	 */
 	public function getLogPath()
 	{
@@ -65,7 +74,7 @@ class CFileLogRoute extends CLogRoute
 	}
 
 	/**
-	 * @param string $value устанавливаемая директория для хранения файлов журнала.
+	 * @param string $value устанавливаемая директория для хранения файлов журнала
 	 * @throws CException вызывается, если путь неверен
 	 */
 	public function setLogPath($value)
@@ -77,7 +86,7 @@ class CFileLogRoute extends CLogRoute
 	}
 
 	/**
-	 * @return string установленное имя файла журнала. По умолчанию - 'application.log'.
+	 * @return string установленное имя файла журнала. По умолчанию - 'application.log'
 	 */
 	public function getLogFile()
 	{
@@ -93,7 +102,7 @@ class CFileLogRoute extends CLogRoute
 	}
 
 	/**
-	 * @return integer установленный максимальный размер файла журнала в килобайтах (KB). По умолчанию - 1024 (1MB).
+	 * @return integer установленный максимальный размер файла журнала в килобайтах (KB). По умолчанию - 1024 (1MB)
 	 */
 	public function getMaxFileSize()
 	{
@@ -101,7 +110,7 @@ class CFileLogRoute extends CLogRoute
 	}
 
 	/**
-	 * @param integer $value устанавливаемый максимальный размер файла журнала в килобайтах (KB).
+	 * @param integer $value устанавливаемый максимальный размер файла журнала в килобайтах (KB)
 	 */
 	public function setMaxFileSize($value)
 	{
@@ -110,7 +119,7 @@ class CFileLogRoute extends CLogRoute
 	}
 
 	/**
-	 * @return integer установленное количество файлов, используемых для ротации. По умолчанию - 5.
+	 * @return integer установленное количество файлов, используемых для ротации. По умолчанию - 5
 	 */
 	public function getMaxLogFiles()
 	{

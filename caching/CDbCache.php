@@ -22,8 +22,13 @@
  *
  * Обратитесь к документации {@link CCache} за информацией об обычных операциях кэша, поддерживаемых компонентом CDbCache.
  *
+ * @property integer $gCProbability вероятность (частей на миллион) выполнения
+ * "сбора мусора" (GC) при сохранении части данных в кэше. По умолчанию - 100,
+ * что означает 0.01% шанс
+ * @property CDbConnection $dbConnection экземпляр соединения БД
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbCache.php 3198 2011-04-30 21:14:17Z qiang.xue $
+ * @version $Id: CDbCache.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.caching
  * @since 1.0
  */
@@ -89,7 +94,7 @@ class CDbCache extends CCache
 
 	/**
 	 * @return integer вероятность (частей на миллион) выполнения "сбора мусора" (GC) при сохранении
-	 * части данных в кэше. По умолчанию - 100, что означает 0.01% шанс.
+	 * части данных в кэше. По умолчанию - 100, что означает 0.01% шанс
 	 * @since 1.0.9
 	 */
 	public function getGCProbability()

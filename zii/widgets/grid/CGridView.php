@@ -72,8 +72,13 @@ Yii::import('zii.widgets.grid.CCheckBoxColumn');
  *
  * Обратитесь к описанию свойства {@link columns} за деталями о конфигурации данного свойства.
  *
+ * @property boolean должна ли таблица генерировать подошву (футер). Возвращает
+ * true, если в любом элементе свойства {@link columns} есть значение
+ * {@link CGridColumn::hasFooter}, равное true
+ * @property CFormatter $formatter экземпляр форматтера. По умолчанию - компонент приложения 'format'
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CGridView.php 3286 2011-06-16 17:34:34Z qiang.xue $
+ * @version $Id: CGridView.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package zii.widgets.grid
  * @since 1.1
  */
@@ -246,7 +251,8 @@ class CGridView extends CBaseListView
 	 * таблица активирует фильтрацию для данного столбца. Каждый столбец данных по умолчанию отображает наверху таблицы текстовое поле,
 	 * которое пользователь может заполнить фильтрующими данными. Примечание: для того, чтобы показать поле ввода
 	 * для фильтрации, столбец должен иметь установленное свойство {@link CDataColumn::name} или
-	 * свойство {@link CDataColumn::filter} в виде HTML-кода поля ввода
+	 * свойство {@link CDataColumn::filter} в виде HTML-кода поля ввода.
+	 * Фильтрация отключена, когда данное свойство не установлено (null)
 	 * @since 1.1.1
 	 */
 	public $filter;
@@ -518,7 +524,8 @@ class CGridView extends CBaseListView
 
 	/**
 	 * @return boolean должна ли таблица генерировать подошву (футер).
-	 * Возвращает true, если в свойстве {@link columns} есть любое значение {@link CGridColumn::hasFooter} равное true
+	 * Возвращает true, если в любом элементе свойства {@link columns} есть
+	 * значение {@link CGridColumn::hasFooter}, равное true
 	 */
 	public function getHasFooter()
 	{

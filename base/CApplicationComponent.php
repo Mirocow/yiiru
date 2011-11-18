@@ -17,8 +17,11 @@
  * метод {@link init()}, а не в конструктор. Преимущество такого подхода в том, что
  * компонент приложения может быть настроен через конфигурацию приложения.
  *
+ * @property boolean $isInitialized был ли компонент приложения инициализирован
+ * (т.е., вызывался ли метод {@link init()})
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CApplicationComponent.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CApplicationComponent.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.base
  * @since 1.0
  */

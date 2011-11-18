@@ -49,7 +49,7 @@
  * </ul>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CValidator.php 3160 2011-04-03 01:08:23Z qiang.xue $
+ * @version $Id: CValidator.php 3429 2011-11-02 08:20:20Z mdomba $
  * @package system.validators
  * @since 1.0
  */

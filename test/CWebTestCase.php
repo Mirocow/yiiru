@@ -16,8 +16,10 @@ require_once('PHPUnit/Extensions/SeleniumTestCase.php');
  * Наследует класс PHPUnit_Extensions_SeleniumTestCase и обеспечивает функцию управления
  * фикстурами базы данных такую, как {@link CDbTestCase}.
  *
+ * @property CDbFixtureManager $fixtureManager менеджер фикстур базы данных
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CWebTestCase.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CWebTestCase.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.test
  * @since 1.1
  */
@@ -63,7 +65,7 @@ abstract class CWebTestCase extends PHPUnit_Extensions_SeleniumTestCase
 	}
 
 	/**
-	 * @return CDbFixtureManager менеджер фикстуры базы данных
+	 * @return CDbFixtureManager менеджер фикстур базы данных
 	 */
 	public function getFixtureManager()
 	{

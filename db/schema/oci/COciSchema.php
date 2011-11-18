@@ -11,8 +11,10 @@
 /**
  * Класс COciSchema - это класс для получения метаинформации БД Oracle.
  *
+ * @property string $defaultSchema схема по умолчанию
+ *
  * @author Ricardo Grana <rickgrana@yahoo.com.br>
- * @version $Id: COciSchema.php 3304 2011-06-23 14:53:50Z qiang.xue $
+ * @version $Id: COciSchema.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.db.schema.oci
  * @since 1.0.5
  */

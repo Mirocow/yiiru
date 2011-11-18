@@ -20,8 +20,10 @@
  * </pre>
  * В коде выше, если имя команды не написано, на экран будут выведены все доступные команды.
  *
+ * @property string $help описание команды
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CHelpCommand.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CHelpCommand.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.console
  * @since 1.0
  */

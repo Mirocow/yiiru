@@ -6,7 +6,7 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2011 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: YiiBase.php 3325 2011-06-26 18:01:42Z qiang.xue $
+ * @version $Id: YiiBase.php 3398 2011-09-15 16:16:08Z alexander.makarow $
  * @package system
  * @since 1.0
  */
@@ -55,7 +55,7 @@ defined('YII_ZII_PATH') or define('YII_ZII_PATH',YII_PATH.DIRECTORY_SEPARATOR.'z
  * {@link Yii}, где вы можете настраивать методы YiiBase
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: YiiBase.php 3325 2011-06-26 18:01:42Z qiang.xue $
+ * @version $Id: YiiBase.php 3398 2011-09-15 16:16:08Z alexander.makarow $
  * @package system
  * @since 1.0
  */
@@ -405,10 +405,10 @@ class YiiBase
 	public static function autoload($className)
 	{
 		// use include so that the error PHP file may appear
-		if(isset(self::$_coreClasses[$className]))
-			include(YII_PATH.self::$_coreClasses[$className]);
-		else if(isset(self::$classMap[$className]))
+		if(isset(self::$classMap[$className]))
 			include(self::$classMap[$className]);
+		else if(isset(self::$_coreClasses[$className]))
+			include(YII_PATH.self::$_coreClasses[$className]);
 		else
 		{
 			// include class file relying on include_path
@@ -549,7 +549,7 @@ class YiiBase
 	 */
 	public static function powered()
 	{
-		return 'Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a>.';
+		return Yii::t('yii','Powered by {yii}.', array('{yii}'=>'<a href="http://www.yiiframework.com/" rel="external">Yii Framework</a>'));
 	}
 
 	/**

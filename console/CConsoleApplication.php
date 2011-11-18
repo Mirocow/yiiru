@@ -36,8 +36,13 @@
  * php путь/к/скрипту-точке-входа.php help <имя-команды>
  * </pre>
  *
+ * @property string $commandPath директория, содержащая классы команды. По
+ * умолчанию 'protected/commands'
+ * @property CConsoleCommandRunner $commandRunner экземпляр исполнителя
+ * (runner) команд
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CConsoleApplication.php 3213 2011-05-12 23:19:59Z alexander.makarow $
+ * @version $Id: CConsoleApplication.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.console
  * @since 1.0
  */

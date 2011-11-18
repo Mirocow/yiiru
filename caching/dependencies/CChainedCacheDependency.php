@@ -19,8 +19,11 @@
  * {@link CTypedList} и может быть использовано как массив
  * (за подробностями обратитесь к классу {@link CList}).
  *
+ * @property CTypedList $dependencies список объектов зависимости
+ * @property boolean $hasChanged изменилась ли зависимость
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CChainedCacheDependency.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CChainedCacheDependency.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.caching.dependencies
  * @since 1.0
  */

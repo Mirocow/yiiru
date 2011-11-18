@@ -13,18 +13,34 @@
  *
  * В основном CModule управляет компонентами приложения и подмодулями.
  *
+ * @property string $id идентификатор модуля
+ * @property string $basePath корневая директория модуля. По умолчанию -
+ * директория, содержащая класс модуля
+ * @property CAttributeCollection $params пользовательские параметры
+ * @property string $modulePath директория, содержащая модули приложения. По
+ * умолчанию - поддиректория 'modules' директории {@link basePath}
+ * @property CModule $parentModule модуль-родитель. Null, если модуль не имеет
+ * родителя
+ * @property array $modules конфигурация текущих установленных модулей
+ * (идентификатор модуля => конфигурация)
+ * @property array $components список компонентов приложения (индексированные
+ * по их идентификаторам)
+ * @property array $import список импортируемых псевдонимов
+ * @property array $aliases список определяемых псевдонимов. Ключи массива -
+ * это корневые псевдонимы, а значения массива - пути или псевдонимы,
+ * соответствующие корневым псевдонимам. Например,
+ * <pre>
+ * array(
+ *    'models'=>'application.models',              // существующий псевдоним
+ *    'extensions'=>'application.extensions',      // существующий псевдоним
+ *    'backend'=>dirname(__FILE__).'/../backend',  // директория
+ * )
+ * </pre>
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CModule.php 3363 2011-07-27 14:02:57Z alexander.makarow $
+ * @version $Id: CModule.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.base
  * @since 1.0.4
- *
- * @property string $basePath корневая директория модуля
- * @property array $components список компонентов приложения
- * @property string $id идентификатор модуля
- * @property string $modulePath директория, содержащая модули приложения
- * @property array $modules конфигурация текущих установленных модулей
- * @property CAttributeCollection $params пользовательские параметры
- * @property CModule $parentModule модуль-родитель
  */
 abstract class CModule extends CComponent
 {
@@ -185,7 +201,8 @@ abstract class CModule extends CComponent
 
 	/**
 	 * Возвращает директорию, хранящую модули приложения
-	 * @return string директория, хранящая модули приложения. По умолчанию - поддиректория 'modules' директории {@link basePath}.
+	 * @return string директория, хранящая модули приложения. По умолчанию -
+	 * поддиректория 'modules' директории {@link basePath}
 	 */
 	public function getModulePath()
 	{
@@ -419,7 +436,7 @@ abstract class CModule extends CComponent
 	}
 
 	/**
-	 * Устанавилвает компоненты приложения.
+	 * Устанавливает компоненты приложения.
 	 *
 	 * Когда конфигурация используется для определения компонента, она должна содержать начальные
 	 * значения свойств компонента (пары имя-значение). В дополнение, компонент 

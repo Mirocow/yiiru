@@ -11,8 +11,15 @@
 /**
  * Класс CDbSchema - это базовый класс для получения метаинформации БД.
  *
+ * @property CDbConnection $dbConnection соединение БД. Соединение активно
+ * @property array $tables метаданные всех таблиц базы данных. Каждый элемент
+ * представляет собой экземпляр класса {@link CDbTableSchema} (или его
+ * потомков). Ключи массива - имена таблиц
+ * @property array $tableNames имена всех таблиц базы данных
+ * @property CDbCommandBuilder $commandBuilder построитель SQL-команд для данного соединения БД
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbSchema.php 3359 2011-07-18 11:25:17Z qiang.xue $
+ * @version $Id: CDbSchema.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.db.schema
  * @since 1.0
  */
@@ -133,7 +140,7 @@ abstract class CDbSchema extends CComponent
 	}
 
 	/**
-	 * @return CDbCommandBuilder построитель SQL-комманд для данного соединения БД
+	 * @return CDbCommandBuilder построитель SQL-команд для данного соединения БД
 	 */
 	public function getCommandBuilder()
 	{

@@ -17,8 +17,12 @@
  *
  * Обратитесь к документации {@link CCache} за информацией об обычных операциях кэша, поддерживаемых компонентом CFileCache.
  *
+ * @property integer $gCProbability вероятность (частей на миллион) выполнения
+ * "сбора мусора" (GC) при сохранении части данных в кэше. По умолчанию - 100,
+ * что означает 0.01% шанс
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFileCache.php 3378 2011-08-06 16:04:41Z keyboard.idol@gmail.com $
+ * @version $Id: CFileCache.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.caching
  * @since 1.0.6
  */
@@ -60,8 +64,9 @@ class CFileCache extends CCache
 	}
 
 	/**
-	 * @return integer вероятность (частей на миллион) выполнения "сбора мусора" (GC) при сохранении
-	 * части данных в кэше. По умолчанию - 100, что означает 0.01% шанс.
+	 * @return integer вероятность (частей на миллион) выполнения
+	 * "сбора мусора" (GC) при сохранении части данных в кэше. По умолчанию -
+	 * 100, что означает 0.01% шанс
 	 */
 	public function getGCProbability()
 	{

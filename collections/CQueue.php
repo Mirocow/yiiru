@@ -20,8 +20,11 @@
  * foreach($queue as $item) ...
  * </pre>
  *
+ * @property Iterator $iterator итератор для обхода элементов очереди
+ * @property integer $count число элементов в очереди
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CQueue.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CQueue.php 3427 2011-10-25 00:03:52Z alexander.makarow $
  * @package system.collections
  * @since 1.0
  */

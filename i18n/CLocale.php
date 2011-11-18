@@ -12,9 +12,30 @@
  * Класс CLocale представляет данные, относящиеся к локали.
  *
  * Данные включают информацию форматирования чисел и дат.
+ * 
+ * @property string $id идентификатор локали (в канонической форме)
+ * @property CNumberFormatter $numberFormatter форматер чисел для данной локали
+ * @property CDateFormatter $dateFormatter форматер дат для данной локали
+ * @property string $decimalFormat десятичный формат
+ * @property string $currencyFormat денежный формат
+ * @property string $percentFormat формат процентов
+ * @property string $scientificFormat научный формат
+ * @property array $monthNames названия месяцев, индексированные по номеру
+ * месяца (1-12)
+ * @property array $weekDayNames названия дней недели, индексированные по
+ * номеру дня недели (0-6, 0 - воскресенье, 1 - понедельник и т.д.)
+ * @property string $aMName наименование AM
+ * @property string $pMName наименование PM
+ * @property string $dateFormat формат даты
+ * @property string $timeFormat формат времени
+ * @property string $dateTimeFormat формат даты и времени - порядок, в котором
+ * идут дата и время
+ * @property string $orientation направление текста, может быть либо 'ltr'
+ * (слева направо) либо 'rtl' (справа налево)
+ * @property array $pluralRules выражения плюральных форм
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLocale.php 2844 2011-01-13 01:29:55Z alexander.makarow $
+ * @version $Id: CLocale.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.i18n
  * @since 1.0
  */
@@ -289,7 +310,8 @@ class CLocale extends CComponent
 	}
 
 	/**
-	 * @return string направление текста, может быть либо 'ltr' (слева направо) либо 'rtl' (справа налево)
+	 * @return string направление текста, может быть либо 'ltr' (слева направо)
+	 * либо 'rtl' (справа налево)
 	 * @since 1.1.2
 	 */
 	public function getOrientation()
@@ -303,5 +325,167 @@ class CLocale extends CComponent
 	public function getPluralRules()
 	{
 		return isset($this->_data['pluralRules']) ? $this->_data['pluralRules'] : array();
+	}
+
+	/**
+	 * Конвертирует идентификатор локали в идентификатор языка. Идентификатор
+	 * языка состоит только из первой группы символов идентификатора локали,
+	 * находящейся перед знаком подчеркивания или тире
+	 * @param string $id конвертируемый идентификатор локали
+	 * @return string идентификатор языка
+	 * @since 1.1.9
+	 */
+	public function getLanguageID($id)
+	{
+		// normalize id
+		$id = $this->getCanonicalID($id);
+		// remove sub tags
+		if(($underscorePosition=strpos($id, '_'))!== false)
+		{
+			$id = substr($id, 0, $underscorePosition);
+		}
+		return $id;
+	}
+
+	/**
+	 * Конвертирует идентификатор локали в идентификатор системы письма.
+	 * Идентификатор системы письма содержит только последние 4 символа
+	 * идентификатора локали, находящиеся после знака подчеркивания или тире
+	 * @param string $id конвертируемый идентификатор локали
+	 * @return string идентификатор системы письма
+	 * @since 1.1.9
+	 */
+	public function getScriptID($id)
+	{
+		// normalize id
+		$id = $this->getCanonicalID($id);
+		// find sub tags
+		if(($underscorePosition=strpos($id, '_'))!==false)
+		{
+			$subTag = explode('_', $id);
+			// script sub tags can be distigused from territory sub tags by length
+			if (strlen($subTag[1])===4)
+			{
+				$id = $subTag[1];
+			}
+			else
+			{
+				$id = null;
+			}
+		}
+		else
+		{
+			$id = null;
+		}
+		return $id;
+	}
+
+	/**
+	 * Конвертирует идентификатор локали в идентификатор территории.
+	 * Идентификатор территории содержит только последние 2 или 3 буквы или
+	 * цифры идентификатора локали, находящиеся после знака подчеркивания или
+	 * тире
+	 * @param string $id конвертируемый идентификатор локали
+	 * @return string идентификатор территории
+	 * @since 1.1.9
+	 */
+	public function getTerritoryID($id)
+	{
+		// normalize id
+		$id = $this->getCanonicalID($id);
+		// find sub tags
+		if (($underscorePosition=strpos($id, '_'))!== false)
+		{
+			$subTag = explode('_', $id);
+			// territory sub tags can be distigused from script sub tags by length
+			if (strlen($subTag[1])<4)
+			{
+				$id = $subTag[1];
+			}
+			else
+			{
+				$id = null;
+			}
+		}
+		else
+		{
+			$id = null;
+		}
+		return $id;
+	}
+
+	/**
+	 * @param string $id идентификатор языка в юникоде по стандарту
+	 * IETF BCP 47. Например, код "en_US" представляет американский английский,
+	 * а код "en_GB" - британский английский
+	 * @param string $category
+	 * @return string локально отображаемое имя языка. Null, если код языка не
+	 * существует
+	 * @since 1.1.9
+	 */
+	public function getLocaleDisplayName($id=null, $category='languages')
+	{
+		$id = $this->getCanonicalID($id);
+		if (isset($this->_data[$category][$id]))
+		{
+			return $this->_data[$category][$id];
+		}
+		else if (($category == 'languages') && ($id=$this->getLanguageID($id)) && (isset($this->_data[$category][$id])))
+		{
+			return $this->_data[$category][$id];
+		}
+		else if (($category == 'scripts') && ($id=$this->getScriptID($id)) && (isset($this->_data[$category][$id])))
+		{
+			return $this->_data[$category][$id];
+		}
+		else if (($category == 'territories') && ($id=$this->getTerritoryID($id)) && (isset($this->_data[$category][$id])))
+		{
+			return $this->_data[$category][$id];
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * @param string $id идентификатор языка в юникоде по стандарту
+	 * IETF BCP 47. Например, код "en_US" представляет американский английский,
+	 * а код "en_GB" - британский английский
+	 * @param string $category
+	 * @return string локально отображаемое имя языка. Null, если код языка не
+	 * существует
+	 * @since 1.1.9
+	 */
+	public function getLanguage($id)
+	{
+		return $this->getLocaleDisplayName($id, 'languages');
+	}
+
+	/**
+	 * @param string $id идентификатор языка в юникоде по стандарту
+	 * IETF BCP 47. Например, код "en_US" представляет американский английский,
+	 * а код "en_GB" - британский английский
+	 * @param string $category
+	 * @return string локально отображаемое имя системы письма. Null, если код
+	 * системы письма не существует
+	 * @since 1.1.9
+	 */
+	public function getScript($id)
+	{
+		return $this->getLocaleDisplayName($id, 'scripts');
+	}
+
+	/**
+	 * @param string $id идентификатор языка в юникоде по стандарту
+	 * IETF BCP 47. Например, код "en_US" представляет американский английский,
+	 * а код "en_GB" - британский английский
+	 * @param string $category
+	 * @return string локально отображаемое имя территории. Null, если код
+	 * территории не существует
+	 * @since 1.1.9
+	 */
+	public function getTerritory($id)
+	{
+		return $this->getLocaleDisplayName($id, 'territories');
 	}
 }

@@ -13,7 +13,7 @@
  * количество выбираемых строк и начальный номер строки и т.д.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbCriteria.php 3345 2011-07-06 22:16:44Z alexander.makarow $
+ * @version $Id: CDbCriteria.php 3420 2011-10-20 21:19:32Z alexander.makarow $
  * @package system.db.schema
  * @since 1.0
  */
@@ -435,7 +435,7 @@ class CDbCriteria extends CComponent
 	 * Например, если оба критерия имеют условия, вместе они будут слиты оператором 'AND'.
 	 * Также, критерий, переданный в метод в качестве параметра, имеет преимущество в случае, когда
 	 * пара опций не может быть слита (например, LIMIT, OFFSET)
-	 * @param CDbCriteria $criteria критерий, с котором производится слияние
+	 * @param mixed $criteria критерий, с котором производится слияние. Может быть массивом или объектом класса CDbCriteria
 	 * @param boolean $useAnd использовать ли оператор 'AND' для слияния условий и их опций. Если значение
 	 * равно false, то будет использоваться оператор 'OR'. По умолчанию - true. Параметр доступен с версии 1.0.6
 	 * @since 1.0.5

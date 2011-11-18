@@ -31,8 +31,10 @@ Yii::import('system.test.CTestCase');
  * соответствующий строке данным фикстуры, используя <code>$this->posts('first post')</code>.
  * Примечание: здесь 'first post' - ключ к строке в исходных данных фикстуры.
  *
+ * @property CDbFixtureManager $fixtureManager менеджер фикстур базы данных
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbTestCase.php 3035 2011-03-08 22:01:20Z alexander.makarow $
+ * @version $Id: CDbTestCase.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.test
  * @since 1.1
  */

@@ -30,8 +30,11 @@
  * для инициализации базы данных. Если такой файл не существует, все доступные фикстуры будут
  * загружены в базу данных.
  *
+ * @property CDbConnection $dbConnection соединение БД
+ * @property array $fixtures информация доступных фикстур (имя таблицы => файл фикстуры)
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbFixtureManager.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CDbFixtureManager.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.test
  * @since 1.1
  */
@@ -86,7 +89,7 @@ class CDbFixtureManager extends CApplicationComponent
 
 	/**
 	 * Возвращает соединение БД, используемое для загрузки фикстур.
-	 * @return CDbConnection соединени БД
+	 * @return CDbConnection соединение БД
 	 */
 	public function getDbConnection()
 	{

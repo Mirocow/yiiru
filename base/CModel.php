@@ -10,12 +10,24 @@
 
 
 /**
- * CModel - это базовый класс, обеспечивающий общие функции, необходимые объектам моделей данных.
+ * CModel - это базовый класс, обеспечивающий общие функции, необходимые
+ * объектам моделей данных.
  *
- * CModel определяет базовый каркас для моделей данных, которым необходима валидация.
+ * CModel определяет базовый каркас для моделей данных, которым необходима
+ * валидация.
+ *
+ * @property CList $validatorList все определенные в модели валидаторы
+ * @property array $validators валидаторы, применимые к текущему
+ * {@link scenario сценарию}
+ * @property array $errors ошибки для всех атрибутов или определенного
+ * атрибута. Если ошибок нет, возвращается пустой массив
+ * @property array $attributes значения атрибутов (имя => значение)
+ * @property string $scenario сценарий, в котором используется данная модель
+ * @property array $safeAttributeNames имена безопасных атрибутов
+ * @property CMapIterator $iterator итератор для обхода атрибутов модели
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CModel.php 3349 2011-07-08 11:27:53Z mdomba $
+ * @version $Id: CModel.php 3427 2011-10-25 00:03:52Z alexander.makarow $
  * @package system.base
  * @since 1.0
  */
@@ -246,8 +258,8 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	/**
 	 * Возвращает валидаторы, применимые к текущему {@link scenario сценарию}.
 	 * @param string $attribute имя атрибута, валидаторы которого должны буть вовращены.
-	 * Если null, будут возвращены валидаторы для ВСЕХ атрибутов модели.
-	 * @return array валидаторы, применимые к текущему {@link scenario сценарию}.
+	 * Если null, будут возвращены валидаторы для ВСЕХ атрибутов модели
+	 * @return array валидаторы, применимые к текущему {@link scenario сценарию}
 	 * @since 1.0.1
 	 */
 	public function getValidators($attribute=null)
@@ -347,9 +359,11 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	}
 
 	/**
-	 * Возвращает ошибки для всех атрибутов или определенного атрибута.
-	 * @param string $attribute имя атрибута. Для получения ошибок всех атрибутов, используйте значение null
-	 * @return array ошибки для всех атрибутов или определенного атрибута. Если ошибок нет, возвращается пустой массив
+	 * Возвращает ошибки для всех атрибутов или определенного атрибута
+	 * @param string $attribute имя атрибута. Для получения ошибок всех
+	  *атрибутов, используйте значение null
+	 * @return array ошибки для всех атрибутов или определенного атрибута. Если
+	 * ошибок нет, возвращается пустой массив
 	 */
 	public function getErrors($attribute=null)
 	{
@@ -429,10 +443,11 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 
 	/**
 	 * Возвращает значения всех атрибутов.
-	 * @param array $names список атрибутов, значения которых необходимо возвратить.
-	 * По умолчанию - null, т.е. будут возвращены все атрибуты, перечисленные в свойстве {@link attributeNames}.
-	 * Если это массив, будут возвращены только атрибуты этого массива.
-	 * @return array attribute values (name=>value).
+	 * @param array $names список атрибутов, значения которых необходимо
+	 * возвратить. По умолчанию - null, т.е. будут возвращены все атрибуты,
+	 * перечисленные в свойстве {@link attributeNames}. Если это массив, то
+	 * будут возвращены только атрибуты этого массива
+	 * @return array значения атрибутов (имя => значение)
 	 */
 	public function getAttributes($names=null)
 	{
@@ -509,12 +524,14 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	 * могут быть массово присвоены.
 	 *
 	 * Правило валидации будет выполнено при вызове метода {@link validate()},
-	 * если его опция 'on' не установлена или содержит значение текущего сценария.
+	 * если его опция 'on' не установлена или содержит значение текущего
+	 * сценария.
 	 *
 	 * Атрибут может быть массово присвоен, если он ассоциирован с
-	 * правилом валидации для текущего сценария. Примечание: исключение составляет
-	 * валидатор {@link CUnsafeValidator unsafe}, помечающий ассоциированные атрибуты
-	 * небезопасными и невозможным идля массового присвоения.
+	 * правилом валидации для текущего сценария. Примечание: исключение
+	 * составляет валидатор {@link CUnsafeValidator unsafe}, помечающий
+	 * ассоциированные атрибуты небезопасными и невозможным идля массового
+	 * присвоения.
 	 *
 	 * @return string сценарий, в котором используется данная модель
 	 * @since 1.0.4
@@ -537,7 +554,8 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 
 	/**
 	 * Возвращает имена атрибутов, безопасных для массового присваивания.
-	 * Безопасный атрибут - это атрибут, ассоциированный с правилом валидации в текущем {@link scenario сценарии}.
+	 * Безопасный атрибут - это атрибут, ассоциированный с правилом валидации в
+	 * текущем {@link scenario сценарии}
 	 * @return array имена безопасных атрибутов
 	 * @since 1.0.2
 	 */
@@ -566,8 +584,8 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 
 	/**
 	 * Возвращает итератор для обхода атрибутов модели.
-	 * Метод требуется интерфейсом IteratorAggregate.
-	 * @return CMapIterator итератор для обхода атрибутов модели.
+	 * Метод требуется интерфейсом IteratorAggregate
+	 * @return CMapIterator итератор для обхода атрибутов модели
 	 */
 	public function getIterator()
 	{
