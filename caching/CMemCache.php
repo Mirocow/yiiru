@@ -9,7 +9,7 @@
  */
 
 /**
- * Класс CMemCache реализует кэш-компонент приложения, основанный на {@link http://www.danga.com/memcached/ memcached}.
+ * Класс CMemCache реализует кэш-компонент приложения, основанный на {@link http://memcached.org/ memcached}.
  *
  * Клмпонент CMemCache может быть сконфигурирован списком серверов memcache, установив
  * его свойство {@link setServers servers}. По умолчанию CMemCache предполагает, что
@@ -47,7 +47,7 @@
  * host, port, persistent, weight, timeout, retryInterval, status.
  * Обратитесь за деталями к {@link http://www.php.net/manual/en/function.memcache-addserver.php}.
  *
- * С версии 1.0.6 CMemCache может использоваться с {@link http://pecl.php.net/package/memcached memcached}.
+ * CMemCache может использоваться с {@link http://pecl.php.net/package/memcached memcached}.
  * Для этого установите свойство {@link useMemcached} в значение true.
  *
  * @property mixed $memCache экземпляр memcache (или memcached, если свойство
@@ -57,7 +57,7 @@
  * элемент - это экземпляр класса {@link CMemCacheServerConfiguration}
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMemCache.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id: CMemCache.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.caching
  * @since 1.0
  */
@@ -66,8 +66,7 @@ class CMemCache extends CCache
 	/**
 	 * @var boolean использовать ли {@link http://pecl.php.net/package/memcached memcached}
 	 * в качестве базового кэширующего расширения. По умолчанию - false, т.е. использовать
-	 * {@link http://pecl.php.net/package/memcache memcache}.
-	 * @since 1.0.6
+	 * {@link http://pecl.php.net/package/memcache memcache}
 	 */
 	public $useMemcached=false;
 	/**
@@ -153,7 +152,6 @@ class CMemCache extends CCache
 	 * Получает из кэша несколько значений с определенными ключами.
 	 * @param array $keys список ключей, идентифицирующих кэшированные значения
 	 * @return array список кэшированных значений, индексированный по ключам
-	 * @since 1.0.8
 	 */
 	protected function getValues($keys)
 	{
@@ -226,7 +224,7 @@ class CMemCache extends CCache
  * детальными объяснениями по каждому свойству конфигурации.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMemCache.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CMemCache.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.caching
  * @since 1.0
  */

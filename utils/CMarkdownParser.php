@@ -45,7 +45,7 @@ if(!class_exists('HTMLPurifier_Bootstrap',false))
  * подсветки блоков кода
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMarkdownParser.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id: CMarkdownParser.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.utils
  * @since 1.0
  */
@@ -74,7 +74,6 @@ class CMarkdownParser extends MarkdownExtra_Parser
 	 * {@link CHtmlPurifier} для очистки HTML-содержимого во избежание XSS атак.
 	 * @param string $content содержиме с синтаксисом markdown
 	 * @return string очищенное HTML-содержимое
-	 * @since 1.0.1
 	 */
 	public function safeTransform($content)
 	{

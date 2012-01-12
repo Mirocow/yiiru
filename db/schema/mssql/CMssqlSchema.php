@@ -14,9 +14,8 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @author Christophe Boulain <Christophe.Boulain@gmail.com>
- * @version $Id: CMssqlSchema.php 3270 2011-06-14 17:41:34Z qiang.xue $
+ * @version $Id: CMssqlSchema.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.schema.mssql
- * @since 1.0.4
  */
 class CMssqlSchema extends CDbSchema
 {
@@ -341,7 +340,6 @@ EOD;
 	 * схема по умолчанию. Если не пусто, возвращаемые имена таблиц будут с префиксом в виде имени схемы
 	 * @param boolean $includeViews включать ли в результат представления. По умолчанию - true
 	 * @return array имена всех таблиц базы данных
-	 * @since 1.0.4
 	 */
 	protected function findTableNames($schema='',$includeViews=true)
 	{

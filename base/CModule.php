@@ -38,9 +38,8 @@
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CModule.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id: CModule.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.base
- * @since 1.0.4
  */
 abstract class CModule extends CComponent
 {
@@ -246,7 +245,6 @@ abstract class CModule extends CComponent
 	 *    'backend'=>dirname(__FILE__).'/../backend',  // директория
 	 * )
 	 * </pre>
-	 * @since 1.0.5
 	 */
 	public function setAliases($mappings)
 	{
@@ -377,8 +375,7 @@ abstract class CModule extends CComponent
 	/**
 	 * Получает именованный компонент приложения.
 	 * @param string $id идентификатор компонента приложения (регистрозависим)
-	 * @param boolean $createIfNull создавать ли компонент, если он еще не существует. Данный параметр
-	 * доступен с версии 1.0.6.
+	 * @param boolean $createIfNull создавать ли компонент, если он еще не существует
 	 * @return IApplicationComponent экземпляр компонента приложения; null, если компонент приложения отключен или не существует
 	 * @see hasComponent
 	 */

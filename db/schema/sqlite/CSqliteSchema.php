@@ -12,7 +12,7 @@
  * Класс CSqliteSchema - это класс для получения метаинформации БД SQLite (версий 2 и 3).
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CSqliteSchema.php 3304 2011-06-23 14:53:50Z qiang.xue $
+ * @version $Id: CSqliteSchema.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.schema.sqlite
  * @since 1.0
  */
@@ -82,7 +82,6 @@ class CSqliteSchema extends CDbSchema
 	 * Возвращает имена всех таблиц базы данных
 	 * @param string $schema схема таблиц. Не используется для базы данных sqlite
 	 * @return array имена всех таблиц базы данных
-	 * @since 1.0.2
 	 */
 	protected function findTableNames($schema='')
 	{

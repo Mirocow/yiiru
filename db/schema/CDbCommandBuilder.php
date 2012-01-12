@@ -15,7 +15,7 @@
  * @property CDbSchema $schema схема БД для данного построителя команд
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbCommandBuilder.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id: CDbCommandBuilder.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.schema
  * @since 1.0
  */
@@ -412,7 +412,6 @@ class CDbCommandBuilder extends CComponent
 	 * @param string $sql SQL-выражение без оператора HAVING
 	 * @param string $having параметр для оператора HAVING
 	 * @return string измененное SQL-выражение
-	 * @since 1.0.1
 	 */
 	public function applyHaving($sql,$having)
 	{
@@ -594,8 +593,7 @@ class CDbCommandBuilder extends CComponent
 	 * @param array $columns список имен столбцов для условия поиска
 	 * @param mixed $keywords слова для поиска. Может быть строкой со словами, разделенными пробелами, или массивом слов
 	 * @param string $prefix префикс столбца (с точкой на конце). Если значение равно null, то префикс будет именем таблицы
-	 * @param boolean $caseSensitive регистрозависим ли поиск. ПО умолчанию - true. Данный параметр
-	 * появился в версии 1.0.4
+	 * @param boolean $caseSensitive регистрозависим ли поиск. ПО умолчанию - true
 	 * @return string SQL-выражение поиска соответствий набору столбцов. Если массив имен столбцов или
 	 * слова для поиска пусты, то возвращается пустая строка
 	 */
@@ -636,7 +634,6 @@ class CDbCommandBuilder extends CComponent
 	 * @param array $values список значений, по которым производить выборку
 	 * @param string $prefix префикс столбца (с точкой на конце). Если значение равно null, то префикс будет именем таблицы
 	 * @return string SQL-выражение выборки
-	 * @since 1.0.4
 	 */
 	public function createInCondition($table,$columnName,$values,$prefix=null)
 	{
@@ -714,7 +711,6 @@ class CDbCommandBuilder extends CComponent
 	 * @param array $values список значений первичного ключа для выборки
 	 * @param string $prefix префикс столбца (с точкой на конце)
 	 * @return string SQL-выражение выборки
-	 * @since 1.0.4
 	 */
 	protected function createCompositeInCondition($table,$values,$prefix)
 	{
@@ -733,7 +729,6 @@ class CDbCommandBuilder extends CComponent
 	 * @param mixed $table схема таблицы (объект класса {@link CDbTableSchema}) или имя таблицы (строка).
 	 * Если является валидным именем таблицы, то данный параметр получит значение соответствующей схемы таблицы
 	 * @throws CDbException вызывается, если имя таблицы невалидно
-	 * @since 1.0.4
 	 */
 	protected function ensureTable(&$table)
 	{

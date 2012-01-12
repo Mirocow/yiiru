@@ -24,6 +24,7 @@
  *         // Важно: необходимо определить url-адрес как 'controller/action',
  *         // а не просто как 'controller' даже если используется действие по умолчанию.
  *         array('label'=>'Домашняя', 'url'=>array('site/index')),
+ *         // элемент меню 'Товары' будет выбран no matter which tag parameter value is since it's not specified.
  *         array('label'=>'Товары', 'url'=>array('product/index'), 'items'=>array(
  *             array('label'=>'Новые поступления', 'url'=>array('product/new', 'tag'=>'new')),
  *             array('label'=>'Наиболее популярные', 'url'=>array('product/index', 'tag'=>'popular')),
@@ -36,7 +37,7 @@
  *
  * @author Jonah Turnquist <poppitypop@gmail.com>
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMenu.php 3204 2011-05-05 21:36:32Z alexander.makarow $
+ * @version $Id: CMenu.php 3520 2011-12-29 09:54:22Z mdomba $
  * @package zii.widgets
  * @since 1.1
  */
@@ -133,6 +134,12 @@ class CMenu extends CWidget
 	 * @since 1.1.4
 	 */
 	public $lastItemCssClass;
+	/**
+	 * @var string CSS-класс, присваиваемый каждому элементу. По умолчанию -
+	 * null, т.е., данный класс не будет присвоен элементам
+	 * @since 1.1.9
+	 */
+	public $itemCssClass;
 
 	/**
 	 * Инициализирует виджет меню.
@@ -184,10 +191,12 @@ class CMenu extends CWidget
 			$class=array();
 			if($item['active'] && $this->activeCssClass!='')
 				$class[]=$this->activeCssClass;
-			if($count===1 && $this->firstItemCssClass!='')
+			if($count===1 && $this->firstItemCssClass!==null)
 				$class[]=$this->firstItemCssClass;
-			if($count===$n && $this->lastItemCssClass!='')
+			if($count===$n && $this->lastItemCssClass!==null)
 				$class[]=$this->lastItemCssClass;
+			if($this->itemCssClass!==null)
+				$class[]=$this->itemCssClass;
 			if($class!==array())
 			{
 				if(empty($options['class']))
@@ -262,7 +271,14 @@ class CMenu extends CWidget
 			{
 				$items[$i]['items']=$this->normalizeItems($item['items'],$route,$hasActiveChild);
 				if(empty($items[$i]['items']) && $this->hideEmptyItems)
+				{
 					unset($items[$i]['items']);
+					if(!isset($item['url']))
+					{
+						unset($items[$i]);
+						continue;
+					}
+				}
 			}
 			if(!isset($item['active']))
 			{

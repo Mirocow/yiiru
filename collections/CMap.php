@@ -30,7 +30,7 @@
  * @property array $keys список ключей
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMap.php 3427 2011-10-25 00:03:52Z alexander.makarow $
+ * @version $Id: CMap.php 3518 2011-12-28 23:31:29Z alexander.makarow $
  * @package system.collections
  * @since 1.0
  */
@@ -265,29 +265,36 @@ class CMap extends CComponent implements IteratorAggregate,ArrayAccess,Countable
 	}
 
 	/**
-	 * Сливает рекурсивно два массива в один
-	 * Если оба массива имеют элемент с одинаковым строковым ключом, то элемент второго
+	 * Сливает рекурсивно два или более массива в один
+	 * Если массивы имеют элемент с одинаковым строковым ключом, то элемент второго
 	 * массива перезапишет элемент первого (в отличие от array_merge_recursive).
 	 * Рекурсивное слияние будет выполняться, если оба массива имеют элементы с одинаковым ключом
 	 * и значением в виде массива. Для элементов с целочисленными ключами элементы второго
 	 * массива будут добавлены к первому массиву
 	 * @param array $a массив, в который происходит слияние
-	 * @param array $b массив, который сливается с предыдущим
+	 * @param array $b массив, который сливается с предыдущим. Можно определить
+	 * дополнительные массивы третим и т.д. аргументами
 	 * @return array слитый массив (исходные массивы остаются без изменений)
 	 * @see mergeWith
 	 */
 	public static function mergeArray($a,$b)
 	{
-		foreach($b as $k=>$v)
+		$args=func_get_args();
+		$res=array_shift($args);
+		while(!empty($args))
 		{
-			if(is_integer($k))
-				isset($a[$k]) ? $a[]=$v : $a[$k]=$v;
-			else if(is_array($v) && isset($a[$k]) && is_array($a[$k]))
-				$a[$k]=self::mergeArray($a[$k],$v);
-			else
-				$a[$k]=$v;
+			$next=array_shift($args);
+			foreach($next as $k => $v)
+			{
+				if(is_integer($k))
+					isset($res[$k]) ? $res[]=$v : $res[$k]=$v;
+				else if(is_array($v) && isset($res[$k]) && is_array($res[$k]))
+					$res[$k]=self::mergeArray($res[$k],$v);
+				else
+					$res[$k]=$v;
+			}
 		}
-		return $a;
+		return $res;
 	}
 
 	/**

@@ -21,7 +21,7 @@
  * (т.е., вызывался ли метод {@link init()})
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CApplicationComponent.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id: CApplicationComponent.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.base
  * @since 1.0
  */
@@ -30,8 +30,8 @@ abstract class CApplicationComponent extends CComponent implements IApplicationC
 	/**
 	 * @var array присоединяемые к компоненту поведения.
 	 * Поведения присоединяются к компоненту при вызове метода {@link init}.
-	 * Обратитесь к {@link CModel::behaviors}, чтобы узнать, как определить значение данного свойства.
-	 * @since 1.0.2
+	 * Обратитесь к {@link CModel::behaviors}, чтобы узнать, как определить
+	 * значение данного свойства
 	 */
 	public $behaviors=array();
 
@@ -39,9 +39,10 @@ abstract class CApplicationComponent extends CComponent implements IApplicationC
 
 	/**
 	 * Инициализирует компонент приложения.
-	 * Метод требуется интерфейсом {@link IApplicationComponent} и вызывается приложением.
-	 * Если вы переопределите данный метод, убедитесь, что реализация метода классом-родителем вызывается так, чтобы
-	 * компонент приложения был помечен как инициализированный.
+	 * Метод требуется интерфейсом {@link IApplicationComponent} и вызывается
+	 * приложением. Если вы переопределите данный метод, убедитесь, что
+	 * реализация метода классом-родителем вызывается так, чтобы компонент
+	 * приложения был помечен как инициализированный
 	 */
 	public function init()
 	{

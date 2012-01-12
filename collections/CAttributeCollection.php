@@ -24,7 +24,7 @@
  * {@link caseSensitive} коллекции.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CAttributeCollection.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CAttributeCollection.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.collections
  * @since 1.0
  */
@@ -67,7 +67,6 @@ class CAttributeCollection extends CMap
 	 * Переопределяет родительский метод, проверяя, существует ли ключ в коллекции и его значение ненулевое
 	 * @param string $name имя свойства или события
 	 * @return boolean нулевое ли значение свойства
-	 * @since 1.0.1
 	 */
 	public function __isset($name)
 	{
@@ -81,7 +80,6 @@ class CAttributeCollection extends CMap
 	 * Удаляет свойство компонента.
 	 * Переопределяет родительский метод, очищая значение определенного ключа.
 	 * @param string $name имя свойства или события
-	 * @since 1.0.1
 	 */
 	public function __unset($name)
 	{

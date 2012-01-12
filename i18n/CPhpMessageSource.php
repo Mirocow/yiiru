@@ -29,7 +29,7 @@
  * </ul>
  * Если значение свойства {@link cachingDuration} - положительное число, то переводы сообщений будут кэшироваться.
  *
- * Начиная с версии 1.0.10 можно специально управлять и использовать сообщения классов расширений (например, виджетов, модулей).
+ * Можно специально управлять и использовать сообщения классов расширений (например, виджетов, модулей).
  * В частности, если сообщения относятся к расширению, класс которого имеет имя Xyz, тогда категория сообщения может быть определена
  * в формате 'Xyz.categoryName'. При этом предполагается, что соответствующий файл сообщений 
  * имеет путь 'BasePath/messages/LanguageID/categoryName.php', где 'BasePath' - директория,
@@ -37,7 +37,7 @@
  * имя категории должно быть установлено в значение 'Xyz.categoryName'.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CPhpMessageSource.php 2798 2011-01-01 19:29:03Z qiang.xue $
+ * @version $Id: CPhpMessageSource.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.i18n
  * @since 1.0
  */
@@ -53,8 +53,7 @@ class CPhpMessageSource extends CMessageSource
 	/**
 	 * @var string идентификатор компонента кэша приложения, используемого для кэширования сообщений.
 	 * По умолчанию - 'cache', соответствующий основному компоненту кэша приложения.
-	 * Установите данное свойство в значение false для отключения кэширования сообщений.
-	 * @since 1.0.10
+	 * Установите данное свойство в значение false для отключения кэширования сообщений
 	 */
 	public $cacheID='cache';
 	/**
@@ -85,7 +84,6 @@ class CPhpMessageSource extends CMessageSource
 	 * @param string $category имя категории
 	 * @param string $language идентификатор языка
 	 * @return string путь к файлу сообщений
-	 * @since 1.0.10
 	 */
 	protected function getMessageFile($category,$language)
 	{

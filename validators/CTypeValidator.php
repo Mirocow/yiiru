@@ -29,8 +29,16 @@
  * Начиная с версии 1.1.7 существует отдельный валидатор дат {@link CDateValidator}.
  * Используйте его для валидации значений дат.
  *
+ * When using the {@link message} property to define a custom error message, the message
+ * may contain additional placeholders that will be replaced with the actual content. In addition
+ * to the "{attribute}" placeholder, recognized by all validators (see {@link CValidator}),
+ * CTypeValidator allows for the following placeholders to be specified:
+ * <ul>
+ * <li>{type}: replaced with data type the attribute should be {@link type}.</li>
+ * </ul>
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CTypeValidator.php 3052 2011-03-12 14:27:07Z qiang.xue $
+ * @version $Id: CTypeValidator.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.validators
  * @since 1.0
  */
@@ -51,15 +59,13 @@ class CTypeValidator extends CValidator
 	/**
 	 * @var string шаблон формата, которому должно соответствовать время. По умолчанию - 'hh:mm'.
 	 * За деталями определения формата даты обратитесь к компоненту {@link CDateTimeParser}.
-	 * Свойство используется только если свойство {@link type} имеет значение 'time'.
-	 * @since 1.0.5
+	 * Свойство используется только если свойство {@link type} имеет значение 'time'
 	 */
 	public $timeFormat='hh:mm';
 	/**
 	 * @var string шаблон формата, которому должны соответствовать дата и время. По умолчанию - 'MM/dd/yyyy hh:mm'.
 	 * За деталями определения формата даты обратитесь к компоненту {@link CDateTimeParser}.
-	 * Свойство используется только если свойство {@link type} имеет значение 'datetime'.
-	 * @since 1.0.5
+	 * Свойство используется только если свойство {@link type} имеет значение 'datetime'
 	 */
 	public $datetimeFormat='MM/dd/yyyy hh:mm';
 	/**

@@ -40,62 +40,51 @@
  * <li>{@link onEndRequest}: выполняет действия после выполнения пользовательского запроса;</li>
  * </ol>
  *
- * Начиная с пункта 3, при возникновении ошибки PHP или неперехваченного исключения,
- * приложение переключается на его обработчик ошибок и после переходит к шагу 6.
+ * Начиная с пункта 3, при возникновении ошибки PHP или неперехваченного
+ * исключения, приложение переключается на его обработчик ошибок и после
+ * переходит к шагу 6.
  *
- * @property string $id The unique identifier for the application.
- * @property string $basePath The root directory of the application. Defaults to 'protected'.
- * @property string $runtimePath The directory that stores runtime files. Defaults to 'protected/runtime'.
- * @property string $extensionPath The directory that contains all extensions. Defaults to the 'extensions' directory under 'protected'.
- * @property string $language The language that the user is using and the application should be targeted to.
- * Defaults to the {@link sourceLanguage source language}.
- * @property string $timeZone The time zone used by this application.
- * @property CLocale $locale The locale instance.
- * @property string $localeDataPath The directory that contains the locale data. It defaults to 'framework/i18n/data'.
- * @property CNumberFormatter $numberFormatter The locale-dependent number formatter.
- * The current {@link getLocale application locale} will be used.
- * @property CDateFormatter $dateFormatter The locale-dependent date formatter.
- * The current {@link getLocale application locale} will be used.
- * @property CDbConnection $db The database connection.
- * @property CErrorHandler $errorHandler The error handler application component.
- * @property CSecurityManager $securityManager The security manager application component.
- * @property CStatePersister $statePersister The state persister application component.
- * @property CCache $cache The cache application component. Null if the component is not enabled.
- * @property CPhpMessageSource $coreMessages The core message translations.
- * @property CMessageSource $messages The application message translations.
- * @property CHttpRequest $request The request component.
- * @property CUrlManager $urlManager The URL manager component.
- * @property CController $controller The currently active controller. Null is returned in this base class.
- * @property string $baseUrl The relative URL for the application.
- * @property string $homeUrl The homepage URL.
+ * @property string $id уникальный идентификатор приложения
+ * @property string $basePath корневая директория приложения. По умолчанию -
+ * 'protected'
+ * @property string $runtimePath директория, хранящая рабочие файлы. По
+ * умолчанию - 'protected/runtime'
+ * @property string $extensionPath директория, содержащая все расширения. По
+ * умолчанию - директория 'extensions' в директории 'protected'
+ * @property string $language язык, используемый пользователем и приложением.
+ * По умолчанию задан свойством {@link sourceLanguage}
+ * @property string $timeZone временная зона, используемая приложением
+ * @property CLocale $locale экземпляр локали
+ * @property string $localeDataPath директория, содержащая данные локали. По
+ * умолчанию - 'framework/i18n/data'
+ * @property CNumberFormatter $numberFormatter локалезависимый менеджер
+ * форматирования чисел. Используется текущая {@link getLocale локаль приложения}
+ * @property CDateFormatter $dateFormatter локалезависимый менеджер
+ * форматирования дат. Используется текущая {@link getLocale локаль приложения}
+ * @property CDbConnection $db компонент соединения с базой
+ * @property CErrorHandler $errorHandler комопонент приложения, отвечающий за
+ * обработку ошибок
+ * @property CSecurityManager $securityManager компонент приложения, отвечающий
+ * за безопасность
+ * @property CStatePersister $statePersister компонент приложения,
+ * представляющий постоянное состояние (state persister)
+ * @property CCache $cache компонент приложения кэша. Null, если компонент не
+ * включен
+ * @property CPhpMessageSource $coreMessages компонент приложения, отвечающий
+ * за перевод сообщений ядра
+ * @property CMessageSource $messages компонент приложения, отвечающий за
+ * перевод сообщений приложения
+ * @property CHttpRequest $request компонент запроса
+ * @property CUrlManager $urlManager менеджер URL маршрутов
+ * @property CController $controller текущий активный контроллер. В данном
+ * базовом классе возвращается значение null
+ * @property string $baseUrl относительный URL-адрес приложения
+ * @property string $homeUrl URL-адрес домашней страницы
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CApplication.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id: CApplication.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.base
  * @since 1.0
- *
- * @property string $basePath Возвращает корневую директорию приложения
- * @property CCache $cache Возвращает  компонент приложения кэша
- * @property CPhpMessageSource $coreMessages Возвращает компонент приложения, отвечающий за перевод сообщений ядра
- * @property CDateFormatter $dateFormatter Возвращает локалезависимый менеджер форматирования дат
- * @property CDbConnection $db Возвращает компонент соединения с базой
- * @property CErrorHandler $errorHandler Возвращает комопонент приложения, отвечающий за обработку ошибок
- * @property string $extensionPath Возвращает корневую директорию, хранящую все сторонние расширения
- * @property string $id Возвращает уникальный идентификатор приложения
- * @property string $language Возвращает язык, используемый пользователем и приложением
- * @property CLocale $locale Возвращает экземпляр локали
- * @property string $localeDataPath Возвращает директорию, содержащую данные локали
- * @property CMessageSource $messages Возвращает компонент приложения, отвечающий за перевод сообщений приложения
- * @property CNumberFormatter $numberFormatter Возвращает локалезависимый менеджер форматирования чисел
- * @property CHttpRequest $request Возвращает компонент запроса
- * @property string $runtimePath Возвращает директорию, хранящую рабочие файлы
- * @property CSecurityManager $securityManager Возвращает компонент приложения, отвечающий за безопасность
- * @property CStatePersister $statePersister Возвращает компонент приложения, представляющий постоянное состояние (state persister)
- * @property string $timeZone Возвращает временную зону, используемую приложением
- * @property CUrlManager $urlManager Возвращает менеджер URL маршрутов
- * @property mixed $globalState Возвращает глобальное значение
- * @property string $baseUrl Возвращает относительный URL-адрес приложения
- * @property string $homeUrl URL-адрес домашней страницы
  */
 abstract class CApplication extends CModule
 {
@@ -317,7 +306,7 @@ abstract class CApplication extends CModule
 	/**
 	 * Возвращает язык, используемый пользователем и приложением
 	 * @return string язык, используемый пользователем и приложением.
-	 * По умолчанию задан свойством {@link sourceLanguage}.
+	 * По умолчанию задан свойством {@link sourceLanguage}
 	 */
 	public function getLanguage()
 	{
@@ -333,7 +322,7 @@ abstract class CApplication extends CModule
 	 * Если ваше приложение должно поддерживать несколько языков, вы должны всегда
 	 * устанавливать данный язык в null для улучшения производительности приложения
 	 * @param string $language язык пользователя (например, 'en_US', 'zh_CN').
-	 * Если null, будет использован язык, заданный свойством {@link sourceLanguage}.
+	 * Если null, будет использован язык, заданный свойством {@link sourceLanguage}
 	 */
 	public function setLanguage($language)
 	{
@@ -345,7 +334,6 @@ abstract class CApplication extends CModule
 	 * Это простая обертка PHP-функции date_default_timezone_get()
 	 * @return string временная зона, используемая приложением
 	 * @see http://php.net/manual/en/function.date-default-timezone-get.php
-	 * @since 1.0.9
 	 */
 	public function getTimeZone()
 	{
@@ -357,7 +345,6 @@ abstract class CApplication extends CModule
 	 * Это простая обертка PHP-функции date_default_timezone_set()
 	 * @param string $value временная зона, используемая приложением
 	 * @see http://php.net/manual/en/function.date-default-timezone-set.php
-	 * @since 1.0.9
 	 */
 	public function setTimeZone($value)
 	{
@@ -426,7 +413,7 @@ abstract class CApplication extends CModule
 	/**
 	 * Возвращает локалезависимый менеджер форматирования чисел
 	 * @return CNumberFormatter локалезависимый менеджер форматирования чисел.
-	 * Используется текущая {@link getLocale локаль приложения}.
+	 * Используется текущая {@link getLocale локаль приложения}
 	 */
 	public function getNumberFormatter()
 	{
@@ -436,7 +423,7 @@ abstract class CApplication extends CModule
 	/**
 	 * Возвращает локалезависимый менеджер форматирования дат
 	 * @return CDateFormatter локалезависимый менеджер форматирования дат.
-	 * Используется текущая {@link getLocale локаль приложения}.
+	 * Используется текущая {@link getLocale локаль приложения}
 	 */
 	public function getDateFormatter()
 	{
@@ -471,8 +458,10 @@ abstract class CApplication extends CModule
 	}
 
 	/**
-	 * Возвращает компонент приложения, представляющий постоянное состояние (state persister)
-	 * @return CStatePersister компонент приложения, представляющий постоянное состояние (state persister)
+	 * Возвращает компонент приложения, представляющий постоянное состояние
+	 * (state persister)
+	 * @return CStatePersister компонент приложения, представляющий постоянное
+	 * состояние (state persister)
 	 */
 	public function getStatePersister()
 	{
@@ -728,7 +717,10 @@ abstract class CApplication extends CModule
 		// php <5.2 doesn't support string conversion auto-magically
 		$message=$exception->__toString();
 		if(isset($_SERVER['REQUEST_URI']))
-			$message.=' REQUEST_URI='.$_SERVER['REQUEST_URI'];
+			$message.="\nREQUEST_URI=".$_SERVER['REQUEST_URI'];
+		if(isset($_SERVER['HTTP_REFERER']))
+			$message.="\nHTTP_REFERER=".$_SERVER['HTTP_REFERER'];
+		$message.="\n---";
 		Yii::log($message,CLogger::LEVEL_ERROR,$category);
 
 		try

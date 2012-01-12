@@ -41,7 +41,7 @@
  * Класс CCache также реализует интерфейс ArrayAccess, и поэтому может использоваться как массив.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCache.php 3001 2011-02-24 16:42:44Z alexander.makarow $
+ * @version $Id: CCache.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.caching
  * @since 1.0
  */
@@ -103,7 +103,6 @@ abstract class CCache extends CApplicationComponent implements ICache, ArrayAcce
 	 * @return array список кэшированных значений, соответствующих переданным ключам.
 	 * Возвращается массив пар (ключ, значение). Если значения нет в кэше или его срок
 	 * годности истек, соответствующее значение массива будет равно значению false
-	 * @since 1.0.8
 	 */
 	public function mget($ids)
 	{
@@ -211,7 +210,6 @@ abstract class CCache extends CApplicationComponent implements ICache, ArrayAcce
 	 * должен быть переопределен, чтобы воспользоваться данной функцией.
 	 * @param array $keys список ключей, идентифицирующих кэшированные значения
 	 * @return array список кэшированных значений, индексированный по ключам
-	 * @since 1.0.8
 	 */
 	protected function getValues($keys)
 	{

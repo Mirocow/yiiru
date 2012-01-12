@@ -25,15 +25,14 @@
  * сообщения, удовлетворяющие условиям обоих фильтров.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLogRoute.php 3205 2011-05-07 23:16:46Z qiang.xue $
+ * @version $Id: CLogRoute.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.logging
  * @since 1.0
  */
 abstract class CLogRoute extends CComponent
 {
 	/**
-	 * @var boolean активен ли данный маршрут журнала. По умолчанию - true.
-	 * @since 1.0.7
+	 * @var boolean активен ли данный маршрут журнала. По умолчанию - true
 	 */
 	public $enabled=true;
 	/**
@@ -50,8 +49,7 @@ abstract class CLogRoute extends CComponent
 	 * объекта фильтра журнала. Поэтому, оно может быть либо строкой, представляющей имя класса фильтра
 	 * или массивом, представляющим конфигурацию фильтра.
 	 * В общем, класс фильтра журнала должен быть классом {@link CLogFilter} или его наследником.
-	 * По умалчанию - null, что значит - без использования фильтра.
-	 * @since 1.0.6
+	 * По умолчанию - null, что значит - без использования фильтра
 	 */
 	public $filter;
 	/**

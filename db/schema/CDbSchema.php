@@ -19,7 +19,7 @@
  * @property CDbCommandBuilder $commandBuilder построитель SQL-команд для данного соединения БД
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbSchema.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id: CDbSchema.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.schema
  * @since 1.0
  */
@@ -66,11 +66,13 @@ abstract class CDbSchema extends CComponent
 	/**
 	 * Получает метаданные таблицы по ее имени
 	 * @param string $name имя таблицы
+	 * @param boolean $refresh обновлять ли кэшированную схему таблицы.
+	 * Параметр доступен с версии 1.1.9
 	 * @return CDbTableSchema метаданные таблицы. Null, если таблица не существует
 	 */
-	public function getTable($name)
+	public function getTable($name,$refresh=false)
 	{
-		if(isset($this->_tables[$name]))
+		if($refresh===false && isset($this->_tables[$name]))
 			return $this->_tables[$name];
 		else
 		{
@@ -89,7 +91,8 @@ abstract class CDbSchema extends CComponent
 			if(!isset($this->_cacheExclude[$name]) && ($duration=$this->_connection->schemaCachingDuration)>0 && $this->_connection->schemaCacheID!==false && ($cache=Yii::app()->getComponent($this->_connection->schemaCacheID))!==null)
 			{
 				$key='yii:dbschema'.$this->_connection->connectionString.':'.$this->_connection->username.':'.$name;
-				if(($table=$cache->get($key))===false)
+				$table=$cache->get($key);
+				if($refresh===true || $table===false)
 				{
 					$table=$this->loadTable($realName);
 					if($table!==null)
@@ -112,7 +115,6 @@ abstract class CDbSchema extends CComponent
 	 * @param string $schema схема таблиц. По умолчанию пустая строка, т.е., используется текущая схема
 	 * @return array метаданные всех таблиц базы данных. Каждый элемент представляет собой
 	 * экземпляр класса {@link CDbTableSchema} (или его потомков). Ключи массива - имена таблиц
-	 * @since 1.0.2
 	 */
 	public function getTables($schema='')
 	{
@@ -130,7 +132,6 @@ abstract class CDbSchema extends CComponent
 	 * @param string $schema схема таблиц. По умолчанию пустая строка, т.е., используется текущая схема.
 	 * Если не пусто, возвращенные имена таблиц будут с префиксом, равным имени схемы
 	 * @return array имена всех таблиц базы данных
-	 * @since 1.0.2
 	 */
 	public function getTableNames($schema='')
 	{
@@ -299,7 +300,6 @@ abstract class CDbSchema extends CComponent
 	 * @param string $schema схема таблиц. По умолчанию - пустая строка, т.е. текущая схема или
 	 * схема по умолчанию. Если не пусто, возвращаемые имена таблиц будут с префиксом в виде имени схемы
 	 * @return array имена всех таблиц базы данных
-	 * @since 1.0.2
 	 */
 	protected function findTableNames($schema='')
 	{

@@ -14,9 +14,8 @@
  * @property string $defaultSchema схема по умолчанию
  *
  * @author Ricardo Grana <rickgrana@yahoo.com.br>
- * @version $Id: COciSchema.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id: COciSchema.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.schema.oci
- * @since 1.0.5
  */
 class COciSchema extends CDbSchema
 {

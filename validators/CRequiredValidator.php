@@ -11,8 +11,16 @@
 /**
  * Валидатор CRequiredValidator проверяет, что значение определенного атрибута не нулевое и не пустое.
  *
+ * When using the {@link message} property to define a custom error message, the message
+ * may contain additional placeholders that will be replaced with the actual content. In addition
+ * to the "{attribute}" placeholder, recognized by all validators (see {@link CValidator}),
+ * CRequiredValidator allows for the following placeholders to be specified:
+ * <ul>
+ * <li>{value}: replaced with the desired value {@link requiredValue}.</li>
+ * </ul>
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CRequiredValidator.php 3157 2011-04-02 19:21:06Z qiang.xue $
+ * @version $Id: CRequiredValidator.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.validators
  * @since 1.0
  */
@@ -22,16 +30,14 @@ class CRequiredValidator extends CValidator
 	 * @var mixed желаемое значение, котороое должен иметь атрибут.
 	 * Если установлено в null, валидатор будет проверять, что значение определенного атрибута не нулевое и не пустое.
 	 * Если установлено в некоторое ненулевое значение, валидатор будет проверять значение атрибута на
-	 * соответствие значению этого свойства. По умолчанию - null.
-	 * @since 1.0.10
+	 * соответствие значению этого свойства. По умолчанию - null
 	 */
 	public $requiredValue;
 	/**
 	 * @var boolean должно ли сравнение со свойством {@link requiredValue} быть строгим.
 	 * Если установлено в true, и значение и тип атрибута должны соответствовать свойству {@link requiredValue}.
 	 * По умолчанию - false, т.е. проверяется только значение.
-	 * Свойство используется только если свойство {@link requiredValue} не нулевое.
-	 * @since 1.0.10
+	 * Свойство используется только если свойство {@link requiredValue} не нулевое
 	 */
 	public $strict=false;
 	/**

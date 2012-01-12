@@ -22,9 +22,8 @@
  * что означает 0.01% шанс
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFileCache.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id: CFileCache.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.caching
- * @since 1.0.6
  */
 class CFileCache extends CCache
 {

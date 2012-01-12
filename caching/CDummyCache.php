@@ -17,7 +17,7 @@
  * режима без кэша на режим с кэшем.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDummyCache.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CDummyCache.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.caching
  * @since 1.0
  */
@@ -59,7 +59,6 @@ class CDummyCache extends CApplicationComponent implements ICache, ArrayAccess
 	 * @return array список кэшированных значений, соответствующих переданным ключам.
 	 * Возвращается массив пар (ключ, значение). Если значения нет в кэше или его срок
 	 * годности истек, соответствующее значение массива будет равно значению false
-	 * @since 1.0.8
 	 */
 	public function mget($ids)
 	{

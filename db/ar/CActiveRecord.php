@@ -16,26 +16,34 @@
  * За деталями работы класса обратитесь к соответствующему разделу
  * {@link http://www.yiiframework.com/doc/guide/database.ar руководства}.
  *
- * @property CDbCriteria $dbCriteria The query criteria that is associated with this model.
- * This criteria is mainly used by {@link scopes named scope} feature to accumulate
- * different criteria specifications.
- * @property CActiveRecordMetaData $metaData The meta for this AR class.
- * @property CDbConnection $dbConnection The database connection used by active record.
- * @property CDbTableSchema $tableSchema The metadata of the table that this AR belongs to.
- * @property CDbCommandBuilder $commandBuilder The command builder used by this AR.
- * @property array $attributes Attribute values indexed by attribute names.
- * @property boolean $isNewRecord Whether the record is new and should be inserted when calling {@link save}.
- * This property is automatically set in constructor and {@link populateRecord}.
- * Defaults to false, but it will be set to true if the instance is created using
- * the new operator.
- * @property mixed $primaryKey The primary key value. An array (column name=>column value) is returned if the primary key is composite.
- * If primary key is not defined, null will be returned.
- * @property mixed $oldPrimaryKey The old primary key value. An array (column name=>column value) is returned if the primary key is composite.
- * If primary key is not defined, null will be returned.
- * @property string $tableAlias The default table alias.
+ * @property CDbCriteria $dbCriteria критерий запроса, ассоциированный с данной
+ * моделью. Данный критерий в основном используется для функционала
+ * {@link scopes именованных групп условий} для сбора различных определений
+ * критериев
+ * @property CActiveRecordMetaData $metaData метаданные данного AR-класса
+ * @property CDbConnection $dbConnection соединение БД, используемое данным
+ * AR-экземпляром
+ * @property CDbTableSchema $tableSchema метаданные таблицы, к которой
+ * относится данный AR-экземпляр
+ * @property CDbCommandBuilder $commandBuilder построитель запросов,
+ * используемый данным AR-экземпляром
+ * @property array $attributes значения атрибутов, индексированные по именам
+ * атрибутов
+ * @property boolean $isNewRecord является ли новой данная запись и должна ли
+ * она быть вставлена при вызове метода {@link save}. Данное свойство
+ * автоматически устанавливается в конструкторе и методе
+ * {@link populateRecord}. По умолчанию - false, но устанавливается в значение
+ * true, если экземпляр создается с помощью оператора 'new'
+ * @property mixed $primaryKey значение первичного ключа. Если ключ составной,
+ * то возвращается массив (имя столбца => значение столбца). Если первичный
+ * ключ не определен, возвращается null
+ * @property mixed $oldPrimaryKey старое значение первичного ключа. Если
+ * первичный ключ является составным, то возвращается массив (имя столбца =>
+ * значение столбца). Если первичный ключ не определен, то возвращается null
+ * @property string $tableAlias псевдоним таблицы по умолчанию
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3427 2011-10-25 00:03:52Z alexander.makarow $
+ * @version $Id: CActiveRecord.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.ar
  * @since 1.0
  */
@@ -91,7 +99,6 @@ abstract class CActiveRecord extends CModel
 	 * свойство {@link scenario} установлено. Вы можете переопределить данный
 	 * метод для предоставления кода, необходимого для инициализации модели
 	 * (например, установка начальных значений свойств)
-	 * @since 1.0.8
 	 */
 	public function init()
 	{
@@ -173,7 +180,6 @@ abstract class CActiveRecord extends CModel
 	 * именем
 	 * @param string $name имя свойства или события
 	 * @return boolean существует ли свойство
-	 * @since 1.0.1
 	 */
 	public function __isset($name)
 	{
@@ -194,7 +200,6 @@ abstract class CActiveRecord extends CModel
 	 * переопределяет родительскую реализацию удалением определенного атрибута
 	 * AR-объекта
 	 * @param string $name имя свойства или события
-	 * @since 1.0.1
 	 */
 	public function __unset($name)
 	{
@@ -213,7 +218,6 @@ abstract class CActiveRecord extends CModel
 	 * @param string $name имя метода
 	 * @param array $parameters параметры метода
 	 * @return mixed возвращаемое методом значение
-	 * @since 1.0.5
 	 */
 	public function __call($name,$parameters)
 	{
@@ -245,11 +249,9 @@ abstract class CActiveRecord extends CModel
 	 * @param boolean $refresh перезагружать ли связанные объекты из базы
 	 * данных. По умолчанию - false
 	 * @param array $params дополнительные параметры, настраивающие условия
-	 * запроса как это определено в описании связи. Данный параметр доступен с
-	 * версии 1.0.5
+	 * запроса как это определено в описании связи
 	 * @return mixed связанный(е) объект(ы)
 	 * @throws CDbException вызывается, если связь не определена в {@link relations списке связей}
-	 * @since 1.0.2
 	 */
 	public function getRelated($name,$refresh=false,$params=array())
 	{
@@ -308,7 +310,6 @@ abstract class CActiveRecord extends CModel
 	 * определенной именованной связи
 	 * @param string $name имя связи
 	 * @return boolean значение, показывающее, загружен(ы) ли связанный(е) объект(ы)
-	 * @since 1.0.3
 	 */
 	public function hasRelated($name)
 	{
@@ -323,7 +324,6 @@ abstract class CActiveRecord extends CModel
 	 * Данный критерий в основном используется для функционала
 	 * {@link scopes именованных групп условий} для сбора различных определений
 	 * критериев
-	 * @since 1.0.5
 	 */
 	public function getDbCriteria($createIfNull=true)
 	{
@@ -355,7 +355,6 @@ abstract class CActiveRecord extends CModel
 	 * умолчанию (например, если должны возвращаться только активные записи)
 	 * @return array критерий запроса. Используется в качестве параметра
 	 * конструктора экземпляра класса {@link CDbCriteria}
-	 * @since 1.0.5
 	 */
 	public function defaultScope()
 	{
@@ -421,7 +420,6 @@ abstract class CActiveRecord extends CModel
 	 * таблицы. Убедитесь, что метод {@link CDbSchema::refresh} вызван перед
 	 * вызовом данного метода. Иначе будет использоваться старая версия схемы
 	 * таблицы
-	 * @since 1.0.8
 	 */
 	public function refreshMetaData()
 	{
@@ -454,7 +452,6 @@ abstract class CActiveRecord extends CModel
 	 * БД. Если ключ - это одиночный столбец, то возвращается имя столбца; если
 	 * ключ является составным, содержащим несколько столбцов, должен
 	 * возвращаться массив имен столбцов ключа
-	 * @since 1.0.4
 	 */
 	public function primaryKey()
 	{
@@ -511,16 +508,16 @@ abstract class CActiveRecord extends CModel
 	 * должны быть загружены вместе с данным объектом. Примечание: 
 	 * используется только при "ленивой" загрузке, но не при "жадной"; (@TODO проверить перевод)</li>
 	 * <li>'joinType': тип связи. По умочанию - 'LEFT OUTER JOIN';</li>
-	 * <li>'alias': псевдоним таблицы, ассоциированной с данной связью. Опция
-	 * доступна с версии 1.0.1. По умолчанию - null, т.е., в качестве псевдонима
-	 * таблицы используется имя связи;</li>
+	 * <li>'alias': псевдоним таблицы, ассоциированной с данной связью. По
+	 * умолчанию - null, т.е., в качестве псевдонима таблицы используется имя
+	 * связи;</li>
      * <li>'params': параметры, связываемые с SQL-выражением. Должны быть
-	 * переданы в виде массива пар имя-значение. Опция доступна с версии 1.0.3;</li>
+	 * переданы в виде массива пар имя-значение;</li>
 	 * <li>'on': выражение ON. Данное условие будет добавлено к условию соединения
-	 * с помощью оператора AND. Опция доступна с версии 1.0.2;</li>
+	 * с помощью оператора AND;</li>
 	 * <li>'index': имя столбца, значение которого должно использоваться в
 	 * качестве ключей массива связанных объектов. Опция доступна только для
-	 * связей HAS_MANY и MANY_MANY. Данная опция доступна с версии 1.0.7;</li>
+	 * связей HAS_MANY и MANY_MANY;</li>
 	 * <li>'scopes': применяемые группы условий. Если используется одна группа,
 	 * то задавать опцию можно в виде 'scopes'=>'scopeName', если несколько
 	 * групп - в виде 'scopes'=>array('scopeName1','scopeName2'). Опция доступна
@@ -594,7 +591,6 @@ abstract class CActiveRecord extends CModel
 	 * условий, а значения - соответствующие определения групп условий. Каждое
 	 * определение групп условий представляет собой массив, ключи которого
 	 * должны быть свойствами класса {@link CDbCriteria}
-	 * @since 1.0.5
 	 */
 	public function scopes()
 	{
@@ -606,7 +602,6 @@ abstract class CActiveRecord extends CModel
 	 * Реализация по умолчанию возвращает все имена столбцов таблицы,
 	 * ассоциированной с данным AR-классом
 	 * @return array список имен атрибутов
-	 * @since 1.0.1
 	 */
 	public function attributeNames()
 	{
@@ -653,7 +648,7 @@ abstract class CActiveRecord extends CModel
 	 * По умолчанию, используется компонент приложения "db". Можно
 	 * переопределить данный метод, если требуется использовать другое
 	 * соединение БД
-	 * @return CDbConnection соединение БД, используемое данным active record-экземпляром
+	 * @return CDbConnection соединение БД, используемое данным AR-экземпляром
 	 */
 	public function getDbConnection()
 	{
@@ -785,7 +780,7 @@ abstract class CActiveRecord extends CModel
 	 * атрибутов, включая те, которые не были загружены из БД (для таких
 	 * атрибутов возвращается значние null). Если имеет значение null, то
 	 * возвращаются значения всех атрибутов кроме тех, что не были загружены из БД
-	 * @return array значения атрибутов, индексированный по именам атрибутов
+	 * @return array значения атрибутов, индексированные по именам атрибутов
 	 */
 	public function getAttributes($names=true)
 	{
@@ -875,7 +870,6 @@ abstract class CActiveRecord extends CModel
 	 * {@link CModelEvent::isValid} в значение false останавливает нормальный
 	 * процесс выполнения метода {@link save()}
 	 * @param CModelEvent $event параметр события
-	 * @since 1.0.2
 	 */
 	public function onBeforeSave($event)
 	{
@@ -885,7 +879,6 @@ abstract class CActiveRecord extends CModel
 	/**
 	 * Данное событие вызывается после сохранения записи
 	 * @param CModelEvent $event параметр события
-	 * @since 1.0.2
 	 */
 	public function onAfterSave($event)
 	{
@@ -897,7 +890,6 @@ abstract class CActiveRecord extends CModel
 	 * {@link CModelEvent::isValid} в значение false останавливает нормальный
 	 * процесс выполнения метода {@link save()}
 	 * @param CModelEvent $event параметр события
-	 * @since 1.0.2
 	 */
 	public function onBeforeDelete($event)
 	{
@@ -907,7 +899,6 @@ abstract class CActiveRecord extends CModel
 	/**
 	 * Данное событие вызывается после удаления записи
 	 * @param CModelEvent $event параметр события
-	 * @since 1.0.2
 	 */
 	public function onAfterDelete($event)
 	{
@@ -923,7 +914,6 @@ abstract class CActiveRecord extends CModel
 	 * необходимо
 	 * @param CModelEvent $event параметр события
 	 * @see beforeFind
-	 * @since 1.0.9
 	 */
 	public function onBeforeFind($event)
 	{
@@ -934,7 +924,6 @@ abstract class CActiveRecord extends CModel
 	 * Данное свойство вызывается после выполнения метода поиска и создания
 	 * объектов найденных записей
 	 * @param CModelEvent $event параметр события
-	 * @since 1.0.2
 	 */
 	public function onAfterFind($event)
 	{
@@ -1020,7 +1009,6 @@ abstract class CActiveRecord extends CModel
 	 * данном методе. Начиная с версии 1.1.5 данный метод может быть вызван со
 	 * скрытым параметром {@link CDbCriteria}, представляющим текущий критерий
 	 * запроса в качестве передаваемого в метод поиска параметра
-	 * @since 1.0.9
 	 */
 	protected function beforeFind()
 	{
@@ -1049,7 +1037,6 @@ abstract class CActiveRecord extends CModel
 	/**
 	 * Вызывает метод {@link beforeFind}.
 	 * Данный метод предназначен для внутреннего использования
-	 * @since 1.0.11
 	 */
 	public function beforeFindInternal()
 	{
@@ -1059,7 +1046,6 @@ abstract class CActiveRecord extends CModel
 	/**
 	 * Вызывает метод {@link afterFind}.
 	 * Данный метод предназначен для внутреннего использования
-	 * @since 1.0.3
 	 */
 	public function afterFindInternal()
 	{
@@ -1390,7 +1376,6 @@ abstract class CActiveRecord extends CModel
 	 * {@link dbCriteria} в null
 	 * @param CDbCriteria $criteria критерий запроса. Данный параметр может
 	 * быть изменен слиянием с {@link dbCriteria}
-	 * @since 1.0.12
 	 */
 	public function applyScopes(&$criteria)
 	{
@@ -1550,8 +1535,8 @@ abstract class CActiveRecord extends CModel
 	 * детальным описанием параметров $condition и $params обратитесь к
 	 * методу {@link find()}
 	 * @param array $attributes список значений атрибутов (индексированный по
-	 * именам атрибутов), которым должна соответствовать запись. С версии 1.0.8
-	 * значение атрибута может быть массивом, используемым для генерации
+	 * именам атрибутов), которым должна соответствовать запись.
+	 * Значение атрибута может быть массивом, используемым для генерации
 	 * условия IN
 	 * @param mixed $condition условие запроса или критерий
 	 * @param array $params передаваемые в SQL-выражение параметры
@@ -1570,8 +1555,8 @@ abstract class CActiveRecord extends CModel
 	 * детальным описанием параметров $condition и $params обратитесь к
 	 * методу {@link find()}
 	 * @param array $attributes список значений атрибутов (индексированный по
-	 * именам атрибутов), которым должна соответствовать запись. С версии 1.0.8
-	 * значение атрибута может быть массивом, используемым для генерации
+	 * именам атрибутов), которым должна соответствовать запись.
+	 * Значение атрибута может быть массивом, используемым для генерации
 	 * условия IN
 	 * @param mixed $condition условие запроса или критерий
 	 * @param array $params передаваемые в SQL-выражение параметры
@@ -1755,9 +1740,6 @@ abstract class CActiveRecord extends CModel
 	 * ))->findAll();
 	 * </pre>
 	 *
-	 * Примечание: возможные параметры метода изменились в версии 1.0.2. Ранее
-	 * было невозможно определять опции запроса "на лету" и дочерние связи
-	 * определялись иерархией массивов
 	 * @return CActiveRecord данный AR-объект
 	 */
 	public function with()
@@ -1890,13 +1872,12 @@ abstract class CActiveRecord extends CModel
 	 * детальным описанием параметров $condition и $params обратитесь к методу
 	 * {@link find()}
 	 * @param array $attributes список значений атрибутов (индексируемых по
-	 * именам атрибутов), которым должны соответствовать записи. С версии 1.0.8
-	 * значение атрибута может быть массивом, используемым для генерации
+	 * именам атрибутов), которым должны соответствовать записи.
+	 * Значение атрибута может быть массивом, используемым для генерации
 	 * условия IN
 	 * @param mixed $condition условие запроса или критерий
 	 * @param array $params передаваемые в SQL-выражение параметры
 	 * @return integer число удаленных строк
-	 * @since 1.0.9
 	 */
 	public function deleteAllByAttributes($attributes,$condition='',$params=array())
 	{
@@ -1914,7 +1895,7 @@ abstract class CActiveRecord extends CModel
 	 * @param array $attributes значения атрибутов (имя столбца => значение
 	 * столбца)
 	 * @param boolean $callAfterFind вызывать ли метод {@link afterFind} после
-	 * создания объекта. Данный параметр доступен с версии 1.0.3
+	 * создания объекта
 	 * @return CActiveRecord созданный AR-объект. Класс объекта такой же как и
 	 * класс модели. Если входные данные имеют значение false, то возвращается
 	 * значение null
@@ -1949,7 +1930,7 @@ abstract class CActiveRecord extends CModel
 	 * используется методами поиска
 	 * @param array $data список значений атрибутов для AR-объектов
 	 * @param boolean $callAfterFind вызывать ли метод {@link afterFind} после
-	 * создания объекта. Данный параметр доступен с версии 1.0.3
+	 * создания объекта
 	 * @param string $index имя атрибута, значение которого будет
 	 * использоваться в качестве индекса результирующего массива. Если задано
 	 * значение null, то массив будет индексирован целыми числами, начиная с
@@ -1979,8 +1960,7 @@ abstract class CActiveRecord extends CModel
 	 * атрибутов. Например, созданием записи на основе значения столбца можно
 	 * реализовать паттерн наследования с единой таблицей
 	 * @param array $attributes список атрибутов для AR-объекта
-	 * @return CActiveRecord AR-обхект
-	 * @since 1.0.2
+	 * @return CActiveRecord AR-объект
 	 */
 	protected function instantiate($attributes)
 	{
@@ -1994,7 +1974,6 @@ abstract class CActiveRecord extends CModel
 	 * требуется интерфейсом ArrayAccess
 	 * @param mixed $offset проверяемое смещение
 	 * @return boolean
-	 * @since 1.0.2
 	 */
 	public function offsetExists($offset)
 	{
@@ -2006,9 +1985,8 @@ abstract class CActiveRecord extends CModel
 /**
  * Класс CBaseActiveRelation - это базовый класс для всех активных связей.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3415 2011-10-13 17:41:55Z alexander.makarow $
+ * @version $Id: CActiveRecord.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.ar
- * @since 1.0.4
  */
 class CBaseActiveRelation extends CComponent
 {
@@ -2089,7 +2067,6 @@ class CBaseActiveRelation extends CComponent
 	 * @param array $criteria динамически определенный критерий
 	 * @param boolean $fromScope происходит ли слияние критерия из группы
 	 * условий (scopes)
-	 * @since 1.0.5
 	 */
 	public function mergeWith($criteria,$fromScope=false)
 	{
@@ -2156,9 +2133,8 @@ class CBaseActiveRelation extends CComponent
 /**
  * Класс CStatRelation представляет статистический реляционный запрос.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3415 2011-10-13 17:41:55Z alexander.makarow $
+ * @version $Id: CActiveRecord.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.ar
- * @since 1.0.4
  */
 class CStatRelation extends CBaseActiveRelation
 {
@@ -2178,7 +2154,6 @@ class CStatRelation extends CBaseActiveRelation
 	 * @param array $criteria динамически определенный критерий
 	 * @param boolean $fromScope происходит ли слияние критерия из группы
 	 * условий (scopes)
-	 * @since 1.0.5
 	 */
 	public function mergeWith($criteria,$fromScope=false)
 	{
@@ -2196,7 +2171,7 @@ class CStatRelation extends CBaseActiveRelation
  * Класс CActiveRelation - это базовый класс, представляющий активные связи,
  * возвращающие связанные объекты
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3415 2011-10-13 17:41:55Z alexander.makarow $
+ * @version $Id: CActiveRecord.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.ar
  * @since 1.0
  */
@@ -2209,13 +2184,11 @@ class CActiveRelation extends CBaseActiveRelation
 	/**
 	 * @var string условие ON, добавляется в условие соединения с помощью
 	 * оператора AND
-	 * @since 1.0.2
 	 */
 	public $on='';
 	/**
 	 * @var string псевоним таблицы, к которой относится данная связь. По
 	 * умолчанию - null, т.е., псевдоним будет таким же, как имя связи
-	 * @since 1.0.1
 	 */
 	public $alias;
 	/**
@@ -2252,7 +2225,6 @@ class CActiveRelation extends CBaseActiveRelation
 	 * @param array $criteria динамически определенный критерий
 	 * @param boolean $fromScope происходит ли слияние критерия из группы
 	 * условий (scopes)
-	 * @since 1.0.5
 	 */
 	public function mergeWith($criteria,$fromScope=false)
 	{
@@ -2298,7 +2270,7 @@ class CActiveRelation extends CBaseActiveRelation
 /**
  * Класс CBelongsToRelation представляет параметры, определяющие связь BELONGS_TO.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3415 2011-10-13 17:41:55Z alexander.makarow $
+ * @version $Id: CActiveRecord.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.ar
  * @since 1.0
  */
@@ -2310,7 +2282,7 @@ class CBelongsToRelation extends CActiveRelation
 /**
  * Класс CHasOneRelation представляет параметры, определяющие связь HAS_ONE.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3415 2011-10-13 17:41:55Z alexander.makarow $
+ * @version $Id: CActiveRecord.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.ar
  * @since 1.0
  */
@@ -2328,7 +2300,7 @@ class CHasOneRelation extends CActiveRelation
 /**
  * Класс CHasManyRelation представляет параметры, определяющие связь HAS_MANY.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3415 2011-10-13 17:41:55Z alexander.makarow $
+ * @version $Id: CActiveRecord.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.ar
  * @since 1.0
  */
@@ -2350,7 +2322,6 @@ class CHasManyRelation extends CActiveRelation
 	 * @var string имя столбца, который должен использоваться в качестве ключа
 	 * для хранения связанных объектов. По умолчанию - null, т.е., используется
 	 * целочисленные идентификаторы, отсчитываемые с нуля
-	 * @since 1.0.7
 	 */
 	public $index;
 	/**
@@ -2365,7 +2336,6 @@ class CHasManyRelation extends CActiveRelation
 	 * @param array $criteria динамически определенный критерий
 	 * @param boolean $fromScope происходит ли слияние критерия из группы
 	 * условий (scopes)
-	 * @since 1.0.5
 	 */
 	public function mergeWith($criteria,$fromScope=false)
 	{
@@ -2387,7 +2357,7 @@ class CHasManyRelation extends CActiveRelation
 /**
  * Класс CManyManyRelation представляет параметры, определяющие связь MANY_MANY.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3415 2011-10-13 17:41:55Z alexander.makarow $
+ * @version $Id: CActiveRecord.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.ar
  * @since 1.0
  */
@@ -2400,7 +2370,7 @@ class CManyManyRelation extends CHasManyRelation
  * Класс CActiveRecordMetaData представляет метаданные для Active Record-класса.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3415 2011-10-13 17:41:55Z alexander.makarow $
+ * @version $Id: CActiveRecord.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.ar
  * @since 1.0
  */

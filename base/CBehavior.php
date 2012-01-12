@@ -15,9 +15,8 @@
  * @property boolean $enabled активно ли поведение
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CBehavior.php 3427 2011-10-25 00:03:52Z alexander.makarow $
+ * @version $Id: CBehavior.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.base
- * @since 1.0.2
  */
 class CBehavior extends CComponent implements IBehavior
 {

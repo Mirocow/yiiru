@@ -35,7 +35,7 @@
  * @property array $pluralRules выражения плюральных форм
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLocale.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id: CLocale.php 3518 2011-12-28 23:31:29Z alexander.makarow $
  * @package system.i18n
  * @since 1.0
  */
@@ -218,7 +218,6 @@ class CLocale extends CComponent
 	 * @param string $width вид названий месяцев. Может принимать значения 'wide', 'abbreviated' или 'narrow'
 	 * @param boolean $standAlone возвращать ли названия месяцев в формате stand-alone
 	 * @return array названия месяцев, индексированные по номеру месяца (1-12)
-	 * @since 1.0.9
 	 */
 	public function getMonthNames($width='wide',$standAlone=false)
 	{
@@ -247,7 +246,6 @@ class CLocale extends CComponent
 	 * @param string $width вид названий дней недели. Может принимать значения 'wide', 'abbreviated' или 'narrow'
 	 * @param boolean $standAlone возвращать ли названия дней недели в формате stand-alone
 	 * @return array названия дней недели, индексированные по номеру дня недели (0-6, 0 - воскресенье, 1 - понедельник и т.д.)
-	 * @since 1.0.9
 	 */
 	public function getWeekDayNames($width='wide',$standAlone=false)
 	{
@@ -415,12 +413,14 @@ class CLocale extends CComponent
 	}
 
 	/**
-	 * @param string $id идентификатор языка в юникоде по стандарту
-	 * IETF BCP 47. Например, код "en_US" представляет американский английский,
-	 * а код "en_GB" - британский английский
-	 * @param string $category
-	 * @return string локально отображаемое имя языка. Null, если код языка не
-	 * существует
+	 * Возвращает локализованное имя из файла данных интернационализации
+	 * (один из файлов пакета framework/i18n/data/)
+	 *
+	 * @param string $id ключ массива для массива категорий
+	 * @param string $category категория данных. Может быть 'languages',
+	 * 'scripts' или 'territories'
+	 * @return string локализованное имя для определенного идентификатора.
+	 * Null, если данные не существуют
 	 * @since 1.1.9
 	 */
 	public function getLocaleDisplayName($id=null, $category='languages')

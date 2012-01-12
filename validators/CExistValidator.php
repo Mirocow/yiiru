@@ -14,10 +14,17 @@
  * Данный валидатор часто используется для проверки того, что внешний ключ содержит значение,
  * которое может быть найдено во внешней таблице.
  *
+ * When using the {@link message} property to define a custom error message, the message
+ * may contain additional placeholders that will be replaced with the actual content. In addition
+ * to the "{attribute}" placeholder, recognized by all validators (see {@link CValidator}),
+ * CExistValidator allows for the following placeholders to be specified:
+ * <ul>
+ * <li>{value}: replaced with value of the attribute.</li>
+ * </ul>
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CExistValidator.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CExistValidator.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.validators
- * @since 1.0.4
  */
 class CExistValidator extends CValidator
 {
@@ -37,8 +44,7 @@ class CExistValidator extends CValidator
 	/**
 	 * @var array дополнительный критерий запроса. Будет объединен с условием,
 	 * проверяющим существование значения атрибута в соответствующем столбце таблицы.
-	 * Данный массив будет использован для создания экземпляра {@link CDbCriteria}.
-	 * @since 1.0.8
+	 * Данный массив будет использован для создания экземпляра {@link CDbCriteria}
 	 */
 	public $criteria=array();
 	/**

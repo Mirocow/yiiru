@@ -76,29 +76,38 @@
  * )
  * </pre>
  *
- * @property boolean $active Whether the DB connection is established.
- * @property PDO $pdoInstance The PDO instance, null if the connection is not established yet.
- * @property CDbTransaction $currentTransaction The currently active transaction. Null if no active transaction.
- * @property CDbSchema $schema The database schema for the current connection.
- * @property CDbCommandBuilder $commandBuilder The command builder.
- * @property string $lastInsertID The row ID of the last row inserted, or the last value retrieved from the sequence object.
- * @property mixed $columnCase The case of the column names.
- * @property mixed $nullConversion How the null and empty strings are converted.
- * @property boolean $autoCommit Whether creating or updating a DB record will be automatically committed.
- * @property boolean $persistent Whether the connection is persistent or not.
- * @property string $driverName Name of the DB driver.
- * @property string $clientVersion The version information of the DB driver.
- * @property string $connectionStatus The status of the connection.
- * @property boolean $prefetch Whether the connection performs data prefetching.
- * @property string $serverInfo The information of DBMS server.
- * @property string $serverVersion The version information of DBMS server.
- * @property integer $timeout Timeout settings for the connection.
- * @property array $attributes Attributes (name=>value) that are previously explicitly set for the DB connection.
- * @property array $stats The first element indicates the number of SQL statements executed,
- * and the second element the total time spent in SQL execution.
+ * @property boolean $active установлено ли соединение БД
+ * @property PDO $pdoInstance экземпляр PDO-класса; null, если соединение еще
+ * не установлено
+ * @property CDbTransaction $currentTransaction текущая активная транзакция;
+ * null, если активных транзакций нет
+ * @property CDbSchema $schema схема БД для данного соединения
+ * @property CDbCommandBuilder $commandBuilder построитель команд для данного
+ * соединения
+ * @property string $lastInsertID идентификатор последней вставленной строки
+ * или последнего значения, полученного из объекта последовательности
+ * @property mixed $columnCase регистр имен столбцов
+ * @property mixed $nullConversion значение того, как конвертируются значения
+ * null и пустые строки
+ * @property boolean $autoCommit будут ли запросы на обновление и добавление
+ * записей БД автоматически подтверждаться
+ * @property boolean $persistent является ли соединение постоянным или нет
+ * @property string $driverName имя драйвера БД
+ * @property string $clientVersion информация о версии драйвера БД
+ * @property string $connectionStatus статус соединения
+ * @property boolean $prefetch выполняет ли соединение предварительную выборку
+ * (prefetching) данных
+ * @property string $serverInfo информация о сервере СУБД
+ * @property string $serverVersion информация о версии сервера СУБД
+ * @property integer $timeout настройки времени ожидания соединения
+ * @property array $attributes атрибуты (в виде имя => значение), явно
+ * установленные ранее для соединения БД
+ * @property array $stats массив, первый элемент которого показывает количество
+ * выполненных SQL-выражений, а второй - общее затраченное на выполнение
+ * SQL-выражений время
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbConnection.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id: CDbConnection.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db
  * @since 1.0
  */
@@ -137,7 +146,6 @@ class CDbConnection extends CApplicationComponent
 	 * @var string идентификатор компонента приложения кэша, используемого для кэширования метаданных таблиц.
 	 * По умолчанию - 'cache' - основной компонент приложения кэша.
 	 * Для отключения кэширования метаданных таблиц необходимо установить данное свойство в значение false
-	 * @since 1.0.10
 	 */
 	public $schemaCacheID='cache';
 	/**
@@ -213,14 +221,12 @@ class CDbConnection extends CApplicationComponent
 	 * целях отладки. Нужно быть внимательным при установке данного свойства,
 	 * т.к. журналирование значений параметров может быть дорогим и оказывать
 	 * значительное влияние на производительность приложения
-	 * @since 1.0.5
 	 */
 	public $enableParamLogging=false;
 	/**
 	 * @var boolean включено ли профилирование выполняемых SQL-выражений. По
 	 * умолчанию - false. В основном, профилирование включается во время
 	 * разработки для обнаружения узких мест в выполнении SQL-выражений
-	 * @since 1.0.6
 	 */
 	public $enableProfiling=false;
 	/**
@@ -425,7 +431,6 @@ class CDbConnection extends CApplicationComponent
 	 * функционала, можно использовать класс-адаптер для предоставления этого
 	 * функционала
 	 * @return PDO экземпляр PDO-класса
-	 * @since 1.0.4
 	 */
 	protected function createPdoInstance()
 	{
@@ -492,7 +497,7 @@ class CDbConnection extends CApplicationComponent
 
 	/**
 	 * Возвращает текущую активную транзакцию
-	 * @return CDbTransaction текущая активная транзакция. Null, если активных
+	 * @return CDbTransaction текущая активная транзакция; null, если активных
 	 * транзакций нет
 	 */
 	public function getCurrentTransaction()
@@ -539,7 +544,6 @@ class CDbConnection extends CApplicationComponent
 	/**
 	 * Возвращает построитель команд для данного соединения
 	 * @return CDbCommandBuilder построитель команд для данного соединения
-	 * @since 1.0.4
 	 */
 	public function getCommandBuilder()
 	{
@@ -831,7 +835,6 @@ class CDbConnection extends CApplicationComponent
 	 * @return array массив, первый элемент которого показывает количество
 	 * выполненных SQL-выражений, а второй - общее затраченное на выполнение
 	 * SQL-выражений время
-	 * @since 1.0.6
 	 */
 	public function getStats()
 	{

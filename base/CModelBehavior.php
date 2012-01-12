@@ -10,12 +10,14 @@
 
 /**
  * Класс CModelBehavior - это базовый класс для поведений, присоединяемых к
- * компоненту модели. Модель должна наследовать класс {@link CModel} или его
+ * моделям. Модель должна наследовать класс {@link CModel} или его
  * классы-потомки
+ *
+ * @property CModel $owner модель, к которой присоединено данное поведение
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CModelBehavior.php 3376 2011-08-05 23:20:09Z alexander.makarow $
+ * @version $Id: CModelBehavior.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.base
- * @since 1.0.2
  */
 class CModelBehavior extends CBehavior
 {

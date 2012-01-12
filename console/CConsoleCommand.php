@@ -44,7 +44,7 @@
  * действия
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CConsoleCommand.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id: CConsoleCommand.php 3501 2011-12-20 20:24:18Z alexander.makarow $
  * @package system.console
  * @since 1.0
  */
@@ -452,5 +452,45 @@ abstract class CConsoleCommand extends CComponent
 				return preg_replace($rule,$replacement,$name);
 		}
 		return $name.'s';
+	}
+
+	/**
+	 * Считывает введенные данные с помощью расширения readline для PHP, если
+	 * оно доступно, или функцией fgets(), если расгирение readline не
+	 * установлено
+	 *
+	 * @param string $message выводимое сообщение при ожидании пользовательского ответа
+	 * @return mixed считанная строка или false, если ввод данных был закрыт (?)
+	 *
+	 * @since 1.1.9
+	 */
+	public function prompt($message)
+	{
+		if(extension_loaded('readline'))
+		{
+			$input = readline($message.' ');
+			readline_add_history($input);
+			return $input;
+		}
+		else
+		{
+			echo $message.' ';
+			return trim(fgets(STDIN));
+		}
+	}
+
+	/**
+	 * Запрашивает пользователя подтвержение выполнения с помощью букв "y" или
+	 * "n" (выполнить или отменить соответственно)
+	 *
+	 * @param string $message выводимое сообщение при ожидании пользовательского ответа
+	 * @return bool подтвердил ли пользователь выполнение
+	 *
+	 * @since 1.1.9
+	 */
+	public function confirm($message)
+	{
+		echo $message.' [yes|no] ';
+		return !strncasecmp(trim(fgets(STDIN)),'y',1);
 	}
 }

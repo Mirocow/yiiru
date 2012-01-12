@@ -12,9 +12,8 @@
  * Класс COciCommandBuilder предоставляет базовые методы для создания команд запросов для таблиц базы данных Oracle.
  *
  * @author Ricardo Grana <rickgrana@yahoo.com.br>
- * @version $Id: COciCommandBuilder.php 3331 2011-06-28 19:47:31Z alexander.makarow $
+ * @version $Id: COciCommandBuilder.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.schema.oci
- * @since 1.0.5
  */
 class COciCommandBuilder extends CDbCommandBuilder
 {

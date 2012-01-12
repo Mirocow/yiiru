@@ -11,8 +11,16 @@
 /**
  * Валидатор CUniqueValidator проверяет значение атрибута на уникальность в соответствующей таблице БД.
  *
+ * When using the {@link message} property to define a custom error message, the message
+ * may contain additional placeholders that will be replaced with the actual content. In addition
+ * to the "{attribute}" placeholder, recognized by all validators (see {@link CValidator}),
+ * CUniqueValidator allows for the following placeholders to be specified:
+ * <ul>
+ * <li>{value}: replaced with current value of the attribute.</li>
+ * </ul>
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CUniqueValidator.php 3260 2011-06-13 20:56:54Z alexander.makarow $
+ * @version $Id: CUniqueValidator.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.validators
  * @since 1.0
  */
@@ -33,21 +41,18 @@ class CUniqueValidator extends CValidator
 	 * По умолчанию - null, т.е. использование валидируемого в данный момент объекта.
 	 * Вы можете использовать здесь псевдонимы (и пути) для ссылки на имя класса.
 	 * @see attributeName
-	 * @since 1.0.8
 	 */
 	public $className;
 	/**
 	 * @var string имя атрибута ActiveRecord-класса, используемое для поиска значения валидируемого атрибута.
 	 * По умолчанию - null, т.е. использование имени валидируемого атрибута.
 	 * @see className
-	 * @since 1.0.8
 	 */
 	public $attributeName;
 	/**
 	 * @var array дополнительный критерий запроса. Будет объединен с условием,
 	 * проверяющим существование значения атрибута в соответствующем столбце таблицы.
-	 * Данный массив будет использован для создания экземпляра {@link CDbCriteria}.
-	 * @since 1.0.8
+	 * Данный массив будет использован для создания экземпляра {@link CDbCriteria}
 	 */
 	public $criteria=array();
 	/**

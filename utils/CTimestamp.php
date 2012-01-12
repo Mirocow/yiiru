@@ -27,7 +27,7 @@
  * PHP за дополнительной информацией.
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: CTimestamp.php 3254 2011-06-11 00:10:54Z keyboard.idol@gmail.com $
+ * @version $Id: CTimestamp.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.utils
  * @since 1.0
  */
@@ -198,8 +198,7 @@ class CTimestamp
 	 * @param integer $m минуты
 	 * @param integer $s секунды
 	 * @param boolean $hs24 является ли формат часов форматов 24 часов (от 0 до 23; по умолчанию) или форматом 12 часов (от 1 до 12).
-	 * @return boolean true, если набор часы - минуты - секунды допустим; только семантическая проверка.
-	 * @since 1.0.5
+	 * @return boolean true, если набор часы - минуты - секунды допустим; только семантическая проверка
 	 */
 	public static function isValidTime($h,$m,$s,$hs24=true)
 	{

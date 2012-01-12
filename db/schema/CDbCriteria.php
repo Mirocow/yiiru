@@ -13,7 +13,7 @@
  * количество выбираемых строк и начальный номер строки и т.д.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbCriteria.php 3420 2011-10-20 21:19:32Z alexander.makarow $
+ * @version $Id: CDbCriteria.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.schema
  * @since 1.0
  */
@@ -34,7 +34,6 @@ class CDbCriteria extends CComponent
 	/**
 	 * @var boolean выбирать ли только неповторяющиеся строки данных. Если равно true,
 	 * оператор SELECT будет изменен на SELECT DISTINCT
-	 * @since 1.0.9
 	 */
 	public $distinct=false;
 	/**
@@ -72,7 +71,6 @@ class CDbCriteria extends CComponent
 	/**
 	 * @var string выражение, выполняемое с оператором GROUP BY.
 	 * Например, <code>'SUM(revenue)<50000'</code>
-	 * @since 1.0.1
 	 */
 	public $having='';
 	/**
@@ -167,6 +165,25 @@ class CDbCriteria extends CComponent
 	}
 
 	/**
+	 * Переименовывает (remaps) параметры критерия при десериализации для
+	 * предотвращения коллизий имен
+	 * @since 1.1.9
+	 */
+	public function __wakeup()
+	{
+		$map=array();
+		$params=array();
+		foreach($this->params as $name=>$value)
+		{
+			$newName=self::PARAM_PREFIX.self::$paramCount++;
+			$map[$name]=$newName;
+			$params[$newName]=$value;
+		}
+		$this->condition=strtr($this->condition,$map);
+		$this->params=$params;
+	}
+
+	/**
 	 * Добавляет условие к уже имеющемуся ({@link condition}).
 	 * Новое условие и имеющееся будут соединены определенным оператором, по умолчанию -
 	 * это оператор 'AND'. Новое условие может быть массивом. В этом случае все элементы массива
@@ -175,7 +192,6 @@ class CDbCriteria extends CComponent
 	 * @param mixed $condition новое условие. Может быть либо строкой либо массивом строк
 	 * @param string $operator оператор соединения отдельных условий. По умолчанию - 'AND'
 	 * @return CDbCriteria объект критерия
-	 * @since 1.0.9
 	 */
 	public function addCondition($condition,$operator='AND')
 	{
@@ -207,7 +223,6 @@ class CDbCriteria extends CComponent
 	 * @param string $operator оператор, используемый для соединения нового условия с имеющимся. По умолчанию - 'AND'
 	 * @param string $like оператор LIKE. По умолчанию - 'LIKE'. Можно установить в значение 'NOT LIKE'
 	 * @return CDbCriteria объект критерия
-	 * @since 1.0.10
 	 */
 	public function addSearchCondition($column,$keyword,$escape=true,$operator='AND',$like='LIKE')
 	{
@@ -229,7 +244,6 @@ class CDbCriteria extends CComponent
 	 * @param array $values список значений, среди которых должно быть значение столбца
 	 * @param string $operator оператор, используемый для соединения нового условия с имеющимся. По умолчанию - 'AND'
 	 * @return CDbCriteria объект критерия
-	 * @since 1.0.10
 	 */
 	public function addInCondition($column,$values,$operator='AND')
 	{
@@ -300,7 +314,6 @@ class CDbCriteria extends CComponent
 	 * @param string $columnOperator оператор для соединения нескольких столбцов в условии сравнения. По умолчанию - 'AND'
 	 * @param string $operator оператор, используемый для соединения нового условия с имеющимся. По умолчанию - 'AND'
 	 * @return CDbCriteria объект критерия
-	 * @since 1.0.10
 	 */
 	public function addColumnCondition($columns,$columnOperator='AND',$operator='AND')
 	{
@@ -437,8 +450,7 @@ class CDbCriteria extends CComponent
 	 * пара опций не может быть слита (например, LIMIT, OFFSET)
 	 * @param mixed $criteria критерий, с котором производится слияние. Может быть массивом или объектом класса CDbCriteria
 	 * @param boolean $useAnd использовать ли оператор 'AND' для слияния условий и их опций. Если значение
-	 * равно false, то будет использоваться оператор 'OR'. По умолчанию - true. Параметр доступен с версии 1.0.6
-	 * @since 1.0.5
+	 * равно false, то будет использоваться оператор 'OR'. По умолчанию - true
 	 */
 	public function mergeWith($criteria,$useAnd=true)
 	{
@@ -581,7 +593,6 @@ class CDbCriteria extends CComponent
 
 	/**
 	 * @return array представление критерия в виде массива
-	 * @since 1.0.6
 	 */
 	public function toArray()
 	{

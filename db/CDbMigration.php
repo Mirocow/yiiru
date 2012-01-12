@@ -1,6 +1,6 @@
 <?php
 /**
- * Файл класса CMysqlSchema.
+ * Файл класса CDbMigration.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
@@ -30,7 +30,7 @@
  * @property CDbConnection $dbConnection текущее активное соединение БД
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbMigration.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id: CDbMigration.php 3514 2011-12-27 20:28:26Z alexander.makarow $
  * @package system.db
  * @since 1.1.6
  */
@@ -388,6 +388,19 @@ abstract class CDbMigration extends CComponent
 		echo "    > drop index $name ...";
 		$time=microtime(true);
 		$this->getDbConnection()->createCommand()->dropIndex($name, $table);
+		echo " done (time: ".sprintf('%.3f', microtime(true)-$time)."s)\n";
+	}
+
+	/**
+	 * Обновляет кэшированную схему таблицы
+	 * @param string $table имя обновляемой таблицы
+	 * @since 1.1.9
+	 */
+	public function refreshTableSchema($table)
+	{
+		echo "    > refresh table $table schema cache ...";
+		$time=microtime(true);
+		$this->getDbConnection()->getSchema()->getTable($table,true);
 		echo " done (time: ".sprintf('%.3f', microtime(true)-$time)."s)\n";
 	}
 }

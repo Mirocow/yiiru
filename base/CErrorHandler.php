@@ -48,7 +48,7 @@ Yii::import('CHtml',true);
  * @property array $error детали ошибки. Null, если ошибки нет
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CErrorHandler.php 3440 2011-11-08 14:50:20Z mdomba $
+ * @version $Id: CErrorHandler.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.base
  * @since 1.0
  */
@@ -76,8 +76,7 @@ class CErrorHandler extends CApplicationComponent
 	/**
 	 * @var string маршрут (например, 'site/error') до действия контроллера, используемого для отображения внешних ошибок.
 	 * Внутри действия можно получить информацию ошибки посредством Yii::app()->errorHandler->error.
-	 * Свойство по умолчанию имеет значение null, т.е. обрабатывать отображение ошибок будет компонент CErrorHandler.
-	 * @since 1.0.6
+	 * Свойство по умолчанию имеет значение null, т.е. обрабатывать отображение ошибок будет компонент CErrorHandler
 	 */
 	public $errorAction;
 
@@ -95,8 +94,11 @@ class CErrorHandler extends CApplicationComponent
 
 		if($this->discardOutput)
 		{
-			while (ob_get_length())
+			// the following manual level counting is to deal with zlib.output_compression set to On
+			for($level=ob_get_level();$level>0;--$level)
+			{
 				@ob_end_clean();
+			}
 		}
 
 		if($event instanceof CExceptionEvent)
@@ -109,16 +111,15 @@ class CErrorHandler extends CApplicationComponent
 	 * Возвращает детали обрабатываемой ошибки.
 	 * Ошибка возвращается в виде массива со следующей информацией:
 	 * <ul>
-	 * <li>code - код ошибки HTTP (например, 403, 500)</li>
-	 * <li>type - тип ошибки (например, 'CHttpException', 'PHP Error')</li>
-	 * <li>message - сообщение об ошибке</li>
-	 * <li>file - имя файла скрипта PHP, к котором возникла ошибка</li>
-	 * <li>line - номер строки кода, в которой возникла ошибка</li>
-	 * <li>trace - стек вызова ошибки</li>
-	 * <li>source - исходный код, в котором возникла ошибка</li>
+	 * <li>code - код ошибки HTTP (например, 403, 500);</li>
+	 * <li>type - тип ошибки (например, 'CHttpException', 'PHP Error');</li>
+	 * <li>message - сообщение об ошибке;</li>
+	 * <li>file - имя файла скрипта PHP, к котором возникла ошибка;</li>
+	 * <li>line - номер строки кода, в которой возникла ошибка;</li>
+	 * <li>trace - стек вызова ошибки;</li>
+	 * <li>source - исходный код, в котором возникла ошибка.</li>
 	 * </ul>
-	 * @return array детали ошибки. Null, если ошибки нет.
-	 * @since 1.0.6
+	 * @return array детали ошибки. Null, если ошибки нет
 	 */
 	public function getError()
 	{
@@ -126,7 +127,7 @@ class CErrorHandler extends CApplicationComponent
 	}
 
 	/**
-	 * Обрабатывает исключение.
+	 * Обрабатывает исключение
 	 * @param Exception $exception перехваченное исключение
 	 */
 	protected function handleException($exception)

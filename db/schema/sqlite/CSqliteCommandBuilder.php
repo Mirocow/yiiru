@@ -12,7 +12,7 @@
  * Класс CSqliteCommandBuilder предоставляет базовые методы для создания команд запросов для таблиц базы данных SQLite.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CSqliteCommandBuilder.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CSqliteCommandBuilder.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.schema.sqlite
  * @since 1.0
  */
@@ -26,7 +26,6 @@ class CSqliteCommandBuilder extends CDbCommandBuilder
 	 * @param array $values список значений первичного ключа для выборки
 	 * @param string $prefix префикс столбца (с точкой на конце)
 	 * @return string SQL-выражение выборки
-	 * @since 1.0.4
 	 */
 	protected function createCompositeInCondition($table,$values,$prefix)
 	{

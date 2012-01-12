@@ -65,7 +65,7 @@
  *
  * Имена свойств и событий регистронезависимы.
  *
- * Начиная с версии 1.0.2, CComponent поддерживает поведения. Поведение - это
+ * CComponent поддерживает поведения. Поведение - это
  * экземпляр класса, реализующего интерфейс {@link IBehavior}, присоединенный к компоненту.
  * Методы поведения могут быть вызваны так, как если бы они принадлежали компоненту. К одному
  * компоненту может быть присоединено несколько поведений.
@@ -81,7 +81,7 @@
  * определяемые геттерами и/или сеттерами) доступны из компонента, к которому присоединено поведение.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CComponent.php 3204 2011-05-05 21:36:32Z alexander.makarow $
+ * @version $Id: CComponent.php 3521 2011-12-29 22:10:57Z mdomba $
  * @package system.base
  * @since 1.0
  */
@@ -179,7 +179,6 @@ class CComponent
 	 * чтобы можно было использовать фукцию isset() для определения, установлено свойство компонента или нет.
 	 * @param string $name имя свойства или события
 	 * @return boolean
-	 * @since 1.0.1
 	 */
 	public function __isset($name)
 	{
@@ -198,7 +197,7 @@ class CComponent
 			foreach($this->_m as $object)
 			{
 				if($object->getEnabled() && (property_exists($object,$name) || $object->canGetProperty($name)))
-					return true;
+					return $object->$name!==null;
 			}
 		}
 		return false;
@@ -211,7 +210,6 @@ class CComponent
 	 * @param string $name имя свойства или события
 	 * @throws CException вызывается, если свойство является свойством только для чтения
 	 * @return mixed
-	 * @since 1.0.1
 	 */
 	public function __unset($name)
 	{
@@ -250,7 +248,6 @@ class CComponent
 	 * @param string $name имя метода
 	 * @param array $parameters параметры метода
 	 * @return mixed значение, возвращаемое методом
-	 * @since 1.0.2
 	 */
 	public function __call($name,$parameters)
 	{
@@ -273,7 +270,6 @@ class CComponent
 	 * Имя 'asa' означает 'as a'.
 	 * @param string $behavior имя поведения
 	 * @return IBehavior объект поведения; null, если поведение не существует
-	 * @since 1.0.2
 	 */
 	public function asa($behavior)
 	{
@@ -293,7 +289,6 @@ class CComponent
 	 * )
 	 * </pre>
 	 * @param array $behaviors список присоединяемых к компоненту поведений
-	 * @since 1.0.2
 	 */
 	public function attachBehaviors($behaviors)
 	{
@@ -302,8 +297,7 @@ class CComponent
 	}
 
 	/**
-	 * Отсоединяет все поведения от компонента.
-	 * @since 1.0.2
+	 * Отсоединяет все поведения от компонента
 	 */
 	public function detachBehaviors()
 	{
@@ -324,7 +318,6 @@ class CComponent
 	 * @param mixed $behavior конфигурация поведения. Передается первым параметром
 	 * в метод {@link YiiBase::createComponent} для создания объекта поведения.
 	 * @return IBehavior объект поведения
-	 * @since 1.0.2
 	 */
 	public function attachBehavior($name,$behavior)
 	{
@@ -340,7 +333,6 @@ class CComponent
 	 * Вызывается метод {@link IBehavior::detach} поведения.
 	 * @param string $name имя поведения. Уникально идентифицирует поведение
 	 * @return IBehavior отсоединенное поведение. Null, если поведение не существует
-	 * @since 1.0.2
 	 */
 	public function detachBehavior($name)
 	{
@@ -354,8 +346,7 @@ class CComponent
 	}
 
 	/**
-	 * Включает все поведения, присоединенные к компоненту.
-	 * @since 1.0.2
+	 * Включает все поведения, присоединенные к компоненту
 	 */
 	public function enableBehaviors()
 	{
@@ -367,8 +358,7 @@ class CComponent
 	}
 
 	/**
-	 * Отключает все поведения, присоединенные к компоненту.
-	 * @since 1.0.2
+	 * Отключает все поведения, присоединенные к компоненту
 	 */
 	public function disableBehaviors()
 	{
@@ -384,7 +374,6 @@ class CComponent
 	 * Поведение имеет действие только если включено.
 	 * При первом присоединении поведение включено.
 	 * @param string $name имя поведения. Уникально идентифицирует поведение
-	 * @since 1.0.2
 	 */
 	public function enableBehavior($name)
 	{
@@ -396,7 +385,6 @@ class CComponent
 	 * Откючает присоединенное поведение.
 	 * Поведение имеет действие только если включено.
 	 * @param string $name имя поведения. Уникально идентифицирует поведение
-	 * @since 1.0.2
 	 */
 	public function disableBehavior($name)
 	{
@@ -411,7 +399,6 @@ class CComponent
 	 * @param string $name имя свойства
 	 * @return boolean определено ли свойство
 	 * @see canGetProperty
-	 * @see canSetProperty
 	 */
 	public function hasProperty($name)
 	{
@@ -635,7 +622,7 @@ class CComponent
  * еще не выполненные обработчики выполняться не будут.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CComponent.php 3204 2011-05-05 21:36:32Z alexander.makarow $
+ * @version $Id: CComponent.php 3521 2011-12-29 22:10:57Z mdomba $
  * @package system.base
  * @since 1.0
  */
@@ -686,7 +673,7 @@ class CEvent extends CComponent
  * Тогда можно использовать перечисляемые значения так - TextAlign::Left и TextAlign::Right.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CComponent.php 3204 2011-05-05 21:36:32Z alexander.makarow $
+ * @version $Id: CComponent.php 3521 2011-12-29 22:10:57Z mdomba $
  * @package system.base
  * @since 1.0
  */

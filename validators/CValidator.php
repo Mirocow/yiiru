@@ -49,7 +49,7 @@
  * </ul>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CValidator.php 3429 2011-11-02 08:20:20Z mdomba $
+ * @version $Id: CValidator.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.validators
  * @since 1.0
  */
@@ -152,6 +152,11 @@ abstract class CValidator extends CComponent
 			$validator=new CInlineValidator;
 			$validator->attributes=$attributes;
 			$validator->method=$name;
+			if(isset($params['clientValidate']))
+			{
+				$validator->clientValidate=$params['clientValidate'];
+				unset($params['clientValidate']);
+			}
 			$validator->params=$params;
 			if(isset($params['skipOnError']))
 				$validator->skipOnError=$params['skipOnError'];
@@ -219,7 +224,6 @@ abstract class CValidator extends CComponent
 	 * </ul>
 	 * @param string $scenario имя сценария
 	 * @return boolean применяется ли валидатор к определенному сценарию
-	 * @since 1.0.2
 	 */
 	public function applyTo($scenario)
 	{
@@ -247,7 +251,6 @@ abstract class CValidator extends CComponent
 	 * @param mixed $value проверяемое значение
 	 * @param boolean $trim выполнять ли усечение перед проверкой строки. По умолчанию - false.
 	 * @return boolean пусто ли значение
-	 * @since 1.0.9
 	 */
 	protected function isEmpty($value,$trim=false)
 	{

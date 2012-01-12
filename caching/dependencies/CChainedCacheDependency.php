@@ -23,7 +23,7 @@
  * @property boolean $hasChanged изменилась ли зависимость
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CChainedCacheDependency.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id: CChainedCacheDependency.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.caching.dependencies
  * @since 1.0
  */
@@ -56,7 +56,6 @@ class CChainedCacheDependency extends CComponent implements ICacheDependency
 	 * @param array $values список объектов зависимости или конфигураций, добавляемых к данной цепочке.
 	 * Если зависимость определена конфигурацией, то конфигурация должна быть массивом, который
 	 * может быть распознан методом {@link YiiBase::createComponent}
-	 * @since 1.0.10
 	 */
 	public function setDependencies($values)
 	{

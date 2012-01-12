@@ -35,7 +35,7 @@
  * быть использован в качестве ассоциативного массива. За подробностями обращайтесь к классу {@link CMap}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CConfiguration.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CConfiguration.php 3458 2011-11-21 02:13:03Z alexander.makarow $
  * @package system.collections
  * @since 1.0
  */
@@ -99,22 +99,5 @@ class CConfiguration extends CMap
 	{
 		foreach($this->toArray() as $key=>$value)
 			$object->$key=$value;
-	}
-
-	/**
-	 * Создает объект и инициализирует его переданной конфигурацией.
-	 *
-	 * МЕТОД ЯВЛЯЕТСЯ УСТАРЕВШИМ С ВЕРСИИ 1.0.1.
-	 * ПИспользуйте вместо него метод {@link YiiBase::createComponent Yii::createComponent}.
-	 *
-	 * @param mixed $config конфигурация. Может быть либо строкой либо массивом.
-	 * @return mixed созданный объект
-	 * @throws CException вызывается, если конфигурация не содержит значения с ключом 'class'
-	 */
-	public static function createObject($config)
-	{
-		if($config instanceof self)
-			$config=$config->toArray();
-		return Yii::createComponent($config);
 	}
 }

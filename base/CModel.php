@@ -27,7 +27,7 @@
  * @property CMapIterator $iterator итератор для обхода атрибутов модели
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CModel.php 3427 2011-10-25 00:03:52Z alexander.makarow $
+ * @version $Id: CModel.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.base
  * @since 1.0
  */
@@ -38,9 +38,8 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	private $_scenario='';  	// сценарий
 
 	/**
-	 * Возвращает список имен атрибутов модели.
-	 * @return array список имен атрибутов.
-	 * @since 1.0.1
+	 * Возвращает список имен атрибутов модели
+	 * @return array список имен атрибутов
 	 */
 	abstract public function attributeNames();
 
@@ -111,7 +110,6 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	 *
 	 * За деталями о поведениях обратитесь к классу {@link CComponent}.
 	 * @return array конфигурации поведений (имя поведения=>конфигурация поведения)
-	 * @since 1.0.2
 	 */
 	public function behaviors()
 	{
@@ -207,9 +205,9 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	}
 
 	/**
-	 * This event is raised after the model instance is created by new operator.
-	 * @param CEvent $event the event parameter
-	 * @since 1.0.2
+	 * Данное событие вызывается после того как экземпляр модели создан
+	 * оператором "new"
+	 * @param CModelEvent $event параметр события
 	 */
 	public function onAfterConstruct($event)
 	{
@@ -217,9 +215,8 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	}
 
 	/**
-	 * Данное событие вызывается перед выполнением валидации.
+	 * Данное событие вызывается перед выполнением валидации
 	 * @param CModelEvent $event параметр события
-	 * @since 1.0.2
 	 */
 	public function onBeforeValidate($event)
 	{
@@ -227,9 +224,8 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	}
 
 	/**
-	 * Данное событие вызывается после выполнения валидации.
+	 * Данное событие вызывается после выполнения валидации
 	 * @param CModelEvent $event параметр события
-	 * @since 1.0.2
 	 */
 	public function onAfterValidate($event)
 	{
@@ -260,7 +256,6 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	 * @param string $attribute имя атрибута, валидаторы которого должны буть вовращены.
 	 * Если null, будут возвращены валидаторы для ВСЕХ атрибутов модели
 	 * @return array валидаторы, применимые к текущему {@link scenario сценарию}
-	 * @since 1.0.1
 	 */
 	public function getValidators($attribute=null)
 	{
@@ -305,7 +300,6 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	 * {@link CRequiredValidator} в текущем {@link scenario сценарии}.
 	 * @param string $attribute имя атрибута
 	 * @return boolean требуется ли атрибут
-	 * @since 1.0.2
 	 */
 	public function isAttributeRequired($attribute)
 	{
@@ -377,7 +371,6 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	 * Возвращает первую ошибку определенного атрибута.
 	 * @param string $attribute имя атрибута
 	 * @return string сообщение об ошибке. Null, если ошибок нет
-	 * @since 1.0.2
 	 */
 	public function getError($attribute)
 	{
@@ -400,7 +393,6 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	 * Значения массива должны быть сообщениями об ошибках. Если атрибут имеет несколько ошибок,
 	 * эти ошибки должны передаваться в виде массива.
 	 * Вы можете использовать результат выполнения метода {@link getErrors} в качестве значения данного параметра
-	 * @since 1.0.5
 	 */
 	public function addErrors($errors)
 	{
@@ -534,7 +526,6 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	 * присвоения.
 	 *
 	 * @return string сценарий, в котором используется данная модель
-	 * @since 1.0.4
 	 */
 	public function getScenario()
 	{
@@ -545,7 +536,6 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	 * Устанавливает сценарий, в котором используется данная модель.
 	 * @param string сценарий, в котором используется данная модель
 	 * @see getScenario
-	 * @since 1.0.4
 	 */
 	public function setScenario($value)
 	{
@@ -557,7 +547,6 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	 * Безопасный атрибут - это атрибут, ассоциированный с правилом валидации в
 	 * текущем {@link scenario сценарии}
 	 * @return array имена безопасных атрибутов
-	 * @since 1.0.2
 	 */
 	public function getSafeAttributeNames()
 	{
@@ -598,7 +587,6 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	 * Метод требуется интерфейсом ArrayAccess.
 	 * @param mixed имя проверяемого свойства
 	 * @return boolean
-	 * @since 1.0.2
 	 */
 	public function offsetExists($offset)
 	{
@@ -610,7 +598,6 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	 * Метод требуется интерфейсом ArrayAccess.
 	 * @param integer имя свойства
 	 * @return mixed значение именованного свойства; null, если свойства с данным именем нет
-	 * @since 1.0.2
 	 */
 	public function offsetGet($offset)
 	{
@@ -622,7 +609,6 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	 * Метод требуется интерфейсом ArrayAccess.
 	 * @param integer имя устанавливаемого свойства
 	 * @param mixed значение свойства
-	 * @since 1.0.2
 	 */
 	public function offsetSet($offset,$item)
 	{
@@ -633,7 +619,6 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	 * Удаляет именованое свойство.
 	 * Метод требуется интерфейсом ArrayAccess.
 	 * @param mixed имя свойства
-	 * @since 1.0.2
 	 */
 	public function offsetUnset($offset)
 	{

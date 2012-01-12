@@ -12,7 +12,7 @@
  * Класс CMysqlSchema - это класс для получения метаинформации БД MySQL (версий 4.1.x и 5.x).
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMysqlSchema.php 3304 2011-06-23 14:53:50Z qiang.xue $
+ * @version $Id: CMysqlSchema.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.schema.mysql
  * @since 1.0
  */
@@ -243,7 +243,6 @@ class CMysqlSchema extends CDbSchema
 	 * @param string $schema схема таблиц. По умолчанию - пустая строка, т.е. текущая схема или
 	 * схема по умолчанию. Если не пусто, возвращаемые имена таблиц будут с префиксом в виде имени схемы
 	 * @return array имена всех таблиц базы данных
-	 * @since 1.0.2
 	 */
 	protected function findTableNames($schema='')
 	{

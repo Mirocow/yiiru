@@ -28,7 +28,7 @@
  * @property CDbConnection $dbConnection экземпляр соединения БД
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbCache.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id: CDbCache.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.caching
  * @since 1.0
  */
@@ -95,7 +95,6 @@ class CDbCache extends CCache
 	/**
 	 * @return integer вероятность (частей на миллион) выполнения "сбора мусора" (GC) при сохранении
 	 * части данных в кэше. По умолчанию - 100, что означает 0.01% шанс
-	 * @since 1.0.9
 	 */
 	public function getGCProbability()
 	{
@@ -106,7 +105,6 @@ class CDbCache extends CCache
 	 * @param integer $value вероятность (частей на миллион) выполнения "сбора мусора" (GC) при сохранении
 	 * части данных в кэше. По умолчанию - 100, что означает 0.01% шанс.
 	 * Число должно быть в диапазоне 0 и 1000000. Значение 0 означает, что сбор мусора производиться не будет
-	 * @since 1.0.9
 	 */
 	public function setGCProbability($value)
 	{
@@ -203,7 +201,6 @@ EOD;
 	 * Получает из кэша несколько значений с определенными ключами
 	 * @param array $keys список ключей, идентифицирующих кэшированные значения
 	 * @return array список кэшированных значений, индексированный по ключам
-	 * @since 1.0.8
 	 */
 	protected function getValues($keys)
 	{
@@ -295,8 +292,7 @@ EOD;
 	}
 
 	/**
-	 * Удаляет значения данных с истёкшим сроком годности.
-	 * @since 1.0.11
+	 * Удаляет значения данных с истёкшим сроком годности
 	 */
 	protected function gc()
 	{

@@ -16,7 +16,7 @@
  * методов поиска, что и класс {@link CActiveRecord}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveFinder.php 3415 2011-10-13 17:41:55Z alexander.makarow $
+ * @version $Id: CActiveFinder.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.ar
  * @since 1.0
  */
@@ -25,13 +25,11 @@ class CActiveFinder extends CComponent
 	/**
 	 * @var boolean присоединять ли все таблицы сразу. По умолчанию - false.
 	 * Данной свойство требуется для внутреннего использования
-	 * @since 1.0.2
 	 */
 	public $joinAll=false;
 	/**
 	 * @var boolean имеет ли базовая модель лимит или смещение.
 	 * Данной свойство требуется для внутреннего использования
-	 * @since 1.0.2
 	 */
 	public $baseLimited=false;
 
@@ -327,7 +325,7 @@ class CActiveFinder extends CComponent
  * объектом поиска {@link CActiveFinder}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveFinder.php 3415 2011-10-13 17:41:55Z alexander.makarow $
+ * @version $Id: CActiveFinder.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.ar
  * @since 1.0
  */
@@ -364,7 +362,6 @@ class CJoinElement
 	public $children=array();
 	/**
 	 * @var array список статистических элементов
-	 * @since 1.0.4
 	 */
 	public $stats=array();
 	/**
@@ -747,7 +744,6 @@ class CJoinElement
 	 * @param CDbCriteria $criteria критерий запроса
 	 * @return string количество первичных записей. Примечание: тип - строка,
 	 * чтобы сохранить максимальную точность
-	 * @since 1.0.3
 	 */
 	public function count($criteria=null)
 	{
@@ -779,7 +775,6 @@ class CJoinElement
 	/**
 	 * Вызывает метод {@link CActiveRecord::beforeFind}
 	 * @param boolean $isChild вызывается ли данный метод для потомка
-	 * @since 1.0.11
 	 */
 	public function beforeFind($isChild=true)
 	{
@@ -792,7 +787,6 @@ class CJoinElement
 
 	/**
 	 * Вызывает метод {@link CActiveRecord::afterFind} всех записей
-	 * @since 1.0.3
 	 */
 	public function afterFind()
 	{
@@ -1224,7 +1218,7 @@ class CJoinElement
  * Класс CJoinQuery представляет SQL-выражение JOIN.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveFinder.php 3415 2011-10-13 17:41:55Z alexander.makarow $
+ * @version $Id: CActiveFinder.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.ar
  * @since 1.0
  */
@@ -1236,7 +1230,6 @@ class CJoinQuery
 	public $selects=array();
 	/**
 	 * @var boolean выбирать только неповторяющиеся строки
-	 * @since 1.0.9
 	 */
 	public $distinct=false;
 	/**
@@ -1385,7 +1378,7 @@ class CJoinQuery
  * для {@link CActiveFinder}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveFinder.php 3415 2011-10-13 17:41:55Z alexander.makarow $
+ * @version $Id: CActiveFinder.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.ar
  * @since 1.0.4
  */

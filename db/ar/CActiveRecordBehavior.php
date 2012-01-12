@@ -14,10 +14,12 @@
  * {@link CModelBehavior}, CActiveRecordBehavior присоединяет больше событий к
  * объекту класса {@link CActiveRecord}.
  *
+ * @property CActiveRecord $owner AR-экземпляр, к которому присоединено данное
+ * поведение
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecordBehavior.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CActiveRecordBehavior.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.ar
- * @since 1.0.2
  */
 class CActiveRecordBehavior extends CModelBehavior
 {
@@ -90,7 +92,6 @@ class CActiveRecordBehavior extends CModelBehavior
 	 * данный метод для обработки соответствующего события
 	 * {@link CBehavior::owner владельца}
 	 * @param CModelEvent $event параметр события
-	 * @since 1.0.9
 	 */
 	public function beforeFind($event)
 	{

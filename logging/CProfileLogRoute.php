@@ -27,7 +27,7 @@
  * профилирования. По умолчанию - 'summary'
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CProfileLogRoute.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id: CProfileLogRoute.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.logging
  * @since 1.0
  */
@@ -39,7 +39,6 @@ class CProfileLogRoute extends CWebLogRoute
 	 * категориям. По умолчанию - true. Примечание: свойство имеет эффект
 	 * только в случае, если свойство {@link report} установлено в значение
 	 * 'summary'
-	 * @since 1.0.6
 	 */
 	public $groupByToken=true;
 	/**

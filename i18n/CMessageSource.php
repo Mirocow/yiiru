@@ -20,7 +20,7 @@
  * {@link CApplication::language язык приложения}
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMessageSource.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id: CMessageSource.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.i18n
  * @since 1.0
  */
@@ -77,7 +77,7 @@ abstract class CMessageSource extends CApplicationComponent
 	 * @param string $category категория, к которой относится сообщение
 	 * @param string $message переводимое сообщение
 	 * @param string $language целевой язык. Если передано значение null (по умлочанию), то
-	 * используется {@link CApplication::getLanguage язык приложения}. Параметр доступен с версии 1.0.3
+	 * используется {@link CApplication::getLanguage язык приложения}
 	 * @return string переведенное сообщение (или оригинальное сообщение, если перевод не требуется)
 	 */
 	public function translate($category,$message,$language=null)
@@ -132,7 +132,7 @@ abstract class CMessageSource extends CApplicationComponent
  * Класс CMissingTranslationEvent представляет параметр для события {@link CMessageSource::onMissingTranslation onMissingTranslation}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMessageSource.php 2798 2011-01-01 19:29:03Z qiang.xue $
+ * @version $Id: CMessageSource.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.i18n
  * @since 1.0
  */

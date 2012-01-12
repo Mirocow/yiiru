@@ -29,7 +29,7 @@
  * @property array $profilingResults результаты профилирования
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLogger.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id: CLogger.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.logging
  * @since 1.0
  */
@@ -77,9 +77,14 @@ class CLogger extends CComponent
 	private $_categories;
 	/**
 	 * @var array результат профилирования (категория, отметка => время в секундах)
-	 * @since 1.0.6
 	 */
 	private $_timings;
+	/**
+	* @var boolean выполнять журналирование (вывод журнала), иначе считать, что
+	* продолжается накопление новых сообщений журнала
+	* @since 1.1.9
+	*/
+	private $_processing = false;
 
 	/**
 	 * Записывает сообщение в журнал.
@@ -93,8 +98,12 @@ class CLogger extends CComponent
 	{
 		$this->_logs[]=array($message,$level,$category,microtime(true));
 		$this->_logCount++;
-		if($this->autoFlush>0 && $this->_logCount>=$this->autoFlush)
+		if($this->autoFlush>0 && $this->_logCount>=$this->autoFlush && !$this->_processing)
+		{
+			$this->_processing=true;
 			$this->flush($this->autoDump);
+			$this->_processing=false;
+		}
 	}
 
 	/**
@@ -221,7 +230,6 @@ class CLogger extends CComponent
 	 * @param boolean $refresh должно ли быть проведено обновление вычислений внутренних таймингов.
 	 * Если установлено в false, то только в первый вызов данного метода будет проведено вычисление внутренних таймингов.
 	 * @return array результаты профилирования
-	 * @since 1.0.6
 	 */
 	public function getProfilingResults($token=null,$category=null,$refresh=false)
 	{

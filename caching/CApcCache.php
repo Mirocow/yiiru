@@ -15,7 +15,7 @@
  * Обратитесь к документации {@link CCache} за информацией об обычных операциях кэша, поддерживаемых компонентом CApcCache.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CApcCache.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CApcCache.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.caching
  * @since 1.0
  */
@@ -49,7 +49,6 @@ class CApcCache extends CCache
 	 * Получает из кэша несколько значений с определенными ключами.
 	 * @param array $keys список ключей, идентифицирующих кэшированные значения
 	 * @return array список кэшированных значений, индексированный по ключам
-	 * @since 1.0.8
 	 */
 	protected function getValues($keys)
 	{

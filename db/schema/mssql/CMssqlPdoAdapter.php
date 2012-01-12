@@ -12,9 +12,8 @@
  * Данный класс является расширением стандартного класса PDO для драйвера mssql.
  * Он предоставляет некоторый функционал pdo драйвера, отсутствующий в драйвере mssql
  * @author Christophe Boulain <Christophe.Boulain@gmail.com>
- * @version $Id: CMssqlPdoAdapter.php 3309 2011-06-23 16:59:34Z qiang.xue $
+ * @version $Id: CMssqlPdoAdapter.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.schema.mssql
- * @since 1.0.4
  */
 class CMssqlPdoAdapter extends PDO
 {

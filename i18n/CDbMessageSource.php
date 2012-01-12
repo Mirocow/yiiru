@@ -38,7 +38,7 @@
  * @property CDbConnection $dbConnection соединение БД, используемое для подключения к источнику сообщений
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbMessageSource.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id: CDbMessageSource.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.i18n
  * @since 1.0
  */
@@ -65,8 +65,7 @@ class CDbMessageSource extends CMessageSource
 	/**
 	 * @var string идентификатор компонента кэша приложения, используемого для кэширования сообщений.
 	 * По умолчанию - 'cache', соответствующий основному компоненту кэша приложения.
-	 * Установите данное свойство в значение false для отключения кэширования сообщений.
-	 * @since 1.0.10
+	 * Установите данное свойство в значение false для отключения кэширования сообщений
 	 */
 	public $cacheID='cache';
 

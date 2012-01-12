@@ -35,7 +35,7 @@
  * Получить доступ к нему можно методом {@link CApplication::getStatePersister()}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CStatePersister.php 3165 2011-04-06 08:27:40Z mdomba $
+ * @version $Id: CStatePersister.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.base
  * @since 1.0
  */
@@ -50,8 +50,7 @@ class CStatePersister extends CApplicationComponent implements IStatePersister
 	/**
 	 * @var string идентификатор кэширующего компонента приложения, используемого для кэширования значений состояния.
 	 * По умолчанию - 'cache', т.е. основной кэширующий компонент приложения.
-	 * Установите свойство в значение false, если хотите отключить кэширование значений состояния.
-	 * @since 1.0.10
+	 * Установите свойство в значение false, если хотите отключить кэширование значений состояния
 	 */
 	public $cacheID='cache';
 

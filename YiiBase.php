@@ -6,7 +6,7 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2011 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: YiiBase.php 3398 2011-09-15 16:16:08Z alexander.makarow $
+ * @version $Id: YiiBase.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system
  * @since 1.0
  */
@@ -55,7 +55,7 @@ defined('YII_ZII_PATH') or define('YII_ZII_PATH',YII_PATH.DIRECTORY_SEPARATOR.'z
  * {@link Yii}, где вы можете настраивать методы YiiBase
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: YiiBase.php 3398 2011-09-15 16:16:08Z alexander.makarow $
+ * @version $Id: YiiBase.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system
  * @since 1.0
  */
@@ -126,12 +126,11 @@ class YiiBase
 	}
 
 	/**
-	 * Создает приложения по определенному классу.
+	 * Создает приложения по определенному классу
 	 * @param string $class имя класса приложения
-	 * @param mixed $config конфигурация приложения. Данный параметр будет передан как параметр
-	 * в конструктор класса приложения.
+	 * @param mixed $config конфигурация приложения. Данный параметр будет
+	 * передан как параметр в конструктор класса приложения
 	 * @return mixed экземпляр приложения
-	 * @since 1.0.10
 	 */
 	public static function createApplication($class,$config=null)
 	{
@@ -184,9 +183,7 @@ class YiiBase
 	 * свойств объекта.
 	 *
 	 * Все дополнительные параметры, переданные методу, будут переданы в конструктор
-	 * создаваемого объекта.
-	 *
-	 * Примечание: конфигурация массивом доступна с версии 1.0.1.
+	 * создаваемого объекта
 	 *
 	 * @param mixed $config конфигурация. Можеть либо строкой либо массивом
 	 * @return mixed созданный объект
@@ -554,7 +551,7 @@ class YiiBase
 
 	/**
 	 * Переводит сообщение на определенный язык.
-	 * Начиная с версии 1.0.2 данный метод поддерживает выбор формата (см. {@link CChoiceFormat}),
+	 * Данный метод поддерживает выбор формата (см. {@link CChoiceFormat}),
 	 * т.е. возвращаемое сообщение будет выбрано среди нескольких согласно переданному числу.
 	 * В основном данная функция используется для решения вопросов формата множественных чисел,
 	 * если в языке сообщение имеет различный вид для различных чисел.
@@ -563,15 +560,15 @@ class YiiBase
 	 * за дополнительной информацией о категориях сообщений
 	 * @param string $message оригинальное сообщение
 	 * @param array $params параметры, применяемые к сообщению с использованием <code>strtr</code>.
-	 * Начиная с версии 1.0.2 первый параметр может быть числом без ключа.
+	 * Первый параметр может быть числом без ключа.
 	 * В этом случае метод будет вызывать метод {@link CChoiceFormat::format} для выбора
 	 * соответствующего перевода. Начиная с версии 1.1.6 вы можете передать параметр для метода {@link CChoiceFormat::format}
 	 * или формат плюральных форм без включения их в массив
 	 * @param string $source какой компонент приложения использовать в качестве источника сообщений.
 	 * По умолчанию - null, т.е. использовать 'coreMessages' для сообщений, принадлежащих
 	 * к категории 'yii', и 'messages' - для остальных собщений
-	 * @param string $language целевой язык. Если null (по умолчанию), то будет использоваться {@link CApplication::getLanguage язык приложения}.
-	 * Параметр доступен с версии 1.0.3
+	 * @param string $language целевой язык. Если null (по умолчанию), то будет
+	 * использоваться {@link CApplication::getLanguage язык приложения}
 	 * @return string переведенное сообщение
 	 * @see CMessageSource
 	 */
@@ -619,7 +616,6 @@ class YiiBase
 	 * других существующих автозагрузчиков.
 	 * @param callback $callback правильный обратный вызов PHP (имя функции или массив вида array($className,$methodName)).
 	 * @param boolean $append добавлять ли новый автоподгрузчик классов после встроенного в Yii автоподгрузчика
-	 * @since 1.0.10
 	 */
 	public static function registerAutoloader($callback, $append=false)
 	{

@@ -12,7 +12,7 @@
  * Валидатор CEmailValidator проверяет, что значение атрибута - правильный адрес email.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CEmailValidator.php 3242 2011-05-28 14:31:04Z qiang.xue $
+ * @version $Id: CEmailValidator.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.validators
  * @since 1.0
  */
@@ -25,14 +25,12 @@ class CEmailValidator extends CValidator
 	public $pattern='/^[a-zA-Z0-9!#$%&\'*+\\/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&\'*+\\/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$/';
 	/**
 	 * @var string регулярное выражение, используемое для проверки адресов email с именем.
-	 * Свойство используется только если свойство {@link allowName} установлено в true.
-	 * @since 1.0.5
+	 * Свойство используется только если свойство {@link allowName} установлено в true
 	 * @see allowName
 	 */
 	public $fullPattern='/^[^@]*<[a-zA-Z0-9!#$%&\'*+\\/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&\'*+\\/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?>$/';
 	/**
-	 * @var boolean допустимо ли имя в адресе email (например, "Qiang Xue <qiang.xue@gmail.com>"). По умолчанию - false.
-	 * @since 1.0.5
+	 * @var boolean допустимо ли имя в адресе email (например, "Qiang Xue <qiang.xue@gmail.com>"). По умолчанию - false
 	 * @see fullPattern
 	 */
 	public $allowName=false;
@@ -44,8 +42,7 @@ class CEmailValidator extends CValidator
 	public $checkMX=false;
 	/**
 	 * @var boolean проверять ли порт 25 для адреса email.
-	 * По умолчанию - false.
-	 * @since 1.0.4
+	 * По умолчанию - false
 	 */
 	public $checkPort=false;
 	/**

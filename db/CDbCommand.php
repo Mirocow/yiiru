@@ -41,27 +41,35 @@
  *     ->queryRow();
  * </pre>
  *
- * @property string $text The SQL statement to be executed.
- * @property CDbConnection $connection The connection associated with this command.
- * @property PDOStatement $pdoStatement The underlying PDOStatement for this command
- * It could be null if the statement is not prepared yet.
- * @property string $select The SELECT part (without 'SELECT') in the query.
- * @property boolean $distinct A value indicating whether SELECT DISTINCT should be used.
- * @property string $from The FROM part (without 'FROM' ) in the query.
- * @property string $where The WHERE part (without 'WHERE' ) in the query.
- * @property mixed $join The join part in the query. This can be an array representing
- * multiple join fragments, or a string representing a single jojin fragment.
- * Each join fragment will contain the proper join operator (e.g. LEFT JOIN).
- * @property string $group The GROUP BY part (without 'GROUP BY' ) in the query.
- * @property string $having The HAVING part (without 'HAVING' ) in the query.
- * @property string $order The ORDER BY part (without 'ORDER BY' ) in the query.
- * @property string $limit The LIMIT part (without 'LIMIT' ) in the query.
- * @property string $offset The OFFSET part (without 'OFFSET' ) in the query.
- * @property mixed $union The UNION part (without 'UNION' ) in the query.
- * This can be either a string or an array representing multiple union parts.
+ * @property string $text выполняемое SQL-выражение
+ * @property CDbConnection $connection соединение, ассоциированное с данной
+ * командой
+ * @property PDOStatement $pdoStatement лежащий в основе команды экземпляр
+ * PDOStatement. Может принимать значение null, если выражение еще не
+ * подготовлено
+ * @property string $select часть "SELECT" (без ключевого слова 'SELECT')
+ * запроса
+ * @property boolean $distinct значение, показывающее, должно ли использоваться
+ * выражение SELECT DISTINCT
+ * @property string $from часть "FROM" (без ключевого слова 'FROM') запроса
+ * @property string $where часть WHERE (без ключевого слова 'WHERE') запроса
+ * @property mixed $joinчасть JOIN запроса. Может быть массивом, представляющим
+ * несколько соединяемых фрагментов, или строкой, представляющей один фрагмент
+ * соединения. Каждый фрагмент соединения должен содержать правильный оператор
+ * соединения (например, LEFT JOIN)
+ * @property string $group часть GROUP BY (без ключевого слова 'GROUP BY')
+ * запроса
+ * @property string $having часть HAVING (без ключевого слова 'HAVING') запроса
+ * @property string $order часть ORDER BY (без ключевого слова 'ORDER BY')
+ * запроса
+ * @property string $limit часть LIMIT (без ключевого слова 'LIMIT') запроса
+ * @property string $offset часть OFFSET (без ключевого слова 'OFFSET') запроса
+ * @property mixed $union часть UNION (без ключевого слова 'UNION') запроса.
+ * Может быть строкой или массивом, представляющим несколько объединяемых
+ * частей
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbCommand.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id: CDbCommand.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db
  * @since 1.0
  */
@@ -246,7 +254,7 @@ class CDbCommand extends CComponent
 	 * @param integer $length длина типа
 	 * @param mixed $driverOptions опции, специфичные для драйверов подключения
 	 * к БД (доступен с версии 1.1.6)
-	 * @return CDbCommand текущая выполняемая команда (доступно с версии 1.0.8)
+	 * @return CDbCommand текущая выполняемая команда
 	 * @see http://www.php.net/manual/en/function.PDOStatement-bindParam.php
 	 */
 	public function bindParam($name, &$value, $dataType=null, $length=null, $driverOptions=null)
@@ -273,7 +281,7 @@ class CDbCommand extends CComponent
 	 * @param mixed $value значение, связываемое с параметром
 	 * @param integer $dataType SQL-тип параметра. Если равен значению null,
 	 * тип определяется на основе PHP-типа значения
-	 * @return CDbCommand текущая выполняемая команда (доступно с версии 1.0.8)
+	 * @return CDbCommand текущая выполняемая команда
 	 * @see http://www.php.net/manual/en/function.PDOStatement-bindValue.php
 	 */
 	public function bindValue($name, $value, $dataType=null)
@@ -320,7 +328,7 @@ class CDbCommand extends CComponent
 	 * их данным способом может увеличить производительность. Примечание: при
 	 * передаче параметров данным способом нельзя связать параметры или
 	 * значения с использованием методов {@link bindParam} или
-	 * {@link bindValue}, и наоборот. Данный параметр доступен с версии 1.0.10
+	 * {@link bindValue}, и наоборот
 	 * @return integer количество строк, затронутых данным выполнением
 	 * SQL-выражения
 	 * @throws CException вызывается, если выполнение SQL-выражения неуспешно
@@ -378,7 +386,7 @@ class CDbCommand extends CComponent
 	 * их данным способом может увеличить производительность. Примечание: при
 	 * передаче параметров данным способом нельзя связать параметры или
 	 * значения с использованием методов {@link bindParam} или
-	 * {@link bindValue}, и наоборот. Данный параметр доступен с версии 1.0.10
+	 * {@link bindValue}, и наоборот
 	 * @return CDbDataReader объект ридера (reader) для получения результата
 	 * запроса
 	 * @throws CException вызывается, если выполнение SQL-выражения неуспешно
@@ -399,7 +407,7 @@ class CDbCommand extends CComponent
 	 * их данным способом может увеличить производительность. Примечание: при
 	 * передаче параметров данным способом нельзя связать параметры или
 	 * значения с использованием методов {@link bindParam} или
-	 * {@link bindValue}, и наоборот. Данный параметр доступен с версии 1.0.10
+	 * {@link bindValue}, и наоборот
 	 * @return array все строки результата запроса. Каждый элемент массива -
 	 * это массив, представляющий строку данных. Если результат запроса пустой,
 	 * то будет возвращен пустой массив
@@ -423,7 +431,7 @@ class CDbCommand extends CComponent
 	 * их данным способом может увеличить производительность. Примечание: при
 	 * передаче параметров данным способом нельзя связать параметры или
 	 * значения с использованием методов {@link bindParam} или
-	 * {@link bindValue}, и наоборот. Данный параметр доступен с версии 1.0.10
+	 * {@link bindValue}, и наоборот
 	 * @return mixed первая строка (в виде массива) результата запроса; false,
 	 * если результат запроса пуст
 	 * @throws CException вызывается, если выполнение SQL-выражения неуспешно
@@ -444,7 +452,7 @@ class CDbCommand extends CComponent
 	 * их данным способом может увеличить производительность. Примечание: при
 	 * передаче параметров данным способом нельзя связать параметры или
 	 * значения с использованием методов {@link bindParam} или
-	 * {@link bindValue}, и наоборот. Данный параметр доступен с версии 1.0.10
+	 * {@link bindValue}, и наоборот
 	 * @return mixed значение первого столбца первой строки результата запроса;
 	 * false, если значения нет
 	 * @throws CException вызывается, если выполнение SQL-выражения неуспешно
@@ -469,7 +477,7 @@ class CDbCommand extends CComponent
 	 * их данным способом может увеличить производительность. Примечание: при
 	 * передаче параметров данным способом нельзя связать параметры или
 	 * значения с использованием методов {@link bindParam} или
-	 * {@link bindValue}, и наоборот. Данный параметр доступен с версии 1.0.10
+	 * {@link bindValue}, и наоборот
 	 * @return array первый столбец результата запроса. Если результат пустой,
 	 * то возвращается пустой массив
 	 * @throws CException вызывается, если выполнение SQL-выражения неуспешно
@@ -488,7 +496,7 @@ class CDbCommand extends CComponent
 	 * их данным способом может увеличить производительность. Примечание: при
 	 * передаче параметров данным способом нельзя связать параметры или
 	 * значения с использованием методов {@link bindParam} или
-	 * {@link bindValue}, и наоборот. Данный параметр доступен с версии 1.0.10
+	 * {@link bindValue}, и наоборот
 	 * @return mixed результат выполнения метода
 	 */
 	private function queryInternal($method,$mode,$params=array())
@@ -747,7 +755,7 @@ class CDbCommand extends CComponent
 	}
 
 	/**
-	 * Возвращает часть "FROM" запроса.
+	 * Возвращает часть "FROM" запроса
 	 * @return string часть "FROM" (без ключевого слова 'FROM') запроса
 	 * @since 1.1.6
 	 */
