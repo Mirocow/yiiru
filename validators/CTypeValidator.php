@@ -29,12 +29,13 @@
  * Начиная с версии 1.1.7 существует отдельный валидатор дат {@link CDateValidator}.
  * Используйте его для валидации значений дат.
  *
- * When using the {@link message} property to define a custom error message, the message
- * may contain additional placeholders that will be replaced with the actual content. In addition
- * to the "{attribute}" placeholder, recognized by all validators (see {@link CValidator}),
- * CTypeValidator allows for the following placeholders to be specified:
+ * При использовании свойства {@link message} для определения сообщения об
+ * ошибке сообщение может содержать дополнительные метки, которые будут
+ * заменены реальным содержимым. В дополнение к метке "{attribute}",
+ * распознаваемой всеми валидаторами (см. {@link CValidator}),
+ * CTypeValidator позволяет определять следующую метку:
  * <ul>
- * <li>{type}: replaced with data type the attribute should be {@link type}.</li>
+ * <li>{type}: заменяется типом данных, которому должен соответствовать атрибут ({@link type}).</li>
  * </ul>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
@@ -46,8 +47,7 @@ class CTypeValidator extends CValidator
 {
 	/**
 	 * @var string тип данных, которому должен соответствовать атрибут. По умолчанию - 'string'.
-	 * Допустимые значения - 'string', 'integer', 'float', 'array', 'date', 'time' и 'datetime'.
-	 * Примечание: типы 'time' и 'datetime' доступны с версии 1.0.5.
+	 * Допустимые значения - 'string', 'integer', 'float', 'array', 'date', 'time' и 'datetime'
 	 */
 	public $type='string';
 	/**

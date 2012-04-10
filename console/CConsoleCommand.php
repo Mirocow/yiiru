@@ -44,7 +44,7 @@
  * действия
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CConsoleCommand.php 3501 2011-12-20 20:24:18Z alexander.makarow $
+ * @version $Id: CConsoleCommand.php 3598 2012-02-19 21:22:09Z qiang.xue@gmail.com $
  * @package system.console
  * @since 1.0
  */
@@ -68,6 +68,7 @@ abstract class CConsoleCommand extends CComponent
 	{
 		$this->_name=$name;
 		$this->_runner=$runner;
+		$this->attachBehaviors($this->behaviors());
 	}
 
 	/**
@@ -78,6 +79,35 @@ abstract class CConsoleCommand extends CComponent
 	 */
 	public function init()
 	{
+	}
+	
+	/**
+	 * Возвращает список поведений, свойства которых должна перенимать команда.
+	 * Возвращаемое значение должно быть массивом конфигураций поведений,
+	 * индексированным по именам поведений. Каждая конфигурация поведения может
+	 * быть либо строкой, определяющей класс поведения, либо массивом со
+	 * следующей структурой:
+	 * <pre>
+	 * 'behaviorName'=>array(
+	 *     'class'=>'path.to.BehaviorClass',
+	 *     'property1'=>'value1',
+	 *     'property2'=>'value2',
+	 * )
+	 * </pre>
+	 *
+	 * Примечание: классы поведений должны реализовывать интерфейс
+	 * {@link IBehavior} или наследовать класс {@link CBehavior}. Поведения,
+	 * объявленные в данном методе, будут присоединены к контроллеру при
+	 * создании экземпляра контроллера.
+	 *
+	 * За деталями о поведениях обратитесь к классу {@link CComponent}
+	 * @return array конфигурации поведений (имя поведения => конфигурация
+	 * поведения)
+	 * @since 1.1.11
+	 */
+	public function behaviors()
+	{
+		return array();
 	}
 
 	/**
@@ -154,7 +184,16 @@ abstract class CConsoleCommand extends CComponent
 	 */
 	protected function beforeAction($action,$params)
 	{
-		return true;
+		if($this->hasEventHandler('onBeforeAction'))
+		{
+			$event = new CConsoleCommandEvent($this, $params, $action);
+			$this->onBeforeAction($event);
+			return !$event->stopCommand;
+		}
+		else
+		{
+			return true;
+		}
 	}
 
 	/**
@@ -165,6 +204,8 @@ abstract class CConsoleCommand extends CComponent
 	 */
 	protected function afterAction($action,$params)
 	{
+		if($this->hasEventHandler('onAfterAction'))
+			$this->onAfterAction(new CConsoleCommandEvent($this, $params, $action));
 	}
 
 	/**
@@ -380,7 +421,7 @@ abstract class CConsoleCommand extends CComponent
 		$handle=opendir($sourceDir);
 		while(($file=readdir($handle))!==false)
 		{
-			if($file==='.' || $file==='..' || $file==='.svn' ||$file==='.yii')
+			if($file==='.' || $file==='..' || $file==='.svn' ||$file==='.gitignore')
 				continue;
 			$sourcePath=$sourceDir.DIRECTORY_SEPARATOR.$file;
 			$targetPath=$targetDir.DIRECTORY_SEPARATOR.$file;
@@ -394,7 +435,7 @@ abstract class CConsoleCommand extends CComponent
 	}
 
 	/**
-	 * Создает все родительские директории, если они не существуют.
+	 * Создает все родительские директории, если они не существуют
 	 * @param string $directory проверяемая директория
 	 */
 	public function ensureDirectory($directory)
@@ -432,18 +473,29 @@ abstract class CConsoleCommand extends CComponent
 	}
 
 	/**
-	 * Конвертирует слово во множественную форму (плюрализация). Только английские слова.
+	 * Конвертирует слово во множественную форму (плюрализация). Только английские слова
 	 * @param string $name плюрализуемое слово
 	 * @return string плюрализованное слово
 	 */
 	public function pluralize($name)
 	{
 		$rules=array(
+			'/move$/i' => 'moves',
+			'/foot$/i' => 'feet',
+			'/child$/i' => 'children',
+			'/human$/i' => 'humans',
+			'/man$/i' => 'men',
+			'/tooth$/i' => 'teeth',
+			'/person$/i' => 'people',
+			'/([m|l])ouse$/i' => '\1ice',
 			'/(x|ch|ss|sh|us|as|is|os)$/i' => '\1es',
+			'/([^aeiouy]|qu)y$/i' => '\1ies',
 			'/(?:([^f])fe|([lr])f)$/i' => '\1\2ves',
-			'/(m)an$/i' => '\1en',
-			'/(child)$/i' => '\1ren',
-			'/(r)y$/i' => '\1ies',
+			'/(shea|lea|loa|thie)f$/i' => '\1ves',
+			'/([ti])um$/i' => '\1a',
+			'/(tomat|potat|ech|her|vet)o$/i' => '\1oes',
+			'/(bu)s$/i' => '\1ses',
+			'/(ax|test)is$/i' => '\1es',
 			'/s$/' => 's',
 		);
 		foreach($rules as $rule=>$replacement)
@@ -456,7 +508,7 @@ abstract class CConsoleCommand extends CComponent
 
 	/**
 	 * Считывает введенные данные с помощью расширения readline для PHP, если
-	 * оно доступно, или функцией fgets(), если расгирение readline не
+	 * оно доступно, или функцией fgets(), если расширение readline не
 	 * установлено
 	 *
 	 * @param string $message выводимое сообщение при ожидании пользовательского ответа
@@ -492,5 +544,25 @@ abstract class CConsoleCommand extends CComponent
 	{
 		echo $message.' [yes|no] ';
 		return !strncasecmp(trim(fgets(STDIN)),'y',1);
+	}
+
+	/**
+	 * Данное событие вызывается перед выполнением действия
+	 * @param CConsoleCommandEvent $event параметр события
+	 * @since 1.1.11
+	 */
+	public function onBeforeAction($event)
+	{
+		$this->raiseEvent('onBeforeAction',$event);
+	}
+
+	/**
+	 * Данное событие вызывается полсе окончания выполнения действия
+	 * @param CConsoleCommandEvent $event параметр события
+	 * @since 1.1.11
+	 */
+	public function onAfterAction($event)
+	{
+		$this->raiseEvent('onAfterAction',$event);
 	}
 }

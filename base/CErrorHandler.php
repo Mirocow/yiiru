@@ -48,7 +48,7 @@ Yii::import('CHtml',true);
  * @property array $error детали ошибки. Null, если ошибки нет
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CErrorHandler.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id: CErrorHandler.php 3540 2012-01-16 10:17:01Z mdomba $
  * @package system.base
  * @since 1.0
  */
@@ -178,7 +178,12 @@ class CErrorHandler extends CApplicationComponent
 			if($exception instanceof CHttpException || !YII_DEBUG)
 				$this->render('error',$data);
 			else
-				$this->render('exception',$data);
+			{
+				if($this->isAjaxRequest())
+					$app->displayException($exception);
+				else
+					$this->render('exception',$data);
+			}
 		}
 		else
 			$app->displayException($exception);

@@ -78,7 +78,7 @@ Yii::import('zii.widgets.grid.CCheckBoxColumn');
  * @property CFormatter $formatter экземпляр форматтера. По умолчанию - компонент приложения 'format'
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CGridView.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id: CGridView.php 3551 2012-02-02 12:45:25Z mdomba $
  * @package zii.widgets.grid
  * @since 1.1
  */

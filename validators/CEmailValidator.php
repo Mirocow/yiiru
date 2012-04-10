@@ -91,10 +91,11 @@ class CEmailValidator extends CValidator
 	}
 
 	/**
-	 * Returns the JavaScript needed for performing client-side validation.
-	 * @param CModel $object the data object being validated
-	 * @param string $attribute the name of the attribute to be validated.
-	 * @return string the client-side validation script.
+	 * Возвращает JavaScript-код, требуемый для выполнения валидации на стороне
+	 * клиента
+	 * @param CModel $object валидируемый объект
+	 * @param string $attribute валидируемый атрибут
+	 * @return string скрипт валидации на стороне клиента
 	 * @see CActiveForm::enableClientValidation
 	 * @since 1.1.7
 	 */

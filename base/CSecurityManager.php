@@ -9,18 +9,21 @@
  */
 
 /**
- * CSecurityManager обеспечивает функции секретных ключей, хеширования и шифрование.
+ * CSecurityManager обеспечивает функции секретных ключей, хеширования и
+ * шифрование.
  *
- * CSecurityManager используется компонентами Yii и приложением для целей, связанных с безопасностью.
- * Например, он используется в функции проверки куки (cookie) для предотвращения подделки данных cookie.
+ * CSecurityManager используется компонентами Yii и приложением для целей,
+ * связанных с безопасностью. Например, он используется в функции проверки куки
+ * (cookie) для предотвращения подделки данных cookie.
  *
- * В основном, CSecurityManager используется для защиты данных от подделки и просмотра.
- * Он может генерировать {@link http://ru.wikipedia.org/wiki/HMAC HMAC}
+ * В основном, CSecurityManager используется для защиты данных от подделки и
+ * просмотра. Он может генерировать {@link http://ru.wikipedia.org/wiki/HMAC HMAC}
  * (hash message authentication code, хеш-код идентификации сообщений) и
  * шифровать данные. Секретный ключ, используемый для генерации HMAC,
- * устанавливается свойством {@link setValidationKey ValidationKey}. Ключ, используемый для
- * шифрования данных, устанавливается свойством {@link setEncryptionKey EncryptionKey}. Если эти ключи
- * не установлены явно, генерируются и используются случайные ключи.
+ * устанавливается свойством {@link setValidationKey ValidationKey}. Ключ,
+ * используемый для шифрования данных, устанавливается свойством
+ * {@link setEncryptionKey EncryptionKey}. Если эти ключи не установлены явно,
+ * генерируются и используются случайные ключи.
  *
  * Для защиты данных с использованием HMAC, вызовите метод {@link hashData()}; а для проверки,
  * подделаны ли данные, вызовите метод {@link validateData()}, который возвращает реальные данные,
@@ -43,7 +46,7 @@
  * @property string $validation
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CSecurityManager.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id: CSecurityManager.php 3555 2012-02-09 10:29:44Z mdomba $
  * @package system.base
  * @since 1.0
  */
@@ -76,6 +79,13 @@ class CSecurityManager extends CApplicationComponent
 
 	private $_validationKey;
 	private $_encryptionKey;
+	private $_mbstring;
+
+	public function init()
+	{
+		parent::init();
+		$this->_mbstring=extension_loaded('mbstring');
+	}
 
 	/**
 	 * @return string генерирует случайный частный ключ
@@ -182,7 +192,7 @@ class CSecurityManager extends CApplicationComponent
 	public function encrypt($data,$key=null)
 	{
 		$module=$this->openCryptModule();
-		$key=substr($key===null ? md5($this->getEncryptionKey()) : $key,0,mcrypt_enc_get_key_size($module));
+		$key=$this->substr($key===null ? md5($this->getEncryptionKey()) : $key,0,mcrypt_enc_get_key_size($module));
 		srand();
 		$iv=mcrypt_create_iv(mcrypt_enc_get_iv_size($module), MCRYPT_RAND);
 		mcrypt_generic_init($module,$key,$iv);
@@ -202,11 +212,11 @@ class CSecurityManager extends CApplicationComponent
 	public function decrypt($data,$key=null)
 	{
 		$module=$this->openCryptModule();
-		$key=substr($key===null ? md5($this->getEncryptionKey()) : $key,0,mcrypt_enc_get_key_size($module));
+		$key=$this->substr($key===null ? md5($this->getEncryptionKey()) : $key,0,mcrypt_enc_get_key_size($module));
 		$ivSize=mcrypt_enc_get_iv_size($module);
-		$iv=substr($data,0,$ivSize);
+		$iv=$this->substr($data,0,$ivSize);
 		mcrypt_generic_init($module,$key,$iv);
-		$decrypted=mdecrypt_generic($module,substr($data,$ivSize));
+		$decrypted=mdecrypt_generic($module,$this->substr($data,$ivSize,$this->strlen($data)));
 		mcrypt_generic_deinit($module);
 		mcrypt_module_close($module);
 		return rtrim($decrypted,"\0");
@@ -222,9 +232,9 @@ class CSecurityManager extends CApplicationComponent
 		if(extension_loaded('mcrypt'))
 		{
 			if(is_array($this->cryptAlgorithm))
-				$module=call_user_func_array('mcrypt_module_open',$this->cryptAlgorithm);
+				$module=@call_user_func_array('mcrypt_module_open',$this->cryptAlgorithm);
 			else
-				$module=mcrypt_module_open($this->cryptAlgorithm, '', MCRYPT_MODE_CBC, '');
+				$module=@mcrypt_module_open($this->cryptAlgorithm,'', MCRYPT_MODE_CBC,'');
 
 			if($module===false)
 				throw new CException(Yii::t('yii','Failed to initialize the mcrypt module.'));
@@ -255,11 +265,11 @@ class CSecurityManager extends CApplicationComponent
 	 */
 	public function validateData($data,$key=null)
 	{
-		$len=strlen($this->computeHMAC('test'));
-		if(strlen($data)>=$len)
+		$len=$this->strlen($this->computeHMAC('test'));
+		if($this->strlen($data)>=$len)
 		{
-			$hmac=substr($data,0,$len);
-			$data2=substr($data,$len);
+			$hmac=$this->substr($data,0,$len);
+			$data2=$this->substr($data,$len,$this->strlen($data));
 			return $hmac===$this->computeHMAC($data2,$key)?$data2:false;
 		}
 		else
@@ -290,11 +300,37 @@ class CSecurityManager extends CApplicationComponent
 			$pack='H32';
 			$func='md5';
 		}
-		if(strlen($key) > 64)
+		if($this->strlen($key) > 64)
 			$key=pack($pack, $func($key));
-		if(strlen($key) < 64)
+		if($this->strlen($key) < 64)
 			$key=str_pad($key, 64, chr(0));
-	    $key=substr($key,0,64);
+		$key=$this->substr($key,0,64);
 		return $func((str_repeat(chr(0x5C), 64) ^ $key) . pack($pack, $func((str_repeat(chr(0x36), 64) ^ $key) . $data)));
+	}
+
+	/**
+	 * Возвращает длину переданной строки. Если доступно расширение "mbstring",
+	 * то использует функцию "mb_strlen", иначе - "strlen"
+	 * @param string $string строка, длина которой измеряется
+	 * @return int длина переданной строки
+	 */
+	private function strlen($string)
+	{
+		return $this->_mbstring ? mb_strlen($string,'8bit') : strlen($string);
+	}
+
+	/**
+	 * Возвращает часть переданной строки по начальной позиции и длины
+	 * подстроки. Если доступно расширение "mbstring", то использует функцию 
+	 * "mb_substr", иначе - "substr"
+	 * @param string $string входная строка. Должна состоять как минимум из
+	 * одного символа
+	 * @param int $start стартовая позиция подстроки
+	 * @param int $length длина подстроки
+	 * @return string подстрока; false - при ошибке или пустой строке
+	 */
+	private function substr($string,$start,$length)
+	{
+		return $this->_mbstring ? mb_substr($string,$start,$length,'8bit') : substr($string,$start,$length);
 	}
 }

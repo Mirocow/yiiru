@@ -11,17 +11,19 @@
 /**
  * Валидатор CNumberValidator проверяет, что значение атрибута является числом.
  *
- * In addition to the {@link message} property for setting a custom error message,
- * CNumberValidator has a couple custom error messages you can set that correspond to different
- * validation scenarios. To specify a custom message when the numeric value is too big, 
- * you may use the {@link tooBig} property. Similarly with {@link tooSmall}.
- * The messages may contain additional placeholders that will be replaced 
- * with the actual content. In addition to the "{attribute}" placeholder, recognized by all 
- * validators (see {@link CValidator}), CNumberValidator allows for the following placeholders 
- * to be specified:
+ * В дополнение к свойству {@link message} для установки пользовательского
+ * сообщения об ошибке, CNumberValidator имеет еще два вида пользовательских
+ * сообщений, которые можно установить согласно различным сценариям валидации.
+ * Для установки пользовательского сообщения об ошибке о том, что числовое
+ * значение слишком большое, можно использовать свойство {@link tooBig}.
+ * Аналогично свойство {@link tooSmall} для установки сообщения в случае
+ * слишком маленького числа. Эти сообщения содержат дополнительные метки,
+ * заменяемые реальным содержимым. В дополнение к метке "{attribute}",
+ * распознаваемой всеми валидаторами (see {@link CValidator}), CNumberValidator
+ * позволяет определять следующие метки:
  * <ul>
- * <li>{min}: when using {@link tooSmall}, replaced with the lower limit of the number {@link min}.</li>
- * <li>{max}: when using {@link tooBig}, replaced with the upper limit of the number {@link max}.</li>
+ * <li>{min}: при использовании {@link tooSmall} заменяется нижним пределом числа - {@link min};</li>
+ * <li>{max}: при использовании {@link tooBig} заменяется верхним пределом числа - {@link max}.</li>
  * </ul>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
@@ -41,28 +43,28 @@ class CNumberValidator extends CValidator
 	 */
 	public $allowEmpty=true;
 	/**
-	 * @var integer|float верхняя граница числа. По умолчанию - null, т.е. без верхней границы.
+	 * @var integer|float верхняя граница числа. По умолчанию - null, т.е. без верхней границы
 	 */
 	public $max;
 	/**
-	 * @var integer|float нижняя граница числа. По умолчанию - null, т.е. без нижней границы.
+	 * @var integer|float нижняя граница числа. По умолчанию - null, т.е. без нижней границы
 	 */
 	public $min;
 	/**
-	 * @var string пользовательское сообщение об ошибке, если значение слишком большое.
+	 * @var string пользовательское сообщение об ошибке, если значение слишком большое
 	 */
 	public $tooBig;
 	/**
-	 * @var string пользовательское сообщение об ошибке, если значение слишком маленькое.
+	 * @var string пользовательское сообщение об ошибке, если значение слишком маленькое
 	 */
 	public $tooSmall;
 	/**
-	 * @var string the regular expression for matching integers.
+	 * @var string регулярное выражение для определение целых чисел
 	 * @since 1.1.7
 	 */
 	public $integerPattern='/^\s*[+-]?\d+\s*$/';
 	/**
-	 * @var string the regular expression for matching numbers.
+	 * @var string регулярное выражение для определения чисел
 	 * @since 1.1.7
 	 */
 	public $numberPattern='/^\s*[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\s*$/';
@@ -108,10 +110,11 @@ class CNumberValidator extends CValidator
 	}
 
 	/**
-	 * Returns the JavaScript needed for performing client-side validation.
-	 * @param CModel $object the data object being validated
-	 * @param string $attribute the name of the attribute to be validated.
-	 * @return string the client-side validation script.
+	 * Возвращает JavaScript-код, требуемый для выполнения валидации на стороне
+	 * клиента
+	 * @param CModel $object валидируемый объект
+	 * @param string $attribute валидируемый атрибут
+	 * @return string скрипт валидации на стороне клиента
 	 * @see CActiveForm::enableClientValidation
 	 * @since 1.1.7
 	 */

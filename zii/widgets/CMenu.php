@@ -24,7 +24,7 @@
  *         // Важно: необходимо определить url-адрес как 'controller/action',
  *         // а не просто как 'controller' даже если используется действие по умолчанию.
  *         array('label'=>'Домашняя', 'url'=>array('site/index')),
- *         // элемент меню 'Товары' будет выбран no matter which tag parameter value is since it's not specified.
+ *         // элемент меню 'Товары' будет выбран независимо от того, каково значение параметра тега
  *         array('label'=>'Товары', 'url'=>array('product/index'), 'items'=>array(
  *             array('label'=>'Новые поступления', 'url'=>array('product/new', 'tag'=>'new')),
  *             array('label'=>'Наиболее популярные', 'url'=>array('product/index', 'tag'=>'popular')),

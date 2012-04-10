@@ -22,7 +22,7 @@
  * </pre>
  * Запомните, что вы должны использовать метод {@link CUploadedFile::getInstances} для загрузки нескольких файлов.
  *
- * При использовании CFileValidator с active record-объектами часто используется следующий код:
+ * При использовании CFileValidator с AR-объектами часто используется следующий код:
  * <pre>
  *  if($model->save())
  *  {
@@ -36,20 +36,25 @@
  *
  * Вы можете использовать {@link CFileValidator} для проверки атрибутов файла.
  *
- * In addition to the {@link message} property for setting a custom error message, 
- * CFileValidator has a few custom error messages you can set that correspond to different
- * validation scenarios. When the file is too large, you may use the {@link tooLarge} property
- * to define a custom error message. Similarly for {@link tooSmall}, {@link wrongType} and 
- * {@link tooMany}. The messages may contain additional placeholders that will be replaced 
- * with the actual content. In addition to the "{attribute}" placeholder, recognized by all 
- * validators (see {@link CValidator}), CFileValidator allows for the following placeholders 
- * to be specified:
+ * В дополнение к свойству {@link message} для установки пользовательского
+ * сообщения об ошибке, CFileValidator имеет еще несколько пользовательских
+ * сообщений, которые можно установить согласно различным сценариям валидации.
+ * Для определения пользовательского сообщения об ошибке о том, что файл
+ * слишком большой, можно использовать свойство {@link tooLarge}.
+ * Аналогично свойства для установки сообщений: {@link tooSmall} - в случае
+ * слишком маленького файла, {@link wrongType} - в случае неверного типа файла
+ * и {@link tooMany} - в случае слишком большого числа переданных файлов. Эти
+ * сообщения содержат дополнительные метки, заменяемые реальным содержимым. В
+ * дополнение к метке "{attribute}", распознаваемой всеми валидаторами
+ * (see {@link CValidator}), CFileValidator позволяет определять следующие
+ * метки:
  * <ul>
- * <li>{file}: replaced with the name of the file.</li>
- * <li>{limit}: when using {@link tooLarge}, replaced with {@link maxSize}; 
- * when using {@link tooSmall}, replaced with {@link maxSize}; and when using {@link tooMany} 
- * replaced with {@link maxFiles}.</li>
- * <li>{extensions}: when using {@link wrongType}, it will be replaced with the allowed extensions.</li>
+ * <li>{file}: заменяется именем файла;</li>
+ * <li>{limit}: при использовании {@link tooLarge} заменяется значением
+ * свойства {@link maxSize}, при использовании {@link tooSmall} -
+ * {@link minSize}, а при использовании {@link tooMany} - {@link maxFiles};</li>
+ * <li>{extensions}: при использовании {@link wrongType} заменяется списком
+ * допустимых расширений.</li>
  * </ul>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>

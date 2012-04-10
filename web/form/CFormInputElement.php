@@ -24,7 +24,12 @@
  * <li>listbox: блок списка, генерируемый методом {@link CHtml::activeListBox};</li>
  * <li>dropdownlist: выпадающий список, генерируемый методом {@link CHtml::activeDropDownList};</li>
  * <li>checkboxlist: список чекбоксов, генерируемый методом {@link CHtml::activeCheckBoxList};</li>
- * <li>radiolist: список радиокнопок, генерируемый методом {@link CHtml::activeRadioButtonList}.</li>
+ * <li>radiolist: список радиокнопок, генерируемый методом {@link CHtml::activeRadioButtonList};</li>
+ * <li>url: поле ввода url-адреса (HTML5), генерируемое методом {@link CHtml::activeUrlField};</li>
+ * <li>email: поле ввода email-адреса (HTML5), генерируемое методом {@link CHtml::activeEmailField};</li>
+ * <li>number: поле ввода числа (HTML5), генерируемое методом {@link CHtml::activeNumberField};</li>
+ * <li>range: поле слайдера (HTML5), генерируемое методом {@link CHtml::activeRangeField};</li>
+ * <li>date: поле выбора даты (HTML5), генерируемое методом {@link CHtml::activeDateField}.</li>
  * </ul>
  * Свойство {@link type} также может быть именем класса или псевдонимом пути к
  * классу. В этом случае элемент ввода генерируется виджетом определенного
@@ -43,7 +48,7 @@
  * соответствующей модели для определения метки
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFormInputElement.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id: CFormInputElement.php 3579 2012-02-17 21:43:44Z qiang.xue@gmail.com $
  * @package system.web.form
  * @since 1.1
  */
@@ -64,6 +69,11 @@ class CFormInputElement extends CFormElement
 		'dropdownlist'=>'activeDropDownList',
 		'checkboxlist'=>'activeCheckBoxList',
 		'radiolist'=>'activeRadioButtonList',
+		'url'=>'activeUrlField',
+		'email'=>'activeEmailField',
+		'number'=>'activeNumberField',
+		'range'=>'activeRangeField',
+		'date'=>'activeDateField'
 	);
 
 	/**

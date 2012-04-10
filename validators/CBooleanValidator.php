@@ -12,13 +12,14 @@
  * Валидатор CBooleanValidator проверяет значение атрибута на соответствие либо свойству {@link trueValue}
  * либо свойству {@link falseValue}.
  *
- * При использовании свойства {@link message} для определения property to define a custom error message, the message
- * may contain additional placeholders that will be replaced with the actual content. In addition
- * to the "{attribute}" placeholder, recognized by all validators (see {@link CValidator}),
- * CBooleanValidator allows for the following placeholders to be specified:
+ * При использовании свойства {@link message} для определения сообщения об
+ * ошибке сообщение может содержать дополнительные метки, которые будут
+ * заменены реальным содержимым. В дополнение к метке "{attribute}",
+ * распознаваемой всеми валидаторами (см. {@link CValidator}),
+ * CBooleanValidator позволяет определять следующие метки:
  * <ul>
- * <li>{true}: replaced with value representing the true status {@link trueValue}.</li>
- * <li>{false}: replaced with value representing the false status {@link falseValue}.</li>
+ * <li>{true}: заменяется значением, представляющим статус true {@link trueValue}.</li>
+ * <li>{false}: заменяется значением, представляющим статус false {@link falseValue}.</li>
  * </ul>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
@@ -70,10 +71,11 @@ class CBooleanValidator extends CValidator
 	}
 
 	/**
-	 * Returns the JavaScript needed for performing client-side validation.
-	 * @param CModel $object the data object being validated
-	 * @param string $attribute the name of the attribute to be validated.
-	 * @return string the client-side validation script.
+	 * Возвращает JavaScript-код, требуемый для выполнения валидации на стороне
+	 * клиента
+	 * @param CModel $object валидируемый объект
+	 * @param string $attribute валидируемый атрибут
+	 * @return string скрипт валидации на стороне клиента
 	 * @see CActiveForm::enableClientValidation
 	 * @since 1.1.7
 	 */

@@ -13,17 +13,20 @@
  *
  * Примечание: валидатор должен использоваться только для строковых атрибутов.
  *
- * In addition to the {@link message} property for setting a custom error message,
- * CStringValidator has a couple custom error messages you can set that correspond to different
- * validation scenarios. For defining a custom message when the string is too short, 
- * you may use the {@link tooShort} property. Similarly with {@link tooLong}. The messages may contain 
- * placeholders that will be replaced with the actual content. In addition to the "{attribute}" 
- * placeholder, recognized by all validators (see {@link CValidator}), CStringValidator allows for the following
- * placeholders to be specified:
+ * В дополнение к свойству {@link message} для установки пользовательского
+ * сообщения об ошибке, CStringValidator имеет еще два вида пользовательских
+ * сообщений, которые можно установить согласно различным сценариям валидации.
+ * Для определения пользовательского сообщения об ошибке о том, что строка
+ * слишком короткая, можно использовать свойство {@link tooShort}.
+ * Аналогично свойство {@link tooLong} для установки сообщения в случае
+ * слишком длинной строки. Эти сообщения содержат дополнительные метки,
+ * заменяемые реальным содержимым. В дополнение к метке "{attribute}",
+ * распознаваемой всеми валидаторами (see {@link CValidator}), CStringValidator
+ * позволяет определять следующие метки:
  * <ul>
- * <li>{min}: when using {@link tooShort}, replaced with minimum length, {@link min}, if set.</li>
- * <li>{max}: when using {@link tooLong}, replaced with the maximum length, {@link max}, if set.</li>
- * <li>{length}: when using {@link message}, replaced with the exact required length, {@link is}, if set.</li>
+ * <li>{min}: при использовании {@link tooShort} заменяется минимальной длиной строки - {@link min} (если она указана);</li>
+ * <li>{max}: при использовании {@link tooLong} заменяется максимальной длиной строки - {@link max} (если она указана);</li>
+ * <li>{length}: при использовании {@link message} заменяется точно требуемой длиной строки - {@link is}, if set (если она указана).</li>
  * </ul>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
@@ -34,15 +37,17 @@
 class CStringValidator extends CValidator
 {
 	/**
-	 * @var integer максимальная длина. По умолчанию - null, т.е. без лимита максимума длины.
+	 * @var integer максимальная длина. По умолчанию - null, т.е. без
+	 * ограничения максимума длины
 	 */
 	public $max;
 	/**
-	 * @var integer минимальная длина. По умолчанию - null, т.е. без лимита минимума длины.
+	 * @var integer минимальная длина. По умолчанию - null, т.е. без
+	 * ограничения минимума длины
 	 */
 	public $min;
 	/**
-	 * @var integer точная длина. По умолчанию - null, т.е. без точной длины.
+	 * @var integer точная длина. По умолчанию - null, т.е. без точной длины
 	 */
 	public $is;
 	/**
@@ -62,15 +67,12 @@ class CStringValidator extends CValidator
 	 * @var string кодировка строки валидируемого значения (например, 'UTF-8').
 	 
 	 * Установка данного свойства требует включенного PHP расширения mbstring.
-	 * Значение данного свойства будет использовано в качестве второго параметра функции mb_strlen().
-	 * По умолчанию равно кодировке приложения, т.е., для вычисления длины строки
-	 * будет использоваться кодировка приложения если доступна функция mb_strlen(), иначе
-	 * используется функция strlen()
-	 * This property is used only when mbstring PHP extension is enabled.
-	 * The value of this property will be used as the 2nd parameter of the
-	 * mb_strlen() function. If this property is not set, the application charset
-	 * will be used.
-	 * If this property is set false, then strlen() will be used even if mbstring is enabled.
+	 * Значение данного свойства будет использовано в качестве второго
+	 * параметра функции mb_strlen(). По умолчанию равно кодировке приложения,
+	 * т.е., для вычисления длины строки будет использоваться кодировка
+	 * приложения, если доступна функция mb_strlen(), иначе используется
+	 * функция strlen(). Если данное свойство установлено в значение false, то
+	 * функция strlen() будет использоваться даже если включено расширение mbstring
 	 * @since 1.1.1
 	 */
 	public $encoding;
@@ -110,10 +112,11 @@ class CStringValidator extends CValidator
 	}
 
 	/**
-	 * Returns the JavaScript needed for performing client-side validation.
-	 * @param CModel $object the data object being validated
-	 * @param string $attribute the name of the attribute to be validated.
-	 * @return string the client-side validation script.
+	 * Возвращает JavaScript-код, требуемый для выполнения валидации на стороне
+	 * клиента
+	 * @param CModel $object валидируемый объект
+	 * @param string $attribute валидируемый атрибут
+	 * @return string скрипт валидации на стороне клиента
 	 * @see CActiveForm::enableClientValidation
 	 * @since 1.1.7
 	 */

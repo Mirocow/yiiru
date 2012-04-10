@@ -6,7 +6,7 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2011 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: YiiBase.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id: YiiBase.php 3597 2012-02-19 21:22:08Z qiang.xue@gmail.com $
  * @package system
  * @since 1.0
  */
@@ -55,7 +55,7 @@ defined('YII_ZII_PATH') or define('YII_ZII_PATH',YII_PATH.DIRECTORY_SEPARATOR.'z
  * {@link Yii}, где вы можете настраивать методы YiiBase
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: YiiBase.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id: YiiBase.php 3597 2012-02-19 21:22:08Z qiang.xue@gmail.com $
  * @package system
  * @since 1.0
  */
@@ -90,7 +90,7 @@ class YiiBase
 	 */
 	public static function getVersion()
 	{
-		return '1.1.9-dev';
+		return '1.1.11-dev';
 	}
 
 	/**
@@ -685,6 +685,8 @@ class YiiBase
 		'CConsoleApplication' => '/console/CConsoleApplication.php',
 		'CConsoleCommand' => '/console/CConsoleCommand.php',
 		'CConsoleCommandRunner' => '/console/CConsoleCommandRunner.php',
+		'CConsoleCommandEvent' => '/console/CConsoleCommandEvent.php',
+		'CConsoleCommandBehavior' => '/console/CConsoleCommandBehavior.php',
 		'CHelpCommand' => '/console/CHelpCommand.php',
 		'CDbCommand' => '/db/CDbCommand.php',
 		'CDbConnection' => '/db/CDbConnection.php',

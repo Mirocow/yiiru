@@ -43,7 +43,7 @@
  * @property string $tableAlias псевдоним таблицы по умолчанию
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id: CActiveRecord.php 3533 2012-01-08 22:07:55Z mdomba $
  * @package system.db.ar
  * @since 1.0
  */
@@ -1985,7 +1985,7 @@ abstract class CActiveRecord extends CModel
 /**
  * Класс CBaseActiveRelation - это базовый класс для всех активных связей.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id: CActiveRecord.php 3533 2012-01-08 22:07:55Z mdomba $
  * @package system.db.ar
  */
 class CBaseActiveRelation extends CComponent
@@ -2133,7 +2133,7 @@ class CBaseActiveRelation extends CComponent
 /**
  * Класс CStatRelation представляет статистический реляционный запрос.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id: CActiveRecord.php 3533 2012-01-08 22:07:55Z mdomba $
  * @package system.db.ar
  */
 class CStatRelation extends CBaseActiveRelation
@@ -2171,7 +2171,7 @@ class CStatRelation extends CBaseActiveRelation
  * Класс CActiveRelation - это базовый класс, представляющий активные связи,
  * возвращающие связанные объекты
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id: CActiveRecord.php 3533 2012-01-08 22:07:55Z mdomba $
  * @package system.db.ar
  * @since 1.0
  */
@@ -2270,7 +2270,7 @@ class CActiveRelation extends CBaseActiveRelation
 /**
  * Класс CBelongsToRelation представляет параметры, определяющие связь BELONGS_TO.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id: CActiveRecord.php 3533 2012-01-08 22:07:55Z mdomba $
  * @package system.db.ar
  * @since 1.0
  */
@@ -2282,7 +2282,7 @@ class CBelongsToRelation extends CActiveRelation
 /**
  * Класс CHasOneRelation представляет параметры, определяющие связь HAS_ONE.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id: CActiveRecord.php 3533 2012-01-08 22:07:55Z mdomba $
  * @package system.db.ar
  * @since 1.0
  */
@@ -2300,7 +2300,7 @@ class CHasOneRelation extends CActiveRelation
 /**
  * Класс CHasManyRelation представляет параметры, определяющие связь HAS_MANY.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id: CActiveRecord.php 3533 2012-01-08 22:07:55Z mdomba $
  * @package system.db.ar
  * @since 1.0
  */
@@ -2357,7 +2357,7 @@ class CHasManyRelation extends CActiveRelation
 /**
  * Класс CManyManyRelation представляет параметры, определяющие связь MANY_MANY.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id: CActiveRecord.php 3533 2012-01-08 22:07:55Z mdomba $
  * @package system.db.ar
  * @since 1.0
  */
@@ -2370,7 +2370,7 @@ class CManyManyRelation extends CHasManyRelation
  * Класс CActiveRecordMetaData представляет метаданные для Active Record-класса.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id: CActiveRecord.php 3533 2012-01-08 22:07:55Z mdomba $
  * @package system.db.ar
  * @since 1.0
  */

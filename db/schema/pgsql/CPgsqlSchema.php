@@ -12,7 +12,7 @@
  * Класс CPgsqlSchema - это класс для получения метаинформации БД PostgreSQL.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CPgsqlSchema.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id: CPgsqlSchema.php 3592 2012-02-17 21:44:35Z qiang.xue@gmail.com $
  * @package system.db.schema.pgsql
  * @since 1.0
  */
@@ -31,7 +31,7 @@ class CPgsqlSchema extends CDbSchema
         'integer' => 'integer',
         'float' => 'double precision',
         'decimal' => 'numeric',
-        'datetime' => 'time',
+        'datetime' => 'timestamp',
         'timestamp' => 'timestamp',
         'time' => 'time',
         'date' => 'date',

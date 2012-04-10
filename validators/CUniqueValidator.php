@@ -11,16 +11,17 @@
 /**
  * Валидатор CUniqueValidator проверяет значение атрибута на уникальность в соответствующей таблице БД.
  *
- * When using the {@link message} property to define a custom error message, the message
- * may contain additional placeholders that will be replaced with the actual content. In addition
- * to the "{attribute}" placeholder, recognized by all validators (see {@link CValidator}),
- * CUniqueValidator allows for the following placeholders to be specified:
+ * При использовании свойства {@link message} для определения сообщения об
+ * ошибке сообщение может содержать дополнительные метки, которые будут
+ * заменены реальным содержимым. В дополнение к метке "{attribute}",
+ * распознаваемой всеми валидаторами (см. {@link CValidator}),
+ * CUniqueValidator позволяет определять следующую метку:
  * <ul>
- * <li>{value}: replaced with current value of the attribute.</li>
+ * <li>{value}: заменяется текущим значением атрибута.</li>
  * </ul>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CUniqueValidator.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id: CUniqueValidator.php 3549 2012-01-27 15:36:43Z qiang.xue $
  * @package system.validators
  * @since 1.0
  */
@@ -32,8 +33,8 @@ class CUniqueValidator extends CValidator
 	 */
 	public $caseSensitive=true;
 	/**
-	 * @var boolean может ли быть значение атрибута пустым или равным null. По умолчанию - true,
-	 * т.е. пустой атрибут считается валидным
+	 * @var boolean может ли быть значение атрибута пустым или равным null. По
+	 * умолчанию - true, т.е. пустой атрибут считается валидным
 	 */
 	public $allowEmpty=true;
 	/**
@@ -120,7 +121,7 @@ class CUniqueValidator extends CValidator
 		if($exists)
 		{
 			$message=$this->message!==null?$this->message:Yii::t('yii','{attribute} "{value}" has already been taken.');
-			$this->addError($object,$attribute,$message,array('{value}'=>$value));
+			$this->addError($object,$attribute,$message,array('{value}'=>CHtml::encode($value)));
 		}
 	}
 }

@@ -16,7 +16,7 @@
  * методов поиска, что и класс {@link CActiveRecord}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveFinder.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id: CActiveFinder.php 3562 2012-02-13 01:27:06Z qiang.xue $
  * @package system.db.ar
  * @since 1.0
  */
@@ -325,7 +325,7 @@ class CActiveFinder extends CComponent
  * объектом поиска {@link CActiveFinder}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveFinder.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id: CActiveFinder.php 3562 2012-02-13 01:27:06Z qiang.xue $
  * @package system.db.ar
  * @since 1.0
  */
@@ -1103,6 +1103,8 @@ class CJoinElement
 	{
 		$schema=$this->_builder->getSchema();
 		$joins=array();
+		if(is_string($fks))
+			$fks=preg_split('/\s*,\s*/',$fks,-1,PREG_SPLIT_NO_EMPTY);
 		foreach($fks as $i=>$fk)
 		{
 			if(!is_int($i))
@@ -1218,7 +1220,7 @@ class CJoinElement
  * Класс CJoinQuery представляет SQL-выражение JOIN.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveFinder.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id: CActiveFinder.php 3562 2012-02-13 01:27:06Z qiang.xue $
  * @package system.db.ar
  * @since 1.0
  */
@@ -1378,7 +1380,7 @@ class CJoinQuery
  * для {@link CActiveFinder}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveFinder.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id: CActiveFinder.php 3562 2012-02-13 01:27:06Z qiang.xue $
  * @package system.db.ar
  * @since 1.0.4
  */

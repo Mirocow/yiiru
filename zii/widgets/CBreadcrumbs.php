@@ -41,7 +41,7 @@
  * Затем, в каждом скрипте представления нужно только привязать свойство "breadcrumbs" как это требуется.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CBreadcrumbs.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CBreadcrumbs.php 3602 2012-02-19 22:08:48Z qiang.xue $
  * @package zii.widgets
  * @since 1.1
  */
@@ -88,6 +88,21 @@ class CBreadcrumbs extends CWidget
 	 */
 	public $links=array();
 	/**
+	 * @var string строка, определяющая генерацию каждого активного элемента.
+	 * По умолчанию - "<a href="{url}">{label}</a>", где "{label}" заменяется
+	 * соответствующей меткой элемента, а "{url}" - URL-адресом элемента
+	 * @since 1.1.11
+	 */
+	public $activeLinkTemplate='<a href="{url}">{label}</a>';
+	/**
+	 * @var string строка, определяющая генерацию каждого неактивного элемента.
+	 * По умолчанию - "<span>{label}</span>", где "{label}" заменяется
+	 * соответствующей меткой элемента. Примечание: шаблон неактивного элемента
+	 * не имеет параметра "{url}"
+	 * @since 1.1.11
+	 */
+	public $inactiveLinkTemplate='<span>{label}</span>';
+	/**
 	 * @var string разделитель между ссылок "хлебных крошек". По умолчанию - ' &raquo; '.
 	 */
 	public $separator=' &raquo; ';
@@ -109,9 +124,12 @@ class CBreadcrumbs extends CWidget
 		foreach($this->links as $label=>$url)
 		{
 			if(is_string($label) || is_array($url))
-				$links[]=CHtml::link($this->encodeLabel ? CHtml::encode($label) : $label, $url);
+				$links[]=strtr($this->activeLinkTemplate,array(
+					'{url}'=>CHtml::normalizeUrl($url),
+					'{label}'=>$this->encodeLabel ? CHtml::encode($label) : $label,
+				));
 			else
-				$links[]='<span>'.($this->encodeLabel ? CHtml::encode($url) : $url).'</span>';
+				$links[]=str_replace('{label}',$this->encodeLabel ? CHtml::encode($url) : $url,$this->inactiveLinkTemplate);
 		}
 		echo implode($this->separator,$links);
 		echo CHtml::closeTag($this->tagName);

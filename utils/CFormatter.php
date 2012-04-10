@@ -43,7 +43,7 @@
  * {@link CHtmlPurifier}
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFormatter.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id: CFormatter.php 3553 2012-02-06 22:07:58Z alexander.makarow $
  * @package system.utils
  * @since 1.1.0
  */
@@ -184,8 +184,7 @@ class CFormatter extends CApplicationComponent
 	 * Форматирует значение в виде булева значения.
 	 * @param mixed $value форматируемое значение
 	 * @return string результат форматирования
-	 * @see trueText
-	 * @see falseText
+	 * @see booleanFormat
 	 */
 	public function formatBoolean($value)
 	{

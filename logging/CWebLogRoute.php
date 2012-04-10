@@ -15,7 +15,7 @@
  * в окне консоли FireBug (если свойство {@link showInFireBug} установлено в true).
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CWebLogRoute.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CWebLogRoute.php 3588 2012-02-17 21:44:26Z qiang.xue@gmail.com $
  * @package system.logging
  * @since 1.0
  */
@@ -33,6 +33,18 @@ class CWebLogRoute extends CLogRoute
 	 * Например, если ajax-вызов ожидает результат типа json, то любые выходные данные журнала будут вызывать ошибку выполнения ajax-вызова.
 	 */
 	public $ignoreAjaxInFireBug=true;
+
+	/**
+	 * @var boolean должен ли журнал быть проигнорирован в FireBug для вызовов
+	 * Flash/Flex. По умолчанию - true. Данное значени нужно импользовать с
+	 * осторожностью, т.к. вызовы Flash/Flex возвращают контент как
+	 * результирующие данные. Например, если вызов Flash/Flex call ожидает
+	 * результат типа XML, то любой контент из журнала будет являться причиной
+	 * неуспешности вызова
+	 * Flash/Flex
+	 * @since 1.1.11
+	 */
+	public $ignoreFlashInFireBug=true;
 
 	/**
 	 * Отображает сообщения журнала.
@@ -53,14 +65,16 @@ class CWebLogRoute extends CLogRoute
 	{
 		$app=Yii::app();
 		$isAjax=$app->getRequest()->getIsAjaxRequest();
+		$isFlash=$app->getRequest()->getIsFlashRequest();
 
 		if($this->showInFireBug)
 		{
-			if($isAjax && $this->ignoreAjaxInFireBug)
+			// do not output anything for ajax and/or flash requests if needed
+			if($isAjax && $this->ignoreAjaxInFireBug || $isFlash && $this->ignoreFlashInFireBug)
 				return;
 			$view.='-firebug';
 		}
-		else if(!($app instanceof CWebApplication) || $isAjax)
+		else if(!($app instanceof CWebApplication) || $isAjax || $isFlash)
 			return;
 
 		$viewFile=YII_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.$view.'.php';

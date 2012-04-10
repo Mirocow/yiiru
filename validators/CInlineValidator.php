@@ -27,7 +27,8 @@ class CInlineValidator extends CValidator
 	 */
 	public $params;
 	/**
-	 * @var string the name of the method that returns the client validation code (See {@link clientValidateAttribute}).
+	 * @var string имя метода, возвращающего скрипт клиентской валидации
+	 * (см. {@link clientValidateAttribute})
 	 */
 	public $clientValidate;
 
@@ -44,29 +45,35 @@ class CInlineValidator extends CValidator
 	}
 
 	/**
-	 * Returns the JavaScript code needed to perform client-side validation by calling the {@link clientValidate} method.
-	 * In the client validation code, these variables are predefined:
+	 * Возвращает JavaScript-код, требуемый для выполнения валидации на стороне
+	 * клиента, вызовом метода, имя которого задано свойством
+	 * {@link clientValidate}. В коде клиентской валидации предопределены
+	 * следующие переменные:
 	 * <ul>
-	 * <li>value: the current input value associated with this attribute.</li>
-	 * <li>messages: an array that may be appended with new error messages for the attribute.</li>
-	 * <li>attribute: a data structure keeping all client-side options for the attribute</li>
+	 * <li>value: текущее введенное значение атрибута;</li>
+	 * <li>messages: массив оишбок, который может быть добавлен к сообщениям об
+	 * ошибках атрибута;</li>
+	 * <li>attribute: структура данных, хранящая все настройки для валибации
+	 * атрибута на стороне клиента.</li>
 	 * </ul>
-	 * <b>Example</b>:
+	 * <b>Пример</b>:
 	 *
-	 * If {@link clientValidate} is set to "clientValidate123", clientValidate123() is the name of
-	 * the method that returns the client validation code and can look like:
+	 * Если свойство {@link clientValidate} установлено в значение
+	 * "clientValidate123", то clientValidate123() - это имя метода,
+	 * возвращающего код валидации на стороне клиента, и данный метод может
+	 * выглядеть так:
 	 * <pre>
 	 * <?php
 	 *   public function clientValidate123($attribute)
 	 *   {
-	 *      $js = "if(value != '123') { messages.push('Value should be 123'); }";
+	 *      $js = "if(value != '123') { messages.push('Значение должно равняться 123'); }";
 	 *      return $js;
 	 *   }
 	 * ?>
 	 * </pre>
-	 * @param CModel $object the data object being validated
-	 * @param string $attribute the name of the attribute to be validated.
-	 * @return string the client-side validation script.
+	 * @param CModel $object валидируемый объект
+	 * @param string $attribute валидируемый атрибут
+	 * @return string скрипт валидации на стороне клиента
 	 * @see CActiveForm::enableClientValidation
 	 * @since 1.1.9
 	 */

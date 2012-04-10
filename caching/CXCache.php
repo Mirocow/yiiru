@@ -12,11 +12,14 @@
  * Класс CXCache реализует кэш-компонент приложения, основанный на {@link http://xcache.lighttpd.net/ xcache}.
  *
  * Для использования этого компонента приложения должно быть загружено расширение PHP XCache.
+ * Функционал очистки кэша (flush) будет корректно работать только если
+ * параметр "xcache.admin.enable_auth" файла php.ini установлен в значение
+ * "Off".
  *
  * Обратитесь к документации {@link CCache} за информацией об обычных операциях кэша, поддерживаемых компонентом CXCache.
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: CXCache.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id: CXCache.php 3568 2012-02-13 16:19:25Z keyboard.idol@gmail.com $
  * @package system.caching
  */
 class CXCache extends CCache

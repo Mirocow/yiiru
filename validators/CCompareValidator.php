@@ -22,12 +22,13 @@
  * CCompareValidator поддерживает различные операторы сравнения.
  * Ранее сравнивалось только равенство двух значений.
  *
- * When using the {@link message} property to define a custom error message, the message
- * may contain additional placeholders that will be replaced with the actual content. In addition
- * to the "{attribute}" placeholder, recognized by all validators (see {@link CValidator}),
- * CCompareValidator allows for the following placeholders to be specified:
+ * При использовании свойства {@link message} для определения сообщения об
+ * ошибке сообщение может содержать дополнительные метки, которые будут
+ * заменены реальным содержимым. В дополнение к метке "{attribute}",
+ * распознаваемой всеми валидаторами (см. {@link CValidator}),
+ * CCompareValidator позволяет определять следующую метку:
  * <ul>
- * <li>{compareValue}: replaced with the constant value being compared with {@link compareValue}.</li>
+ * <li>{compareValue}: заменяется постоянным значением, сравниваемым с {@link compareValue}.</li>
  * </ul>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
@@ -142,10 +143,11 @@ class CCompareValidator extends CValidator
 	}
 
 	/**
-	 * Returns the JavaScript needed for performing client-side validation.
-	 * @param CModel $object the data object being validated
-	 * @param string $attribute the name of the attribute to be validated.
-	 * @return string the client-side validation script.
+	 * Возвращает JavaScript-код, требуемый для выполнения валидации на стороне
+	 * клиента
+	 * @param CModel $object валидируемый объект
+	 * @param string $attribute валидируемый атрибут
+	 * @return string скрипт валидации на стороне клиента
 	 * @see CActiveForm::enableClientValidation
 	 * @since 1.1.7
 	 */
